@@ -20,29 +20,36 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="论文分享《Community-affiliation graph model for overlapping network community detection》  日期： 2021. 12. 05 论文链接：https:&#x2F;&#x2F;cs.stanford.edu&#x2F;~jure&#x2F;pubs&#x2F;agmfit-icdm12.pdf 论文会议：ICDM, 2012  1. Abstract 1.1">
+  <meta name="description" content="论文分享《Learning community embedding with community detection and node embedding on graphs》  论文链接：https:&#x2F;&#x2F;sentic.net&#x2F;community-embedding.pdf 论文会议：CIKM 2017  1. Abstract 1.1 What do they do 引入多元高斯分">
 <meta property="og:type" content="article">
-<meta property="og:title" content="社区发现01-AGM论文笔记">
-<meta property="og:url" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="社区发现02_ComE论文笔记">
+<meta property="og:url" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="这是博客">
-<meta property="og:description" content="论文分享《Community-affiliation graph model for overlapping network community detection》  日期： 2021. 12. 05 论文链接：https:&#x2F;&#x2F;cs.stanford.edu&#x2F;~jure&#x2F;pubs&#x2F;agmfit-icdm12.pdf 论文会议：ICDM, 2012  1. Abstract 1.1">
+<meta property="og:description" content="论文分享《Learning community embedding with community detection and node embedding on graphs》  论文链接：https:&#x2F;&#x2F;sentic.net&#x2F;community-embedding.pdf 论文会议：CIKM 2017  1. Abstract 1.1 What do they do 引入多元高斯分">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_01.png">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_02.png">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_03.png">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_04.png">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_05.png">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_06.png">
-<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_01.png">
-<meta property="article:published_time" content="2020-12-05T17:42:14.000Z">
-<meta property="article:modified_time" content="2020-12-05T18:29:44.968Z">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE01.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE02.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE03.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE04.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE05.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE06.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE07.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE08.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE09.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE10.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE11.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE12.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE13.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE14.png">
+<meta property="article:published_time" content="2020-12-06T07:50:11.000Z">
+<meta property="article:modified_time" content="2020-12-06T07:59:36.614Z">
 <meta property="article:author" content="Vincent Xue">
 <meta property="article:tag" content="图表示学习">
 <meta property="article:tag" content="社区发现">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/AGM_01.png">
+<meta name="twitter:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE01.png">
 
-<link rel="canonical" href="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
 
 <script id="page-configurations">
@@ -55,7 +62,7 @@
   };
 </script>
 
-  <title>社区发现01-AGM论文笔记 | 这是博客</title>
+  <title>社区发现02_ComE论文笔记 | 这是博客</title>
   
 
 
@@ -204,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -217,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          社区发现01-AGM论文笔记
+          社区发现02_ComE论文笔记
         </h1>
 
         <div class="post-meta">
@@ -228,7 +235,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-12-06 01:42:14 / 修改时间：02:29:44" itemprop="dateCreated datePublished" datetime="2020-12-06T01:42:14+08:00">2020-12-06</time>
+              <time title="创建时间：2020-12-06 15:50:11 / 修改时间：15:59:36" itemprop="dateCreated datePublished" datetime="2020-12-06T15:50:11+08:00">2020-12-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,113 +258,103 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="论文分享community-affiliation-graph-model-for-overlapping-network-community-detection">论文分享《Community-affiliation graph model for overlapping network community detection》</h1>
+        <h1 id="论文分享learning-community-embedding-with-community-detection-and-node-embedding-on-graphs">论文分享《Learning community embedding with community detection and node embedding on graphs》</h1>
 <blockquote>
-<p>日期： 2021. 12. 05</p>
-<p>论文链接：https://cs.stanford.edu/~jure/pubs/agmfit-icdm12.pdf</p>
-<p>论文会议：ICDM, 2012</p>
+<p>论文链接：https://sentic.net/community-embedding.pdf</p>
+<p>论文会议：<strong>CIKM 2017</strong></p>
 </blockquote>
 <h2 id="abstract">1. Abstract</h2>
 <h3 id="what-do-they-do">1.1 What do they do</h3>
-<p>对现实数据中重叠社区的分布进行研究，提出社区-节点的二分图模型<strong>AGM</strong>，并基于<strong>AGM</strong>设计算法完成重叠社区发现任务。</p>
+<p>引入多元高斯分布来描述社区embedding，在LINE的基础上结合社区embedding来同时实现node embedding learning 和 社区发现任务。</p>
 <a id="more"></a>
 <h3 id="whats-amazing-points">1.2 What's amazing points</h3>
-<ol type="1">
-<li>通过数据挖掘研究<strong>社区重叠部分节点对间边的稠密程度</strong>，反驳过往重叠社区发现工作的基础假设；</li>
-<li>设计的图生成模型<strong>AGM</strong>能简洁的描述多种社区重叠情况（non-overlap/overlap/nested)</li>
-</ol>
+<ul>
+<li>使用multivariate Gaussian distribution 多元高斯分布建模社区 ( learn community embedding)；</li>
+<li>设计端到端的训练模型，同步学习node embedding，多元高斯分布参数并更新社区发现结果。</li>
+</ul>
 <h3 id="learning-model">1.3 Learning model</h3>
 <ul>
-<li>graph: non-attributed, unweighted graph</li>
+<li>graph：non-attributed graph</li>
 <li>unsupervised learning</li>
-<li>task: overlapped community detection</li>
+<li>task：non-overlapped community detection</li>
+<li>learning model: Skip-gram based</li>
 </ul>
 <h2 id="motivation">2. Motivation</h2>
-<ul>
-<li><p>Assumptions comparison</p>
-<p><img src="./AGM_01.png" style="zoom:80%;" /></p>
-<ul>
-<li>过往模型假设：社区重叠部分节点对间边是<strong>稀疏的</strong>；</li>
-<li>本工作发现：社区重叠部分节点对间边是<strong>稠密的</strong>，即，<strong>节点对间所属相同的社区越多，节点对间越有可能有边</strong>。</li>
-</ul></li>
-<li><p>Empirical Observations</p>
-<ul>
-<li><p>实验：</p>
-<p><img src="./AGM_02.png" style="zoom:75%;" /></p>
-<blockquote>
-<p>分别为social network, co-purchasing network, collaboration network</p>
-</blockquote>
-<p>研究边的分布表明，随着节点对所属相同社区越多，该节点对间有边的概率越大。</p>
-<p>作为对比，实验还计算了图中随机两个节点间有边的概率 ≈ <span class="math inline">\(10^{-5}\)</span></p></li>
-<li><p>解读：</p>
-<p>作者以人际关系举例，诸如“兴趣”、”亲属关系“相近的越多，两人越有可能有联系，又如蛋白质中拥有越多相同的功能模块，越有可能发生交互。</p>
-<p><img src="./AGM_03.png" style="zoom:50%;" /></p>
-<blockquote>
-<p>引 <em>Stanford CS224w</em> slide 直观示例</p>
-</blockquote></li>
-</ul></li>
-</ul>
-<h2 id="model">3. Model</h2>
-<h3 id="community-affiliation-graph-model-agm">3.1 Community-affiliation graph model (AGM)</h3>
-<ul>
-<li><p>工作提出的模型主要基于两个要素：</p>
+<figure>
+<img src="./ComE01.png" alt="" /><figcaption>motivation</figcaption>
+</figure>
+<p>考虑上图3个任务，各自结果有助于提升彼此：</p>
 <ol type="1">
-<li>社区出现的原因，是源自节点有相近的隶属关系(shared group affiliations)</li>
-<li>基于如下事实：人们属于多个社区（朋友，家人和同事），但人们间的联系主要由于某一个主要原因。</li>
-</ol></li>
-<li><p>模型定义（参见下图）</p>
-<p>有二分图 <span class="math inline">\(B(V,C,M)\)</span>， <span class="math inline">\(V,C\)</span>分别为节点集合、社区集合，<span class="math inline">\((u, c) \in M\)</span> 意味着节点<span class="math inline">\(u\)</span>属于社区<span class="math inline">\(c\)</span>；</p>
-<p>此外，有对社区集合有概率集 <span class="math inline">\({p_c}\)</span>, <span class="math inline">\(p_c\)</span>表示 ”同属于社区<span class="math inline">\(c\)</span>的节点对间生成边的概率，</p>
-<p>所以，给定<span class="math inline">\(B, V\)</span>， 我们能生成图 <span class="math inline">\(G(V,E)\)</span>，通过如下概率方式决定图中边的生成：</p>
-<p><span class="math display">\[p(u, v)=1-\prod_{k \in C_{u v}}\left(1-p_{k}\right)\]</span></p>
+<li>① 好的node embedding能捕获图的结构、去除噪音，使用该embedding做输入，有助于community detection；</li>
+<li>② 精准的社区发现结果是进行community embedding的基础，因为community embedding是对社区节点特征分布的一种描述；</li>
+<li>③ 引入community embedding，可以理解为引入了<strong>high-order information</strong>，能让node embeding更好的关注全局结构信息。</li>
+</ol>
+<p>关于③，如下图所示：</p>
+<p><img src="./ComE02.png" alt="example" style="zoom:50%;" /></p>
+<ul>
+<li>节点3、10为一阶邻居，但属于不同社区。仅基于first-order proximity的模型无法把握此结构信息；</li>
+<li>节点9、10共享了许多二阶邻居，但二者属于不同社区，基于second-order proximity的模型不易描述此差异。</li>
+</ul>
+<p><strong>Q: 上述3个任务用pipeline实现？</strong></p>
+<p>A：可以，如a. 首先用spectral clustering进行社区发现；b. 学习node embedding；c. 基于社区发现结果和node embedding，学习一个分布，以该分布的参数来描述社区(即community embedding)</p>
+<p>不过，上述pipeline有缺陷：</p>
+<ol type="1">
+<li>node embedding方法未引入社区信息；</li>
+<li>3个任务独立，无法联合优化训练。</li>
+</ol>
+<h2 id="model">3. Model</h2>
+<p>基于上述motivation，本文提出end-to-end的模型ComE来同步完成上述3个任务。</p>
+<h3 id="前导知识">3.0 前导知识</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30483076">高斯混合模型 GMM</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64991884">Skip-gram based 图表示学习</a></li>
+</ul>
+<h3 id="community-detection-embedding">3.1 Community detection &amp; embedding</h3>
+<p>本文基于高斯混合模型，假设同社区的node embedding符合正态分布，多个社区的节点混合，组成了多元正态分布。由此，假设每个node embedding <span class="math inline">\(\phi_{i}\)</span>是由其对应的社区<span class="math inline">\(z_i=k\)</span>生成的。</p>
+<p>我们有如下似然：</p>
+<p><img src="./ComE03.png" /></p>
+<p>其中，</p>
+<p><img src="./ComE04.png" /></p>
+<p>对应commnity detection 任务，节点<span class="math inline">\(i\)</span>所属社区<span class="math inline">\(k\)</span>为最大概率<span class="math inline">\(p(z_i=k)\)</span>，下文记作<span class="math inline">\(\pi_{ik}\)</span>。</p>
+<p>对应community embedding任务，给定输入node embedding <span class="math inline">\(\Phi\)</span>，我们目标是学习最合适的<span class="math inline">\((\Psi, \Sigma)\)</span>。</p>
+<h3 id="node-embedding-loss-function">3.2 Node embedding &amp; Loss function</h3>
+<p>基于LINE，有对应一阶、二阶相似性的目标函数：</p>
+<p><img src="./ComE05.png" /></p>
+<p><img src="./ComE06.png" /></p>
+<p><img src="./ComE07.png" /></p>
+<p>同时，希望同社区内node embedding相近，设计有：</p>
+<p><img src="./ComE08.png" /></p>
+<p>故模型最终的损失函数为：</p>
+<p><img src="./ComE09.png" /></p>
+<h3 id="inference略">3.3 Inference(略)</h3>
+<p>文章进一步讨论了如何实现对上述损失函数的优化，详情略。</p>
+<p>简略伪码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Initialize Φ and Φ′ by DeepWalk</span><br><span class="line">for i in range(iterations):</span><br><span class="line">	Fix (Φ, Φ′), optimize (Π, Ψ, Σ).</span><br><span class="line">	Fix (Π, Ψ, Σ), optimize (Φ, Φ′).</span><br></pre></td></tr></table></figure>
+<h2 id="experiments略">4. Experiments(略)</h2>
+<p>本工作就模型进行全面的实验，包括1. graph visualization; 2. community detection; 3. node classification; 4. model study.</p>
+<h3 id="baselines">4.1 baselines</h3>
+<ul>
+<li>SF: straightforward approach, 与本工作做对照的pipeline。分别使用：Spectral Clustering for community detection; DeepWalk for node embedding; use GMM to fit community</li>
+<li>DeepWalk, LINE, Node2Vec, GraRep: Skip-gram based model</li>
+<li>M-NMF: non-negative matrix factorization based</li>
+</ul>
+<h3 id="graph-visualization">4.2 Graph Visualization</h3>
+<p><img src="./ComE10.png" style="zoom:80%;" /></p>
+<h3 id="community-detection">4.3 Community Detection</h3>
+<p><img src="./ComE11.png" /></p>
+<h3 id="node-classification">4.4 Node Classification</h3>
+<p><img src="./ComE12.png" /></p>
+<p><img src="./ComE13.png" /></p>
 <blockquote>
-<p>即P(u,v 有边) = 1 - P(u, v 在任何一个共同社区概率<span class="math inline">\(p_c\)</span>下都没能生成边)</p>
-</blockquote></li>
-</ul>
-<p><img src="./AGM_04.png" /></p>
-<ul>
-<li><p>模型表达灵活性</p>
-<p>对于重叠/嵌入/非重叠的社区都能描述</p>
-<p><img src="./AGM_05.png" /></p></li>
-</ul>
-<h3 id="agm-for-community-detection">3.2 AGM for Community Detection</h3>
-<p>任务：给定无向无权图<span class="math inline">\(G(V,E)\)</span>，通过拟合<strong>AGM</strong>，求最大似然的方式进行重叠社区发现。</p>
-<p>似然函数：</p>
-<p><span class="math display">\[\underset{B,\left\{p_{c}\right\}}{\operatorname{argmax}} L\left(B,\left\{p_{c}\right\}\right)=\prod_{(u, v) \in E} p(u, v) \prod_{(u, v) \notin E}(1-p(u, v))\]</span></p>
-<p>伪码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for iterations to convergence:</span><br><span class="line">    fixed B, update &#123;pc&#125; by gradient descent</span><br><span class="line">    fixed &#123;pc&#125;, update B # use the Metropolis-Hastings algorithm</span><br></pre></td></tr></table></figure>
-<h3 id="others">3.3 Others</h3>
-<ul>
-<li><p>ε-community</p>
-<p>上述模型，生成的图中对于无共同社区的节点对，不能生成边，这与实际图的情况不符。</p>
-<p>为此，引入一个ε-community，所有节点都属于该社区，设置<span class="math inline">\(p_c=\varepsilon=2|E| /|V|(|V|-1)\)</span>，由此，任意节点能以较低概率生成边。</p></li>
-<li><p>the number of community</p>
-<p><strong>AGM</strong>中社区的数量为超参，为了找出合适的社区数量，本工作通过：</p>
-<p>设置较大数值的社区(<span class="math inline">\(\left|C_{0}\right|=O(|V|)\)</span>)，训练一个初始的模型，并施加<strong>L1</strong>罚项，有</p>
-<p><span class="math inline">\(\left\{\hat{p}_{c}(\lambda)\right\}=\underset{\left\{p_{c}\right\}}{\operatorname{argmax}} P\left(G \mid B_{0},\left\{p_{c}\right\}\right)-\lambda \sum_{c}\left|p_{c}\right|\)</span></p>
-<p>训练后统计<span class="math inline">\(pc\)</span>不为零的个数作为实际社区数进行模型训练。</p></li>
-</ul>
-<h2 id="later-works-个人补充">4. Later works (个人补充)</h2>
-<ul>
-<li><p><strong>BIGCLAM</strong></p>
-<blockquote>
-<p><em>Overlapping Community Detection at Scale: A Nonnegative Matrix Factorization Approach</em></p>
+<p><strong>Flickr</strong>数据集中缺失项，是由于模型训练爆内存无法完成</p>
 </blockquote>
-<p>可理解为对<em>AGM</em>约束放松的模型，即每个结点属于对应社区的概率是连续且独立的，而非统一的<span class="math inline">\(pc\)</span>,</p>
-<p>即得到 隶属权重矩阵 <span class="math inline">\(F \in{|V|}\)</span> x <span class="math inline">\(|C|\)</span>, 每行表示结点<span class="math inline">\(u\)</span>属于社区<span class="math inline">\(c_1,c_2,...,c_k\)</span>的权重。</p>
-<p>见下图：</p>
-<p><img src="./AGM_06.png" style="zoom:80%;" /></p></li>
-<li><p><strong>CommunityGAN</strong></p>
-<blockquote>
-<p><span class="math inline">\(CommunityGAN: Community Detection with Generative Adversarial Nets\)</span></p>
-</blockquote>
-<p>将AGM中节点对的生成，扩展为clique的生成，将AGM结合入GAN中完成社区发现.</p></li>
-</ul>
+<h3 id="model-study">4.5 Model Study</h3>
+<p><img src="./ComE14.png" /></p>
 <h2 id="thoughts">5. Thoughts</h2>
 <ol type="1">
-<li><p>工作基于数据集研究所得结论进行了简洁的图生成模型建模，生成方式依照“所属相同社区越多，节点对越可能有边”。但单纯从图生成的角度考虑，图应该不止由社区结构决定边的产生，因此<strong>AGM</strong>模型对图整体结构信息的把握是有缺失的；</p></li>
-<li><p>本文所述observation”所属相同社区越多，节点对越可能有边“。但仅从图结构上看，下图a,b 更符合社区的定义”社区内节点的边稠密，社区外节点的边稀疏“。如何<strong>理解、定义重叠社区</strong>，是值得更深入思考的问题。</p>
-<p><img src="./AGM_01.png" style="zoom:50%;" /></p></li>
+<li>为什么用GMM建模社区？社区结构用GMM描述合适吗？</li>
+<li>除了用多元高斯分布，如何更显式的建模社区结构？</li>
+<li>motivation 阐述的Loop中，community embedding是否真的有必要？</li>
 </ol>
 
     </div>
@@ -377,10 +374,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="next" title="社区发现02_ComE论文笔记">
-      社区发现02_ComE论文笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="社区发现01-AGM论文笔记">
+      <i class="fa fa-chevron-left"></i> 社区发现01-AGM论文笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B003-GEMSEC%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="next" title="社区发现03_GEMSEC论文笔记">
+      社区发现03_GEMSEC论文笔记 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

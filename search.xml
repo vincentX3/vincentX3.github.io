@@ -120,4 +120,265 @@
         <tag>社区发现</tag>
       </tags>
   </entry>
+  <entry>
+    <title>社区发现02_ComE论文笔记</title>
+    <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="论文分享learning-community-embedding-with-community-detection-and-node-embedding-on-graphs">论文分享《Learning community embedding with community detection and node embedding on graphs》</h1>
+<blockquote>
+<p>论文链接：https://sentic.net/community-embedding.pdf</p>
+<p>论文会议：<strong>CIKM 2017</strong></p>
+</blockquote>
+<h2 id="abstract">1. Abstract</h2>
+<h3 id="what-do-they-do">1.1 What do they do</h3>
+<p>引入多元高斯分布来描述社区embedding，在LINE的基础上结合社区embedding来同时实现node embedding learning 和 社区发现任务。</p>
+<a id="more"></a>
+<h3 id="whats-amazing-points">1.2 What's amazing points</h3>
+<ul>
+<li>使用multivariate Gaussian distribution 多元高斯分布建模社区 ( learn community embedding)；</li>
+<li>设计端到端的训练模型，同步学习node embedding，多元高斯分布参数并更新社区发现结果。</li>
+</ul>
+<h3 id="learning-model">1.3 Learning model</h3>
+<ul>
+<li>graph：non-attributed graph</li>
+<li>unsupervised learning</li>
+<li>task：non-overlapped community detection</li>
+<li>learning model: Skip-gram based</li>
+</ul>
+<h2 id="motivation">2. Motivation</h2>
+<figure>
+<img src="./ComE01.png" alt="" /><figcaption>motivation</figcaption>
+</figure>
+<p>考虑上图3个任务，各自结果有助于提升彼此：</p>
+<ol type="1">
+<li>① 好的node embedding能捕获图的结构、去除噪音，使用该embedding做输入，有助于community detection；</li>
+<li>② 精准的社区发现结果是进行community embedding的基础，因为community embedding是对社区节点特征分布的一种描述；</li>
+<li>③ 引入community embedding，可以理解为引入了<strong>high-order information</strong>，能让node embeding更好的关注全局结构信息。</li>
+</ol>
+<p>关于③，如下图所示：</p>
+<p><img src="./ComE02.png" alt="example" style="zoom:50%;" /></p>
+<ul>
+<li>节点3、10为一阶邻居，但属于不同社区。仅基于first-order proximity的模型无法把握此结构信息；</li>
+<li>节点9、10共享了许多二阶邻居，但二者属于不同社区，基于second-order proximity的模型不易描述此差异。</li>
+</ul>
+<p><strong>Q: 上述3个任务用pipeline实现？</strong></p>
+<p>A：可以，如a. 首先用spectral clustering进行社区发现；b. 学习node embedding；c. 基于社区发现结果和node embedding，学习一个分布，以该分布的参数来描述社区(即community embedding)</p>
+<p>不过，上述pipeline有缺陷：</p>
+<ol type="1">
+<li>node embedding方法未引入社区信息；</li>
+<li>3个任务独立，无法联合优化训练。</li>
+</ol>
+<h2 id="model">3. Model</h2>
+<p>基于上述motivation，本文提出end-to-end的模型ComE来同步完成上述3个任务。</p>
+<h3 id="前导知识">3.0 前导知识</h3>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/30483076">高斯混合模型 GMM</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/64991884">Skip-gram based 图表示学习</a></li>
+</ul>
+<h3 id="community-detection-embedding">3.1 Community detection &amp; embedding</h3>
+<p>本文基于高斯混合模型，假设同社区的node embedding符合正态分布，多个社区的节点混合，组成了多元正态分布。由此，假设每个node embedding <span class="math inline">\(\phi_{i}\)</span>是由其对应的社区<span class="math inline">\(z_i=k\)</span>生成的。</p>
+<p>我们有如下似然：</p>
+<p><img src="./ComE03.png" /></p>
+<p>其中，</p>
+<p><img src="./ComE04.png" /></p>
+<p>对应commnity detection 任务，节点<span class="math inline">\(i\)</span>所属社区<span class="math inline">\(k\)</span>为最大概率<span class="math inline">\(p(z_i=k)\)</span>，下文记作<span class="math inline">\(\pi_{ik}\)</span>。</p>
+<p>对应community embedding任务，给定输入node embedding <span class="math inline">\(\Phi\)</span>，我们目标是学习最合适的<span class="math inline">\((\Psi, \Sigma)\)</span>。</p>
+<h3 id="node-embedding-loss-function">3.2 Node embedding &amp; Loss function</h3>
+<p>基于LINE，有对应一阶、二阶相似性的目标函数：</p>
+<p><img src="./ComE05.png" /></p>
+<p><img src="./ComE06.png" /></p>
+<p><img src="./ComE07.png" /></p>
+<p>同时，希望同社区内node embedding相近，设计有：</p>
+<p><img src="./ComE08.png" /></p>
+<p>故模型最终的损失函数为：</p>
+<p><img src="./ComE09.png" /></p>
+<h3 id="inference略">3.3 Inference(略)</h3>
+<p>文章进一步讨论了如何实现对上述损失函数的优化，详情略。</p>
+<p>简略伪码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Initialize Φ and Φ′ by DeepWalk</span><br><span class="line">for i in range(iterations):</span><br><span class="line">	Fix (Φ, Φ′), optimize (Π, Ψ, Σ).</span><br><span class="line">	Fix (Π, Ψ, Σ), optimize (Φ, Φ′).</span><br></pre></td></tr></table></figure>
+<h2 id="experiments略">4. Experiments(略)</h2>
+<p>本工作就模型进行全面的实验，包括1. graph visualization; 2. community detection; 3. node classification; 4. model study.</p>
+<h3 id="baselines">4.1 baselines</h3>
+<ul>
+<li>SF: straightforward approach, 与本工作做对照的pipeline。分别使用：Spectral Clustering for community detection; DeepWalk for node embedding; use GMM to fit community</li>
+<li>DeepWalk, LINE, Node2Vec, GraRep: Skip-gram based model</li>
+<li>M-NMF: non-negative matrix factorization based</li>
+</ul>
+<h3 id="graph-visualization">4.2 Graph Visualization</h3>
+<p><img src="./ComE10.png" style="zoom:80%;" /></p>
+<h3 id="community-detection">4.3 Community Detection</h3>
+<p><img src="./ComE11.png" /></p>
+<h3 id="node-classification">4.4 Node Classification</h3>
+<p><img src="./ComE12.png" /></p>
+<p><img src="./ComE13.png" /></p>
+<blockquote>
+<p><strong>Flickr</strong>数据集中缺失项，是由于模型训练爆内存无法完成</p>
+</blockquote>
+<h3 id="model-study">4.5 Model Study</h3>
+<p><img src="./ComE14.png" /></p>
+<h2 id="thoughts">5. Thoughts</h2>
+<ol type="1">
+<li>为什么用GMM建模社区？社区结构用GMM描述合适吗？</li>
+<li>除了用多元高斯分布，如何更显式的建模社区结构？</li>
+<li>motivation 阐述的Loop中，community embedding是否真的有必要？</li>
+</ol>
+]]></content>
+      <categories>
+        <category>论文笔记</category>
+      </categories>
+      <tags>
+        <tag>图表示学习</tag>
+        <tag>社区发现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>社区发现04_NOCD论文笔记</title>
+    <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B004-NOCD%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="论文分享overlapping-community-detection-with-graph-neural-networks">论文分享《Overlapping Community Detection with Graph Neural Networks》</h1>
+<blockquote>
+<p>论文链接：https://arxiv.org/pdf/1909.12201.pdf</p>
+<p>论文会议：<strong>DLG 2019</strong></p>
+</blockquote>
+<h2 id="abstract">1. Abstract</h2>
+<h3 id="what-do-they-do">1.1 What do they do</h3>
+<p>面向<strong>重叠社区</strong>问题，结合 GNN 和 Bernoulli-Poisson 概率模型进行建模。</p>
+<a id="more"></a>
+<h3 id="whats-amazing-points">1.2 What's amazing points</h3>
+<h3 id="learning-model">1.3 Learning model</h3>
+<ul>
+<li>graph：attributed graph</li>
+<li>supervised learning</li>
+<li>task：overlapped community detection</li>
+<li>learning model: GNN based</li>
+</ul>
+<h2 id="motivation">2. Motivation</h2>
+<p>当前缺少进行<strong>重叠社区发现</strong>的工作。</p>
+<h2 id="model">3. Model</h2>
+<h3 id="前导简介">3.1 前导简介</h3>
+<ol type="1">
+<li><p>Affiliation Matrix <span class="math inline">\(F \in \mathbb{R}_{\geq 0}^{N \times C}\)</span>, 每列表示对应节点属于该社区的强度。用以表示节点属于多社区的结果。</p></li>
+<li><p>Bernoulli-Poisson</p>
+<p>伯努利-泊松模型是一个重叠社团的图生成模型。对于给定的隶属关系矩阵 <span class="math inline">\(F\)</span>，可以得到邻接矩阵 Auv 采样为：</p>
+<p><span class="math display">\[A_{u v} \sim Bernoulli \left(1-\exp \left(-F_{u} F_{v}^{T}\right)\right)\]</span></p>
+<p>其中，行向量 Fu 表示节点 u 的社团隶属关系。从上式可以看出节点 u 和节点 v 之间属于相同社团的数量越多说明两节点之间存在边的概率越高。</p></li>
+</ol>
+<h3 id="模型架构">3.2 模型架构</h3>
+<p>两层GCN：</p>
+<p><span class="math display">\[F:=\operatorname{GCN}_{\theta}(A, X)=\operatorname{ReLU}\left(\hat{A} \operatorname{ReLU}\left(\hat{A} X W^{(1)}\right) W^{(2)}\right)\]</span></p>
+<p>对于伯努利-泊松模型的负对数似然函数为：</p>
+<p><span class="math inline">\(-\log p(A \mid F)=-\sum_{(u, v) \in E} \log \left(1-\exp \left(-F_{u} F_{v}^{T}\right)\right)+\sum_{(u, v) \notin E} F_{u} F_{v}^{T}\)</span></p>
+<p>由于现实中的图是非常稀疏的，因此上式中的第二项对于损失函数的贡献较大。可以通过不平衡分类的方法来消除这两项的不平衡：</p>
+<p><span class="math inline">\(\mathcal{L}(F)=-\mathbb{E}_{(u, v) \sim P_{E}}\left[\log \left(1-\exp \left(-F_{u} F_{v}^{T}\right)\right)\right]+\mathbb{E}_{(u, v) \sim P_{N}}\left[F_{u} F_{v}^{T}\right]\)</span></p>
+<p>其中 <span class="math inline">\(P_E\)</span>和 <span class="math inline">\(P_N\)</span> 分别表示边存在或者不存在的均匀分布。</p>
+<p>其它论文中的方法通常是直接优化隶属矩阵 <span class="math inline">\(F\)</span> , 本文中直接通过最小化对数似然函数的值来调整神经网络的参数：</p>
+<p><span class="math inline">\(\boldsymbol{\theta}^{\star}=\underset{\boldsymbol{\theta}}{\arg \min } \mathcal{L}\left(\operatorname{GNN}_{\boldsymbol{\theta}}(A, X)\right)\)</span></p>
+<h2 id="实验">4. 实验</h2>
+<ol type="1">
+<li><p>数据集</p>
+<ul>
+<li>标准的 Facebook 数据集</li>
+<li>作者自己提供的四个数据集：Chemistry、Computer Science、Engineering 和 Medicine。</li>
+</ul></li>
+<li><p>相关参数</p>
+<p>对于生成的隶属矩阵，作者采用隶属阈值 <span class="math inline">\(ρ=0.5\)</span> 来判定是否属于某社团。对于评价指标，文中仅使用了重叠的 NMI 值来对比不同模型的结果。NOCD-G 表示以邻接矩阵 <span class="math inline">\(A\)</span>作为节点属性输入，NOCD-X 表示以原节点属性值作为输入。</p></li>
+<li><p>实验结果</p>
+<p>NMI 比较</p>
+<figure>
+<img src="./NOCD_01.png" alt="" /><figcaption>image-20201121084217604</figcaption>
+</figure>
+<p>GNN重要性比较</p>
+<p><img src="./NOCD_02.png" /></p></li>
+</ol>
+<h2 id="后续">5. 后续</h2>
+<p>经更多了解，本工作中讨论的矩阵<span class="math inline">\(F\)</span>，实际是源自<a href="https://www.researchgate.net/publication/262272761_Overlapping_community_detection_at_scale_A_nonnegative_matrix_factorization_approach">BIGCLAM</a> 的设计。</p>
+]]></content>
+      <categories>
+        <category>论文笔记</category>
+      </categories>
+      <tags>
+        <tag>图表示学习</tag>
+        <tag>社区发现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>社区发现03_GEMSEC论文笔记</title>
+    <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B003-GEMSEC%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="论文笔记gemsec-graph-embedding-with-self-clustering">论文笔记《GEMSEC: Graph Embedding with Self Clustering》</h1>
+<blockquote>
+<p>论文链接：https://arxiv.org/abs/1802.03997</p>
+<p>论文会议：ASONAM, 2019</p>
+<p>论文代码：https://github.com/benedekrozemberczki/GEMSEC</p>
+</blockquote>
+<h2 id="abstract">1. Abstract</h2>
+<h3 id="what-do-they-do">1.1 What do they do</h3>
+<p>工作基于Skip-gram提出<strong>GEMSEC</strong>模型，通过在损失函数中加入clustering cost来要求社区节点表示的近似性，该模型能同步完成节点嵌入学习和社区发现。</p>
+<a id="more"></a>
+<h3 id="whats-amazing-points">1.2 What's amazing points</h3>
+<ul>
+<li>类似<strong>K-Means</strong>，通过计算节点与所属的聚类中心距离，设计clustering lost；</li>
+<li>基于对社交网络中“同社区内邻居节点高度重合”的观察，设计regularization term来降低参数敏感性</li>
+</ul>
+<h3 id="learning-model">1.3 Learning model</h3>
+<ul>
+<li>graph：non-attributed graph</li>
+<li>unsupervised learning</li>
+<li>task：non-overlapped community detection</li>
+<li>learning model: Skip-gram based</li>
+</ul>
+<h2 id="motivation">2. Motivation</h2>
+<ul>
+<li>借助<strong>K-Means</strong>算法思路来描述节点与社区（聚类）的关系；</li>
+<li>在社交网络中，同属一个社区的节点可能有许多相同的朋友，这意味着社区中<strong>节点邻居重叠度很高</strong>。</li>
+</ul>
+<h2 id="model">3. Model</h2>
+<h3 id="clustering-cost">3.1 Clustering Cost</h3>
+<p><img src="./gemsec_01.png" /></p>
+<p><span class="math inline">\(f(v)\)</span>即节点<span class="math inline">\(v\)</span>的嵌入表示，<span class="math inline">\(\mu_c\)</span>为第<span class="math inline">\(c\)</span>个社区(或理解为cluster)的社区中心向量表示。</p>
+<p>clustering cost目标是最小化节点嵌入和其社区中心的距离，使得同社区节点的表示近似。</p>
+<h2 id="smoothness-regularization">3.2 Smoothness Regularization</h2>
+<p>基于motivation中第二点对社交网络的观察，提出如下正则项：</p>
+<p><img src="./gemsec_02.png" /></p>
+<p>其中，<span class="math inline">\(w(v,u)\)</span>为节点间邻居重叠度，即<span class="math inline">\(\frac{N(a) \cap N(b)}{N(a) \cup N(b)}\)</span>。</p>
+<p>所以，上式可以理解为：</p>
+<ul>
+<li>节点<span class="math inline">\(u,v\)</span>共享邻居越多，越可能同属一个社区，于是<span class="math inline">\(w(v,u)\)</span>趋近1，则两节点的嵌入表示应当相近；</li>
+<li>反之，共享邻居少，<span class="math inline">\(w(v,u)\)</span>趋近0，则不强求二者表示相近。</li>
+</ul>
+<h3 id="others">3.3 others</h3>
+<p>本工作还讨论了learning rate及其他超参的退火调整，整个模型算法伪码如下：</p>
+<p><img src="./gemsec_03.png" style="zoom:50%;" /></p>
+<h2 id="thoughts">4. Thoughts</h2>
+<ul>
+<li>与<strong>KMeans</strong>局限性类似，本工作发现的社区是否很大程度受聚类中心节点初始化的影响；</li>
+<li>比起得到embedding后再用<strong>KMeans</strong>，本工作简单的走多一步但取得更好的效果——大约还是要多实验、并自信地发出来吧。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>论文笔记</category>
+      </categories>
+      <tags>
+        <tag>图表示学习</tag>
+        <tag>社区发现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MSL-01-Preview</title>
+    <url>/2020/12/06/MSL-01-Preview/</url>
+    <content><![CDATA[<h1 id="msl-01-preview真正成为研究生前的一窥">MSL-01-Preview：真正成为研究生前的一窥</h1>
+<blockquote>
+<p>随记点想法，或许略负能量吧。</p>
+</blockquote>
+<p>写在去实验室机位贴标签条后。</p>
+<a id="more"></a>
+<p>和朋友出街路过网吧，总是挂在嘴边：这辈子还没在里面开过机位。 一间房里，空调费劲咳嗽般吐出暖气，吸干空气中一点一丝的湿气，从进门时便感到干燥的嘴唇似要破裂。低头瞅见，门旁的小小垃圾桶，垃圾摞成了麦当劳甜筒的模样。一长条桌子用隔板分割，每个位置塞个约莫19寸的屏幕。狭小逼仄，双屏想来无法摆下。</p>
+<p>如果这是件网吧的设备，我一定扭头便走——2020年居然还以这般破败姿态来开网吧？</p>
+<p>未曾想，这是未来三年研究生时光的位置。 曾经想，实验室大约该宽敞明亮，不求双屏+人体工学椅，好歹有套性能强劲的主机吧。没想到这台式的内存，居然才8G。</p>
+<p>也罢，多记负能量无用。<strong>且记住，哪怕是在自己认为像乡村网吧的实验室里，也正不断产出可能改变世界的成果。</strong></p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>科研心声</tag>
+      </tags>
+  </entry>
 </search>
