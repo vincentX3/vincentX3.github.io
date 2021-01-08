@@ -1,6 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ML汇总-不平衡数据集</title>
+    <url>/2021/01/06/ML%E6%B1%87%E6%80%BB-%E4%B8%8D%E5%B9%B3%E8%A1%A1%E6%95%B0%E6%8D%AE%E9%9B%86/</url>
+    <content><![CDATA[<h1 id="关于不平衡数据集的总结汇总">关于不平衡数据集的总结汇总</h1>
+<h2 id="从样本分布看问题根源">1. 从样本分布看问题根源</h2>
+<p>资料来源:<a href="https://zhuanlan.zhihu.com/p/56960799">机器学习中如何处理不平衡数据？</a></p>
+<blockquote>
+<p>链接中通过例子重点分析unbalanced dataset的分布问题</p>
+</blockquote>
+<p>往往由于现实因素限制，我们得到数据集中正负样例比例相差悬殊，可能导致如下情况：</p>
+<a id="more"></a>
+<p><img src="./ML_02_02.png" style="zoom:50%;" /></p>
+<p>如上图所示，尽管正负样例的实际分布不同（虚线部分），但由于采样比例悬殊（实线部分），若模型<strong>仅仅追求高Accuracy</strong>，模型则倾向于给出<code>predict=1</code>的结果。</p>
+<p>不过，若正负样例的实际分布相差较大，就算数据集不平衡，模型也可能得到较好的分辨能力：</p>
+<p><img src="./ML_02_01.png" style="zoom:50%;" /></p>
+<p>若想从根本上解决不平衡数据集问题，还是需要<strong>采集更多负样本</strong>。</p>
+<h2 id="改进方式">2. 改进方式</h2>
+<p><a href="https://www.jianshu.com/p/f170d72f6fb6">详细资料参考</a></p>
+<p>基本思路如下：</p>
+<h3 id="采样方式">2.1 采样方式</h3>
+<ol type="1">
+<li>欠采样/过采样</li>
+<li>数据合成（对负样本进行微小扰动等实现负样本合成）</li>
+</ol>
+<h3 id="建模方式">2.2 建模方式</h3>
+<ol type="1">
+<li>模型训练中，<strong>分配类别权重</strong>或者样本权重；</li>
+<li>将问题视作看成一分类(One Class Learning)或者<strong>异常检测</strong>(Novelty Detection)问题；</li>
+<li>Ensemble集成算法;</li>
+</ol>
+<h3 id="特征工程">2.3 特征工程</h3>
+<p>从上文图2中可以发现，如果能创建出新特征，使各类样本的分布尽可能分离，也有可能提升分类器性能。</p>
+<h2 id="其他问题">3. 其他问题</h2>
+<p>在面对不平衡数据集时需要选择合适的指标，</p>
+<p><code>Accuracy</code>, <code>AUC</code> 的结果不能真实反映分类器性能，关注<code>PR</code>曲线等能更好理解分类器在对不同类别样本的分类能力。</p>
+<hr />
+<p>参考资料：</p>
+<ol type="1">
+<li>https://www.jianshu.com/p/f170d72f6fb6</li>
+<li>https://zhuanlan.zhihu.com/p/56960799</li>
+<li>https://blog.csdn.net/qidailiming1994/article/details/100159842</li>
+<li>https://www.zhihu.com/question/323518703</li>
+</ol>
+]]></content>
+      <categories>
+        <category>算法实践</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MSL-01-Preview</title>
+    <url>/2020/12/06/MSL-01-Preview/</url>
+    <content><![CDATA[<h1 id="msl-01-preview真正成为研究生前的一窥">MSL-01-Preview：真正成为研究生前的一窥</h1>
+<blockquote>
+<p>随记点想法，或许略负能量吧。</p>
+</blockquote>
+<p>写在去实验室机位贴标签条后。</p>
+<a id="more"></a>
+<p>和朋友出街路过网吧，总是挂在嘴边：这辈子还没在里面开过机位。 一间房里，空调费劲咳嗽般吐出暖气，吸干空气中一点一丝的湿气，从进门时便感到干燥的嘴唇似要破裂。低头瞅见，门旁的小小垃圾桶，垃圾摞成了麦当劳甜筒的模样。一长条桌子用隔板分割，每个位置塞个约莫19寸的屏幕。狭小逼仄，双屏想来无法摆下。</p>
+<p>如果这是件网吧的设备，我一定扭头便走——2020年居然还以这般破败姿态来开网吧？</p>
+<p>未曾想，这是未来三年研究生时光的位置。 曾经想，实验室大约该宽敞明亮，不求双屏+人体工学椅，好歹有套性能强劲的主机吧。没想到这台式的内存，居然才8G。</p>
+<p>也罢，多记负能量无用。<strong>且记住，哪怕是在自己认为像乡村网吧的实验室里，也正不断产出可能改变世界的成果。</strong></p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>科研心声</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MSL-02-团建</title>
+    <url>/2020/12/20/MSL-02-%E5%9B%A2%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="团建后的随记">团建后的随记</h1>
+<p>开始敲打键盘时已经是零点又二十分了，距离德州扑克结束3小时又20分，距离晚餐用毕有约六小时。</p>
+<a id="more"></a>
+<p>团建是从下午两点时开始的，一场四小时的剧本杀。</p>
+<p>剧本杀总能暴露我的话痨属性。尽管努力参与游戏，但笨拙且直白的交谈技巧，未能玩出尔虞我诈的精髓。大约是所谓涉世太浅，恰似白板一眼看穿吧。</p>
+<p>晚饭时，听学长们探讨互联网企业是非与职业发展路径，打破了些许学生思维：</p>
+<ul>
+<li>纯做技术出头的人才总是有限，何况考虑到现实情况（自己连🐔都未必是哈哈）所限。</li>
+<li>最初时选到合适的大船，着眼于个人发展，诸如团队、项目管理，技术规划等，远好于冲着一个大package跑去，锁死了晋升的天花板。</li>
+</ul>
+<p>饭后的德州属实上头，装神弄鬼后把自己完成了“无产阶级”——输光筹码。</p>
+<p><img src="./texas_poker.jpg" /></p>
+<p>想来自己还是不够沉稳，开局小胜几局后便沉不住气，把把不计概率而博运气。</p>
+<p>最后一局毕业的学长一把翻盘——隐忍了一整晚后抓了个Ace同花，换来大额入账。做人嘛，不能没有富贵的命得了富贵的命，属实该学会静候真正时机。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>MSL-03-南昌行</title>
+    <url>/2021/01/05/MSL-03-%E5%8D%97%E6%98%8C%E8%A1%8C/</url>
+    <content><![CDATA[<h1 id="出差南昌的若干夜">出差南昌的若干夜</h1>
+<h2 id="第一夜">第一夜</h2>
+<p>社交媒体上，尽是“拼多多的恶”——所谓奋斗的旗号送走了年轻的生命，在社交媒体上还为”剥削的正当性“叫嚣。</p>
+<p>奈何那些996、大小周的互联网公司仍是围城，城内的打工人难堪种种压榨，城外的人羡慕那用命博来的巨额财富——尽管对于真正获利的资本家而言不过九牛一毛。</p>
+<p>乘着高铁来到了南昌，江西的省会城市。</p>
+<a id="more"></a>
+<p>天空灰蒙蒙地，甚至发黄。所谓老城区的商业区，步行街晚上八点时却人影寥寥，马路宽敞却残破。那种第一眼的破败感，仿佛一下置身《铳梦》那废土赛博世界。</p>
+<p>到了办公场地，仿佛置身计算机博物馆。早就知道银行数据安全重要，却不曾想要依靠一次性的光盘进行资料传输——每张4G，每秒传输数据峰值不超4M；在维护OA软件的程序员那边，看到了win XP，还是未破解的版本。</p>
+<p>场地逼仄，三人共享一张办公桌，有的人还要在铁货架上写代码。</p>
+<p>却问办公时间，休闲异常：早八点半到十一点半，悠哉游哉睡个午觉，下午两点上班，匆匆到五点又要下班了。</p>
+<p>要去互联网公司吗，扛得住那般作息吗？</p>
+<p>要来国企养老吗，休闲而落后，落袋没有几个子。</p>
+<p>不是二选一的选择呵。现在更该做的，不是看到矛盾、苦涩的现实就倦怠、懒惰，反倒是更应耕耘自我跃升到更上的平台吧。</p>
+<h2 id="第二夜">第二夜</h2>
+<p>拼多多股价又涨了，资本果然冷血而逐利。</p>
+<p>个人体验而言，有限、合理的工作时长带啦的效宜远胜996啊。</p>
+<p>晚上不过7点就不让继续在办公室干活了。</p>
+<p>此刻的我刚停下”自主加班“的脚步，思索如何提高办公效率。</p>
+<h2 id="末夜">末夜</h2>
+<p>受限于银行那边的硬件资源，模型没能完成就撤退了。</p>
+<p>三小时车程，返汉后已然十一点。</p>
+<p>寒冬冷风中的小确幸，莫过于大老远看到校门口的店铺还亮着灯。</p>
+<p>一杯绿豆汤，一张鲜肉锅魁，是对自己最大的犒赏。</p>
+<p>悦纳自己不过是个小人物的现状，开怀于每点温暖的片段罢了。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+  </entry>
+  <entry>
     <title>社区发现01-AGM论文笔记</title>
     <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h1 id="论文分享community-affiliation-graph-model-for-overlapping-network-community-detection">论文分享《Community-affiliation graph model for overlapping network community detection》</h1>
@@ -231,6 +357,67 @@
       </tags>
   </entry>
   <entry>
+    <title>社区发现03_GEMSEC论文笔记</title>
+    <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B003-GEMSEC%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="论文笔记gemsec-graph-embedding-with-self-clustering">论文笔记《GEMSEC: Graph Embedding with Self Clustering》</h1>
+<blockquote>
+<p>论文链接：https://arxiv.org/abs/1802.03997</p>
+<p>论文会议：ASONAM, 2019</p>
+<p>论文代码：https://github.com/benedekrozemberczki/GEMSEC</p>
+</blockquote>
+<h2 id="abstract">1. Abstract</h2>
+<h3 id="what-do-they-do">1.1 What do they do</h3>
+<p>工作基于Skip-gram提出<strong>GEMSEC</strong>模型，通过在损失函数中加入clustering cost来要求社区节点表示的近似性，该模型能同步完成节点嵌入学习和社区发现。</p>
+<a id="more"></a>
+<h3 id="whats-amazing-points">1.2 What's amazing points</h3>
+<ul>
+<li>类似<strong>K-Means</strong>，通过计算节点与所属的聚类中心距离，设计clustering lost；</li>
+<li>基于对社交网络中“同社区内邻居节点高度重合”的观察，设计regularization term来降低参数敏感性</li>
+</ul>
+<h3 id="learning-model">1.3 Learning model</h3>
+<ul>
+<li>graph：non-attributed graph</li>
+<li>unsupervised learning</li>
+<li>task：non-overlapped community detection</li>
+<li>learning model: Skip-gram based</li>
+</ul>
+<h2 id="motivation">2. Motivation</h2>
+<ul>
+<li>借助<strong>K-Means</strong>算法思路来描述节点与社区（聚类）的关系；</li>
+<li>在社交网络中，同属一个社区的节点可能有许多相同的朋友，这意味着社区中<strong>节点邻居重叠度很高</strong>。</li>
+</ul>
+<h2 id="model">3. Model</h2>
+<h3 id="clustering-cost">3.1 Clustering Cost</h3>
+<p><img src="./gemsec_01.png" /></p>
+<p><span class="math inline">\(f(v)\)</span>即节点<span class="math inline">\(v\)</span>的嵌入表示，<span class="math inline">\(\mu_c\)</span>为第<span class="math inline">\(c\)</span>个社区(或理解为cluster)的社区中心向量表示。</p>
+<p>clustering cost目标是最小化节点嵌入和其社区中心的距离，使得同社区节点的表示近似。</p>
+<h2 id="smoothness-regularization">3.2 Smoothness Regularization</h2>
+<p>基于motivation中第二点对社交网络的观察，提出如下正则项：</p>
+<p><img src="./gemsec_02.png" /></p>
+<p>其中，<span class="math inline">\(w(v,u)\)</span>为节点间邻居重叠度，即<span class="math inline">\(\frac{N(a) \cap N(b)}{N(a) \cup N(b)}\)</span>。</p>
+<p>所以，上式可以理解为：</p>
+<ul>
+<li>节点<span class="math inline">\(u,v\)</span>共享邻居越多，越可能同属一个社区，于是<span class="math inline">\(w(v,u)\)</span>趋近1，则两节点的嵌入表示应当相近；</li>
+<li>反之，共享邻居少，<span class="math inline">\(w(v,u)\)</span>趋近0，则不强求二者表示相近。</li>
+</ul>
+<h3 id="others">3.3 others</h3>
+<p>本工作还讨论了learning rate及其他超参的退火调整，整个模型算法伪码如下：</p>
+<p><img src="./gemsec_03.png" style="zoom:50%;" /></p>
+<h2 id="thoughts">4. Thoughts</h2>
+<ul>
+<li>与<strong>KMeans</strong>局限性类似，本工作发现的社区是否很大程度受聚类中心节点初始化的影响；</li>
+<li>比起得到embedding后再用<strong>KMeans</strong>，本工作简单的走多一步但取得更好的效果——大约还是要多实验、并自信地发出来吧。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>论文笔记</category>
+      </categories>
+      <tags>
+        <tag>图表示学习</tag>
+        <tag>社区发现</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>社区发现04_NOCD论文笔记</title>
     <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B004-NOCD%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h1 id="论文分享overlapping-community-detection-with-graph-neural-networks">论文分享《Overlapping Community Detection with Graph Neural Networks》</h1>
@@ -298,110 +485,6 @@
         <tag>图表示学习</tag>
         <tag>社区发现</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>社区发现03_GEMSEC论文笔记</title>
-    <url>/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B003-GEMSEC%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="论文笔记gemsec-graph-embedding-with-self-clustering">论文笔记《GEMSEC: Graph Embedding with Self Clustering》</h1>
-<blockquote>
-<p>论文链接：https://arxiv.org/abs/1802.03997</p>
-<p>论文会议：ASONAM, 2019</p>
-<p>论文代码：https://github.com/benedekrozemberczki/GEMSEC</p>
-</blockquote>
-<h2 id="abstract">1. Abstract</h2>
-<h3 id="what-do-they-do">1.1 What do they do</h3>
-<p>工作基于Skip-gram提出<strong>GEMSEC</strong>模型，通过在损失函数中加入clustering cost来要求社区节点表示的近似性，该模型能同步完成节点嵌入学习和社区发现。</p>
-<a id="more"></a>
-<h3 id="whats-amazing-points">1.2 What's amazing points</h3>
-<ul>
-<li>类似<strong>K-Means</strong>，通过计算节点与所属的聚类中心距离，设计clustering lost；</li>
-<li>基于对社交网络中“同社区内邻居节点高度重合”的观察，设计regularization term来降低参数敏感性</li>
-</ul>
-<h3 id="learning-model">1.3 Learning model</h3>
-<ul>
-<li>graph：non-attributed graph</li>
-<li>unsupervised learning</li>
-<li>task：non-overlapped community detection</li>
-<li>learning model: Skip-gram based</li>
-</ul>
-<h2 id="motivation">2. Motivation</h2>
-<ul>
-<li>借助<strong>K-Means</strong>算法思路来描述节点与社区（聚类）的关系；</li>
-<li>在社交网络中，同属一个社区的节点可能有许多相同的朋友，这意味着社区中<strong>节点邻居重叠度很高</strong>。</li>
-</ul>
-<h2 id="model">3. Model</h2>
-<h3 id="clustering-cost">3.1 Clustering Cost</h3>
-<p><img src="./gemsec_01.png" /></p>
-<p><span class="math inline">\(f(v)\)</span>即节点<span class="math inline">\(v\)</span>的嵌入表示，<span class="math inline">\(\mu_c\)</span>为第<span class="math inline">\(c\)</span>个社区(或理解为cluster)的社区中心向量表示。</p>
-<p>clustering cost目标是最小化节点嵌入和其社区中心的距离，使得同社区节点的表示近似。</p>
-<h2 id="smoothness-regularization">3.2 Smoothness Regularization</h2>
-<p>基于motivation中第二点对社交网络的观察，提出如下正则项：</p>
-<p><img src="./gemsec_02.png" /></p>
-<p>其中，<span class="math inline">\(w(v,u)\)</span>为节点间邻居重叠度，即<span class="math inline">\(\frac{N(a) \cap N(b)}{N(a) \cup N(b)}\)</span>。</p>
-<p>所以，上式可以理解为：</p>
-<ul>
-<li>节点<span class="math inline">\(u,v\)</span>共享邻居越多，越可能同属一个社区，于是<span class="math inline">\(w(v,u)\)</span>趋近1，则两节点的嵌入表示应当相近；</li>
-<li>反之，共享邻居少，<span class="math inline">\(w(v,u)\)</span>趋近0，则不强求二者表示相近。</li>
-</ul>
-<h3 id="others">3.3 others</h3>
-<p>本工作还讨论了learning rate及其他超参的退火调整，整个模型算法伪码如下：</p>
-<p><img src="./gemsec_03.png" style="zoom:50%;" /></p>
-<h2 id="thoughts">4. Thoughts</h2>
-<ul>
-<li>与<strong>KMeans</strong>局限性类似，本工作发现的社区是否很大程度受聚类中心节点初始化的影响；</li>
-<li>比起得到embedding后再用<strong>KMeans</strong>，本工作简单的走多一步但取得更好的效果——大约还是要多实验、并自信地发出来吧。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>论文笔记</category>
-      </categories>
-      <tags>
-        <tag>图表示学习</tag>
-        <tag>社区发现</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MSL-01-Preview</title>
-    <url>/2020/12/06/MSL-01-Preview/</url>
-    <content><![CDATA[<h1 id="msl-01-preview真正成为研究生前的一窥">MSL-01-Preview：真正成为研究生前的一窥</h1>
-<blockquote>
-<p>随记点想法，或许略负能量吧。</p>
-</blockquote>
-<p>写在去实验室机位贴标签条后。</p>
-<a id="more"></a>
-<p>和朋友出街路过网吧，总是挂在嘴边：这辈子还没在里面开过机位。 一间房里，空调费劲咳嗽般吐出暖气，吸干空气中一点一丝的湿气，从进门时便感到干燥的嘴唇似要破裂。低头瞅见，门旁的小小垃圾桶，垃圾摞成了麦当劳甜筒的模样。一长条桌子用隔板分割，每个位置塞个约莫19寸的屏幕。狭小逼仄，双屏想来无法摆下。</p>
-<p>如果这是件网吧的设备，我一定扭头便走——2020年居然还以这般破败姿态来开网吧？</p>
-<p>未曾想，这是未来三年研究生时光的位置。 曾经想，实验室大约该宽敞明亮，不求双屏+人体工学椅，好歹有套性能强劲的主机吧。没想到这台式的内存，居然才8G。</p>
-<p>也罢，多记负能量无用。<strong>且记住，哪怕是在自己认为像乡村网吧的实验室里，也正不断产出可能改变世界的成果。</strong></p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>科研心声</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MSL-02-团建</title>
-    <url>/2020/12/20/MSL-02-%E5%9B%A2%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="团建后的随记">团建后的随记</h1>
-<p>开始敲打键盘时已经是零点又二十分了，距离德州扑克结束3小时又20分，距离晚餐用毕有约六小时。</p>
-<a id="more"></a>
-<p>团建是从下午两点时开始的，一场四小时的剧本杀。</p>
-<p>剧本杀总能暴露我的话痨属性。尽管努力参与游戏，但笨拙且直白的交谈技巧，未能玩出尔虞我诈的精髓。大约是所谓涉世太浅，恰似白板一眼看穿吧。</p>
-<p>晚饭时，听学长们探讨互联网企业是非与职业发展路径，打破了些许学生思维：</p>
-<ul>
-<li>纯做技术出头的人才总是有限，何况考虑到现实情况（自己连🐔都未必是哈哈）所限。</li>
-<li>最初时选到合适的大船，着眼于个人发展，诸如团队、项目管理，技术规划等，远好于冲着一个大package跑去，锁死了晋升的天花板。</li>
-</ul>
-<p>饭后的德州属实上头，装神弄鬼后把自己完成了“无产阶级”——输光筹码。</p>
-<p><img src="./texas_poker.jpg" /></p>
-<p>想来自己还是不够沉稳，开局小胜几局后便沉不住气，把把不计概率而博运气。</p>
-<p>最后一局毕业的学长一把翻盘——隐忍了一整晚后抓了个Ace同花，换来大额入账。做人嘛，不能没有富贵的命得了富贵的命，属实该学会静候真正时机。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
   </entry>
   <entry>
     <title>社区发现05-CommunityGAN论文笔记</title>
