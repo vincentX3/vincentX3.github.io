@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="论文分享《Learning community embedding with community detection and node embedding on graphs》  论文链接：https:&#x2F;&#x2F;sentic.net&#x2F;community-embedding.pdf 论文会议：CIKM 2017  1. Abstract 1.1 What do they do 引入多元高斯分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="社区发现02_ComE论文笔记">
+<meta property="og:url" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="这是博客">
+<meta property="og:description" content="论文分享《Learning community embedding with community detection and node embedding on graphs》  论文链接：https:&#x2F;&#x2F;sentic.net&#x2F;community-embedding.pdf 论文会议：CIKM 2017  1. Abstract 1.1 What do they do 引入多元高斯分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE01.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE02.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE03.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE04.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE05.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE06.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE07.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE08.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE09.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE10.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE11.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE12.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE13.png">
+<meta property="og:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE14.png">
+<meta property="article:published_time" content="2020-12-06T07:50:11.000Z">
+<meta property="article:modified_time" content="2020-12-06T07:59:36.614Z">
+<meta property="article:author" content="Vincent Xue">
+<meta property="article:tag" content="图表示学习">
+<meta property="article:tag" content="社区发现">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/ComE01.png">
+
+<link rel="canonical" href="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>社区发现02_ComE论文笔记 | 这是博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cd00dc9d214bf89ab2a9e3420f3828f6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="这是博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">这是博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">试图存在, 但薛三无法自证</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/vincentX3" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          社区发现02_ComE论文笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-06 15:50:11 / 修改时间：15:59:36" itemprop="dateCreated datePublished" datetime="2020-12-06T15:50:11+08:00">2020-12-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B002-ComE%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="社区发现02_ComE论文笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="论文分享learning-community-embedding-with-community-detection-and-node-embedding-on-graphs">论文分享《Learning community embedding with community detection and node embedding on graphs》</h1>
+<blockquote>
+<p>论文链接：https://sentic.net/community-embedding.pdf</p>
+<p>论文会议：<strong>CIKM 2017</strong></p>
+</blockquote>
+<h2 id="abstract">1. Abstract</h2>
+<h3 id="what-do-they-do">1.1 What do they do</h3>
+<p>引入多元高斯分布来描述社区embedding，在LINE的基础上结合社区embedding来同时实现node embedding learning 和 社区发现任务。</p>
+<span id="more"></span>
+<h3 id="whats-amazing-points">1.2 What's amazing points</h3>
+<ul>
+<li>使用multivariate Gaussian distribution 多元高斯分布建模社区 ( learn community embedding)；</li>
+<li>设计端到端的训练模型，同步学习node embedding，多元高斯分布参数并更新社区发现结果。</li>
+</ul>
+<h3 id="learning-model">1.3 Learning model</h3>
+<ul>
+<li>graph：non-attributed graph</li>
+<li>unsupervised learning</li>
+<li>task：non-overlapped community detection</li>
+<li>learning model: Skip-gram based</li>
+</ul>
+<h2 id="motivation">2. Motivation</h2>
+<figure>
+<img src="./ComE01.png" alt="motivation" /><figcaption aria-hidden="true">motivation</figcaption>
+</figure>
+<p>考虑上图3个任务，各自结果有助于提升彼此：</p>
+<ol type="1">
+<li>① 好的node embedding能捕获图的结构、去除噪音，使用该embedding做输入，有助于community detection；</li>
+<li>② 精准的社区发现结果是进行community embedding的基础，因为community embedding是对社区节点特征分布的一种描述；</li>
+<li>③ 引入community embedding，可以理解为引入了<strong>high-order information</strong>，能让node embeding更好的关注全局结构信息。</li>
+</ol>
+<p>关于③，如下图所示：</p>
+<p><img src="./ComE02.png" alt="example" style="zoom:50%;" /></p>
+<ul>
+<li>节点3、10为一阶邻居，但属于不同社区。仅基于first-order proximity的模型无法把握此结构信息；</li>
+<li>节点9、10共享了许多二阶邻居，但二者属于不同社区，基于second-order proximity的模型不易描述此差异。</li>
+</ul>
+<p><strong>Q: 上述3个任务用pipeline实现？</strong></p>
+<p>A：可以，如a. 首先用spectral clustering进行社区发现；b. 学习node embedding；c. 基于社区发现结果和node embedding，学习一个分布，以该分布的参数来描述社区(即community embedding)</p>
+<p>不过，上述pipeline有缺陷：</p>
+<ol type="1">
+<li>node embedding方法未引入社区信息；</li>
+<li>3个任务独立，无法联合优化训练。</li>
+</ol>
+<h2 id="model">3. Model</h2>
+<p>基于上述motivation，本文提出end-to-end的模型ComE来同步完成上述3个任务。</p>
+<h3 id="前导知识">3.0 前导知识</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30483076">高斯混合模型 GMM</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64991884">Skip-gram based 图表示学习</a></li>
+</ul>
+<h3 id="community-detection-embedding">3.1 Community detection &amp; embedding</h3>
+<p>本文基于高斯混合模型，假设同社区的node embedding符合正态分布，多个社区的节点混合，组成了多元正态分布。由此，假设每个node embedding <span class="math inline">\(\phi_{i}\)</span>是由其对应的社区<span class="math inline">\(z_i=k\)</span>生成的。</p>
+<p>我们有如下似然：</p>
+<p><img src="./ComE03.png" /></p>
+<p>其中，</p>
+<p><img src="./ComE04.png" /></p>
+<p>对应commnity detection 任务，节点<span class="math inline">\(i\)</span>所属社区<span class="math inline">\(k\)</span>为最大概率<span class="math inline">\(p(z_i=k)\)</span>，下文记作<span class="math inline">\(\pi_{ik}\)</span>。</p>
+<p>对应community embedding任务，给定输入node embedding <span class="math inline">\(\Phi\)</span>，我们目标是学习最合适的<span class="math inline">\((\Psi, \Sigma)\)</span>。</p>
+<h3 id="node-embedding-loss-function">3.2 Node embedding &amp; Loss function</h3>
+<p>基于LINE，有对应一阶、二阶相似性的目标函数：</p>
+<p><img src="./ComE05.png" /></p>
+<p><img src="./ComE06.png" /></p>
+<p><img src="./ComE07.png" /></p>
+<p>同时，希望同社区内node embedding相近，设计有：</p>
+<p><img src="./ComE08.png" /></p>
+<p>故模型最终的损失函数为：</p>
+<p><img src="./ComE09.png" /></p>
+<h3 id="inference略">3.3 Inference(略)</h3>
+<p>文章进一步讨论了如何实现对上述损失函数的优化，详情略。</p>
+<p>简略伪码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Initialize Φ and Φ′ by DeepWalk</span><br><span class="line">for i in range(iterations):</span><br><span class="line">	Fix (Φ, Φ′), optimize (Π, Ψ, Σ).</span><br><span class="line">	Fix (Π, Ψ, Σ), optimize (Φ, Φ′).</span><br></pre></td></tr></table></figure>
+<h2 id="experiments略">4. Experiments(略)</h2>
+<p>本工作就模型进行全面的实验，包括1. graph visualization; 2. community detection; 3. node classification; 4. model study.</p>
+<h3 id="baselines">4.1 baselines</h3>
+<ul>
+<li>SF: straightforward approach, 与本工作做对照的pipeline。分别使用：Spectral Clustering for community detection; DeepWalk for node embedding; use GMM to fit community</li>
+<li>DeepWalk, LINE, Node2Vec, GraRep: Skip-gram based model</li>
+<li>M-NMF: non-negative matrix factorization based</li>
+</ul>
+<h3 id="graph-visualization">4.2 Graph Visualization</h3>
+<p><img src="./ComE10.png" style="zoom:80%;" /></p>
+<h3 id="community-detection">4.3 Community Detection</h3>
+<p><img src="./ComE11.png" /></p>
+<h3 id="node-classification">4.4 Node Classification</h3>
+<p><img src="./ComE12.png" /></p>
+<p><img src="./ComE13.png" /></p>
+<blockquote>
+<p><strong>Flickr</strong>数据集中缺失项，是由于模型训练爆内存无法完成</p>
+</blockquote>
+<h3 id="model-study">4.5 Model Study</h3>
+<p><img src="./ComE14.png" /></p>
+<h2 id="thoughts">5. Thoughts</h2>
+<ol type="1">
+<li>为什么用GMM建模社区？社区结构用GMM描述合适吗？</li>
+<li>除了用多元高斯分布，如何更显式的建模社区结构？</li>
+<li>motivation 阐述的Loop中，community embedding是否真的有必要？</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/" rel="tag"># 图表示学习</a>
+              <a href="/tags/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B0/" rel="tag"># 社区发现</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B001-AGM%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="prev" title="社区发现01-AGM论文笔记">
+      <i class="fa fa-chevron-left"></i> 社区发现01-AGM论文笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/06/%E7%A4%BE%E5%8C%BA%E5%8F%91%E7%8E%B003-GEMSEC%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" rel="next" title="社区发现03_GEMSEC论文笔记">
+      社区发现03_GEMSEC论文笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+        
+        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=2bV_KsPkzlOuuLZ7Nsucqhfj04iXoZ16zOqvmeB-Y_8&cl=ffffff&w=a"></script>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BA%E6%96%87%E5%88%86%E4%BA%ABlearning-community-embedding-with-community-detection-and-node-embedding-on-graphs"><span class="nav-text">论文分享《Learning community embedding with community detection and node embedding on graphs》</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#abstract"><span class="nav-text">1. Abstract</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#what-do-they-do"><span class="nav-text">1.1 What do they do</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#whats-amazing-points"><span class="nav-text">1.2 What&#39;s amazing points</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#learning-model"><span class="nav-text">1.3 Learning model</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#motivation"><span class="nav-text">2. Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-text">3. Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%AF%BC%E7%9F%A5%E8%AF%86"><span class="nav-text">3.0 前导知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#community-detection-embedding"><span class="nav-text">3.1 Community detection &amp; embedding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node-embedding-loss-function"><span class="nav-text">3.2 Node embedding &amp; Loss function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inference%E7%95%A5"><span class="nav-text">3.3 Inference(略)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiments%E7%95%A5"><span class="nav-text">4. Experiments(略)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#baselines"><span class="nav-text">4.1 baselines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#graph-visualization"><span class="nav-text">4.2 Graph Visualization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#community-detection"><span class="nav-text">4.3 Community Detection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node-classification"><span class="nav-text">4.4 Node Classification</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model-study"><span class="nav-text">4.5 Model Study</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thoughts"><span class="nav-text">5. Thoughts</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent Xue</p>
+  <div class="site-description" itemprop="description">努力更新博客来使自己清醒。</div>
+</div>
+  
+
+  <div class="">
+
+    <div class="">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent Xue</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"kBOuJmtu0EoE9vlD5IWJd5Dn-gzGzoHsz","app_key":"T10XF9QYbKXLS8NiyEPyBWgE","server_url":"https://api.vincentx3.cn","security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

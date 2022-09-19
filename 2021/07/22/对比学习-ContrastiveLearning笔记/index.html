@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Contrastive Learning 笔记  参考资料：  https:&#x2F;&#x2F;lilianweng.github.io&#x2F;lil-log&#x2F;2021&#x2F;05&#x2F;31&#x2F;contrastive-representation-learning.html https:&#x2F;&#x2F;ankeshanand.com&#x2F;blog&#x2F;2020&#x2F;01&#x2F;26&#x2F;contrative-self-supervised-learnin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对比学习_ContrastiveLearning笔记">
+<meta property="og:url" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="这是博客">
+<meta property="og:description" content="Contrastive Learning 笔记  参考资料：  https:&#x2F;&#x2F;lilianweng.github.io&#x2F;lil-log&#x2F;2021&#x2F;05&#x2F;31&#x2F;contrastive-representation-learning.html https:&#x2F;&#x2F;ankeshanand.com&#x2F;blog&#x2F;2020&#x2F;01&#x2F;26&#x2F;contrative-self-supervised-learnin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_01.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_03.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_02.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_04.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_06.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_07.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_05.png">
+<meta property="og:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_08.png">
+<meta property="article:published_time" content="2021-07-22T07:32:20.000Z">
+<meta property="article:modified_time" content="2021-07-22T07:32:20.000Z">
+<meta property="article:author" content="Vincent Xue">
+<meta property="article:tag" content="图神经网络">
+<meta property="article:tag" content="图表示学习">
+<meta property="article:tag" content="对比学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/flgnn_01.png">
+
+<link rel="canonical" href="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>对比学习_ContrastiveLearning笔记 | 这是博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cd00dc9d214bf89ab2a9e3420f3828f6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="这是博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">这是博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">试图存在, 但薛三无法自证</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/vincentX3" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对比学习_ContrastiveLearning笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-22 15:32:20" itemprop="dateCreated datePublished" datetime="2021-07-22T15:32:20+08:00">2021-07-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">论文笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/07/22/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0-ContrastiveLearning%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="对比学习_ContrastiveLearning笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="contrastive-learning-笔记">Contrastive Learning 笔记</h1>
+<blockquote>
+<p>参考资料：</p>
+<ul>
+<li>https://lilianweng.github.io/lil-log/2021/05/31/contrastive-representation-learning.html</li>
+<li>https://ankeshanand.com/blog/2020/01/26/contrative-self-supervised-learning.html</li>
+<li>https://zhuanlan.zhihu.com/p/334732028</li>
+<li>https://zhuanlan.zhihu.com/p/367290573</li>
+<li>https://zhuanlan.zhihu.com/p/368678302</li>
+</ul>
+<p>论文引用见文末。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="motivations">1. Motivations</h2>
+<h3 id="纯监督学习的弊端">1.1 纯监督学习的弊端</h3>
+<ol type="1">
+<li>数据潜在的结构难以通过少量的labels来描述，因而purely supervised learning需要大量样本来学习，同时容易收敛到特殊情况；</li>
+<li>模型为针对task-specific，所学的并非可重用的知识。</li>
+</ol>
+<h3 id="nlp领域预训练模型的进展">1.2 NLP领域预训练模型的进展</h3>
+<p>NLP领域如Bert预训练模型，从<strong>海量无标注文本</strong>中学习通用知识的能力。而CV领域的预训练，常为<strong>有监督</strong>，在ImageNet上预训练，但在下游任务中Fine-tuning的效果远不如NLP预训练模型来得显著。那，CV领域，能不能类似的，“充分使用越来越大量的无标注数据，使用越来越复杂的模型，采用自监督预训练模式，来从中吸取图像本身的先验知识分布，在下游任务中通过Fine-tuning，来把预训练过程习得的知识，迁移给并提升下游任务的效果。”</p>
+<h3 id="toy-example">1.3 Toy Example</h3>
+<p><img src="./flgnn_01.png" /></p>
+<p>左图是人们根据记忆草绘的钞票，<strong>抽象程度较高</strong>，右图则是人们对着钞票临摹的结果，是接近<strong>像素级别</strong>的绘制。</p>
+<p>尽管无数次看到一美元钞票，人们无法复刻它的全部细节。但是，根据脑中的印象，我们能轻松地把它与其他对象区分。类似地，我们能否构建不关注像素级细节，只编码足以区分不同对象的高级特征的表示学习算法？</p>
+<h2 id="brief-introduction">2. Brief Introduction</h2>
+<h3 id="goal">2.1 Goal</h3>
+<p>Contrastive Learning的目标是学习这样一个嵌入空间，其中<strong>相似的样本对彼此靠近而不同的样本对相距很远</strong>，所得的编码器及嵌入为下游任务所用。</p>
+<p>正式地，有：</p>
+<p><img src="./flgnn_03.png" /></p>
+<p>与supervised learning对比，直观地可见下图：</p>
+<p><img src="./flgnn_02.png" /></p>
+<h3 id="basic-model-architecture">2.2 Basic model architecture</h3>
+<p><img src="./flgnn_04.png" /></p>
+<p>主要包括如下三步：</p>
+<ol type="1">
+<li>对样本<span class="math inline">\(X\)</span>，进行<strong>data augmentation</strong>，得到正样例<span class="math inline">\(V\)</span>，而其他样本的样例则作为本样本的负例<span class="math inline">\(V&#39;\)</span>；</li>
+<li>使用<strong>encoder</strong>得到样例的嵌入表示<span class="math inline">\(Y\)</span>；</li>
+<li>基于对比学习的<span class="math inline">\(Loss\)</span>进行参数更新。</li>
+</ol>
+<h2 id="key-ingredients">3. Key Ingredients</h2>
+<h3 id="loss-design">3.1 Loss Design</h3>
+<blockquote>
+<p>Loss的设计、发展详见<a target="_blank" rel="noopener" href="https://lilianweng.github.io/lil-log/2021/05/31/contrastive-representation-learning.html#contrastive-training-objectives">Trend of training objectives</a></p>
+</blockquote>
+<ul>
+<li><p>从形式上的发展来说，损失函数从早期仅对一个正负样例对进行学习，逐渐向考虑多个正负样例对发展；</p></li>
+<li><p>此外，也有工作跳出self-supervised，将<strong>label信息</strong>也考虑入模型[9]；</p></li>
+<li><p>从核心来说，好的损失函数应具备Alignment和Uniformity[1]：</p>
+<p><img src="./flgnn_06.png" /></p>
+<p>所谓“Alignment”，指的是相似的例子，也就是正例，映射到单位超球面后，应该有接近的特征，也即是说，在超球面上距离比较近；所谓“Uniformity”，指的是系统应该倾向在特征里保留尽可能多的信息，这等价于使得映射到单位超球面的特征，尽可能均匀地分布在球面上，分布得越均匀，意味着保留的信息越充分。Uniformity特性的极端反例，是所有数据映射到单位超球面同一个点上，即模型坍塌（Collapse），如下图：</p>
+<p><img src="./flgnn_07.png" style="zoom:50%;" /></p></li>
+</ul>
+<h3 id="data-augmentation">3.2 Data Augmentation</h3>
+<p>给定一个训练样本，需要通过数据增强获取正负样例。合理的数据增强设置对于学习good and generalizable的嵌入表示至关重要。例如，SimCLR[2] 实验表明，随机裁剪和随机颜色失真的组合对于学习图像视觉表示的良好性能至关重要。</p>
+<h3 id="large-batch-size">3.3 Large Batch Size</h3>
+<p>只有当批量足够大时，损失函数才能覆盖足够多样化的负样本集合，让模型学习有意义的表示以区分不同的示例。但由于硬件的限制，如何让模型能支持更大batch size，需要进一步地考量模型反向传播的方式。</p>
+<p>研究有如[3]：</p>
+<p><img src="./flgnn_05.png" /></p>
+<h2 id="cl-gnn">4. CL + GNN</h2>
+<p>目前CL和GNN结合的工作[4-8]，主要是将CL的SOTA模型应用到GNN领域，模型架构上无太大创新。</p>
+<p>迁移的主要难点，在于两个领域的输入不同，故CL+GNN的工作，主要创新在于如何对图数据进行augmentation，得到正负样例。</p>
+<p>其扩增的方法归类如下：</p>
+<p><img src="./flgnn_08.png" /></p>
+<hr />
+<p>Reference:</p>
+<ol type="1">
+<li>Understanding Contrastive Representation Learning through Alignment and Uniformity on the Hypersphere</li>
+<li>A Simple Framework for Contrastive Learning of Visual Representations</li>
+<li>Momentum Contrast for Unsupervised Visual Representation Learning</li>
+<li>Contrastive multi-view representation learning on graphs</li>
+<li>Gcc: Graph contrastive coding for graph neural network pre-training</li>
+<li>Deep Graph Infomax</li>
+<li>Graph contrastive learning with augmentations</li>
+<li>Graph contrastive learning with adaptive augmentation</li>
+<li>Supervised contrastive learning</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 图神经网络</a>
+              <a href="/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/" rel="tag"># 图表示学习</a>
+              <a href="/tags/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0/" rel="tag"># 对比学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/14/BOOK-04-AI%E6%9E%81%E7%AE%80%E7%BB%8F%E6%B5%8E%E5%AD%A6/" rel="prev" title="BOOK-04-AI极简经济学">
+      <i class="fa fa-chevron-left"></i> BOOK-04-AI极简经济学
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/13/MSL-08-%E5%81%87%E6%97%A5%E7%94%9F%E6%B4%BB%E7%A2%8E%E7%89%87/" rel="next" title="MSL-08-假日生活碎片">
+      MSL-08-假日生活碎片 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+        
+        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=2bV_KsPkzlOuuLZ7Nsucqhfj04iXoZ16zOqvmeB-Y_8&cl=ffffff&w=a"></script>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#contrastive-learning-%E7%AC%94%E8%AE%B0"><span class="nav-text">Contrastive Learning 笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#motivations"><span class="nav-text">1. Motivations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%BC%8A%E7%AB%AF"><span class="nav-text">1.1 纯监督学习的弊端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nlp%E9%A2%86%E5%9F%9F%E9%A2%84%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%BF%9B%E5%B1%95"><span class="nav-text">1.2 NLP领域预训练模型的进展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toy-example"><span class="nav-text">1.3 Toy Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#brief-introduction"><span class="nav-text">2. Brief Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goal"><span class="nav-text">2.1 Goal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-model-architecture"><span class="nav-text">2.2 Basic model architecture</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#key-ingredients"><span class="nav-text">3. Key Ingredients</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#loss-design"><span class="nav-text">3.1 Loss Design</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-augmentation"><span class="nav-text">3.2 Data Augmentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#large-batch-size"><span class="nav-text">3.3 Large Batch Size</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cl-gnn"><span class="nav-text">4. CL + GNN</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent Xue</p>
+  <div class="site-description" itemprop="description">努力更新博客来使自己清醒。</div>
+</div>
+  
+
+  <div class="">
+
+    <div class="">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent Xue</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"kBOuJmtu0EoE9vlD5IWJd5Dn-gzGzoHsz","app_key":"T10XF9QYbKXLS8NiyEPyBWgE","server_url":"https://api.vincentx3.cn","security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

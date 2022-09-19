@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Abstract: 当前GNNs主要利用了节点特征，忽略了边上信息。本笔记对GNNs中利用边信息的方式进行小结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GNN_利用边信息">
+<meta property="og:url" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/index.html">
+<meta property="og:site_name" content="这是博客">
+<meta property="og:description" content="Abstract: 当前GNNs主要利用了节点特征，忽略了边上信息。本笔记对GNNs中利用边信息的方式进行小结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/01.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/GNNs+Edge%20Features.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/02.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/03.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/04.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/05.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/06.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/07.png">
+<meta property="og:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/08.png">
+<meta property="article:published_time" content="2021-11-13T06:44:51.000Z">
+<meta property="article:modified_time" content="2021-11-13T06:44:51.000Z">
+<meta property="article:author" content="Vincent Xue">
+<meta property="article:tag" content="图神经网络">
+<meta property="article:tag" content="图表示学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/01.png">
+
+<link rel="canonical" href="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GNN_利用边信息 | 这是博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cd00dc9d214bf89ab2a9e3420f3828f6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="这是博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">这是博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">试图存在, 但薛三无法自证</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/vincentX3" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GNN_利用边信息
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-13 14:44:51" itemprop="dateCreated datePublished" datetime="2021-11-13T14:44:51+08:00">2021-11-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">ML知识总结</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/" class="post-meta-item leancloud_visitors" data-flag-title="GNN_利用边信息" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><strong>Abstract</strong>:</p>
+<p>当前GNNs主要利用了节点特征，忽略了边上信息。本笔记对GNNs中利用边信息的方式进行小结。</p>
+</blockquote>
+<span id="more"></span>
+<p>部分图片截取自[1]，感谢原创人员悉心的总结分享。</p>
+<h2 id="backgrounds">1. Backgrounds</h2>
+<p>图表示学习近年来取得巨大进展，以<strong>GCNs</strong>为代表的一系列图神经网络模型在节点分类、图分类、链接预测等图领域任务取得亮眼的成果。其中大部分模型基于<em>message-passing</em>方式构建，即“聚合邻居信息，更新节点自身状态”，在此范式中，节点特征得到充分的学习。而现实的许多图中，边上存在丰富的信息，它们在当前大多模型中未被充分利用。</p>
+<p>Edge Features同样描述着网络，学习edge features能强化图神经网络的表达能力。</p>
+<p>以下图为例：</p>
+<p>社交网络中，edge features更具体地描述着用户(nodes)间关系。</p>
+<p><img src="./01.png" /></p>
+<h2 id="recently-works">2. Recently Works</h2>
+<p>当前图神经网络对边信息主要有如下几种利用方式：</p>
+<p><img src="./GNNs+Edge%20Features.png" /></p>
+<h3 id="implicit-utilization">2.1 Implicit Utilization</h3>
+<p>每个节点只aggregate其邻居的信息，这一聚合方式本身就基于节点间的边实现。此情况下只视作各个边为binary feature，只有“有边/无边”区别。</p>
+<h3 id="naive-utilization">2.2 Naive Utilization</h3>
+<p>对于边上特征为scalar的情况，最简单直接的方式是使用带权的邻接矩阵描述，与之对应的，使用支持edge weight的模型学习即可。</p>
+<h3 id="aggregate-from-different-types-of-edge">2.3 Aggregate from Different Types of Edge</h3>
+<p>在许多场景中，边上特征为类别标签，如社交网络中，边上可以标注两人为工作关系、家人等。</p>
+<p>对于存在多种类型边的图（边异构），常见处理方法是<strong>依照边的类型分别聚合信息</strong>。</p>
+<p>如早期工作<strong>Relational GCN</strong>[2]，</p>
+<p>其只在GCN</p>
+<p><span class="math display">\[h^{l+1}_i = \sum_{j \in \mathcal{N}_{i}} \frac{1}{norm} W^{(l)} h_{j}^{(l)}+W^{(l)} h_{i}^{(l)}\]</span></p>
+<p>的基础上，增加了<span class="math inline">\(\sum_{r \in R}\)</span>.</p>
+<p><img src="./02.png" /></p>
+<p>其他模型也是类似思路，仅在聚合方式上做进一步细化。 如下图：</p>
+<p><img src="./03.png" /></p>
+<h3 id="multi-dimensional-edge-features">2.4 Multi-dimensional Edge Features</h3>
+<p>上述3个方式并不能较好地处理边上多维特征。面对多维边特征，常见手段也是在aggregation阶段将边特征、邻居节点特征通过某种function结合在一起，再传给目标节点。</p>
+<p>General Idea 如下图：</p>
+<p><img src="./04.png" /></p>
+<p>相关工作有<em>PNAConv</em>[3],<em>Crystal Graph Conv</em>[4]。</p>
+<h3 id="learn-edge-embeddings">2.5 Learn Edge Embeddings</h3>
+<p>与2.4区别在于，下述方法以多维边特征为输入，并在模型每层更新，类似学习node embedding一般，同时学习edge embeddings。其实现方式多为创建某种辅助图，在该图中将边也视作节点，再用现有GAT等模型学习边和节点的表示。</p>
+<ol type="1">
+<li><p><em>EGNN</em> [5] <span class="math display">\[
+X^{l}=\sigma\left[\prod_{p=1}^{P}\left(\alpha_{\cdots p}^{l}\left(X^{l-1}, E_{\cdots p}^{l-1}\right) g^{l}\left(X^{l-1}\right)\right)\right]
+\]</span></p>
+<p><span class="math inline">\(P\)</span> 为边特征维度数。</p>
+<p>在GAT基础上，单独处理每一维的特征。聚合函数中加入节点特征，并为每一维特征单独学一组注意力权重，最后将各维输出concate。本文的edge embeddings，为每层所学的边多维特征注意力权重。</p>
+<p><img src="./05.png" /></p></li>
+<li><p><em>CensNet</em> [6]</p>
+<p>使用line graph（原始图中节点变为line graph中的边，边变为节点）构建辅助图，在original graph和line graph上训练模型，交替更新node, edge embeddings。</p>
+<p><img src="./06.png" /></p></li>
+<li><p><em>NENN</em> [7]</p>
+<p>以GAT为基础，提出Node-level Attention Layer, Edge-level Attention Layer。</p>
+<p>每个layer区别主要在于输入的图的观察角度。</p>
+<p>如下图中两矩形方框部分，分别以node、edge为视角，重新定义“邻居”，将边/节点视作新图中的节点，在新图中学习边和节点的embeddings。</p>
+<p><img src="./07.png" /></p></li>
+<li><p><em>EGAT</em> [8]</p>
+<p>与<em>CensNet</em>类似，使用line graph+GAT学习节点和边的表示。</p>
+<p><img src="./08.png" /></p></li>
+</ol>
+<h2 id="discussion">3. Discussion</h2>
+<ol type="1">
+<li>2.5中多用GAT编码边特征信息，带来较大的计算开销，能否更轻量且优雅的编码边特征？</li>
+<li>2.5中使用诸如line graph等构建辅助图，把原图中的边变换为辅助图中的节点，从而可以利用已有GNN进行边嵌入的学习。但是，对于“边的邻居边”，是否同样满足节点与其邻居相近的假设？</li>
+<li>如何评估边特征与节点的关系，边特征如何切实的帮助图表示学习？</li>
+</ol>
+<h2 id="reference">Reference</h2>
+<ol type="1">
+<li>https://www.youtube.com/watch?v=mdWQYYapvR8</li>
+<li>Schlichtkrull M, Kipf T N, Bloem P, et al. Modeling relational data with graph convolutional networks[C]//European semantic web conference. Springer, Cham, 2018: 593-607.</li>
+<li>Corso G, Cavalleri L, Beaini D, et al. Principal neighbourhood aggregation for graph nets[J]. arXiv preprint arXiv:2004.05718, 2020.</li>
+<li>Xie T, Grossman J C. Crystal graph convolutional neural networks for an accurate and interpretable prediction of material properties[J]. Physical review letters, 2018, 120(14): 145301.</li>
+<li>Gong L, Cheng Q. Exploiting edge features for graph neural networks[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2019: 9211-9219.</li>
+<li>Jiang X, Ji P, Li S. CensNet: Convolution with Edge-Node Switching in Graph Neural Networks[C]//IJCAI. 2019: 2656-2662.</li>
+<li>Yang Y, Li D. Nenn: Incorporate node and edge features in graph neural networks[C]//Asian Conference on Machine Learning. PMLR, 2020: 593-608.</li>
+<li>Chen J, Chen H. Edge-Featured Graph Attention Network[J]. arXiv preprint arXiv:2101.07671, 2021.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 图神经网络</a>
+              <a href="/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/" rel="tag"># 图表示学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/12/MSL-14-%E6%98%9F%E7%81%AB%E4%B8%8D%E7%86%84/" rel="prev" title="MSL_14_星火不熄">
+      <i class="fa fa-chevron-left"></i> MSL_14_星火不熄
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/13/MSL-15-%E5%A4%9C%E4%B8%8E%E4%BE%BF%E5%88%A9%E5%BA%97/" rel="next" title="MSL_15_夜与便利店">
+      MSL_15_夜与便利店 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+        
+        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=2bV_KsPkzlOuuLZ7Nsucqhfj04iXoZ16zOqvmeB-Y_8&cl=ffffff&w=a"></script>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#backgrounds"><span class="nav-text">1. Backgrounds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#recently-works"><span class="nav-text">2. Recently Works</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#implicit-utilization"><span class="nav-text">2.1 Implicit Utilization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#naive-utilization"><span class="nav-text">2.2 Naive Utilization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#aggregate-from-different-types-of-edge"><span class="nav-text">2.3 Aggregate from Different Types of Edge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#multi-dimensional-edge-features"><span class="nav-text">2.4 Multi-dimensional Edge Features</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#learn-edge-embeddings"><span class="nav-text">2.5 Learn Edge Embeddings</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#discussion"><span class="nav-text">3. Discussion</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">Reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent Xue</p>
+  <div class="site-description" itemprop="description">努力更新博客来使自己清醒。</div>
+</div>
+  
+
+  <div class="">
+
+    <div class="">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent Xue</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"kBOuJmtu0EoE9vlD5IWJd5Dn-gzGzoHsz","app_key":"T10XF9QYbKXLS8NiyEPyBWgE","server_url":"https://api.vincentx3.cn","security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
