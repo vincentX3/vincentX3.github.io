@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-09-19T13:42:11.000Z</updated>
+  <updated>2022-10-14T02:48:32.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MSL_19_Why Decentralization Matters笔记</title>
+    <link href="http://example.com/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/"/>
+    <id>http://example.com/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/</id>
+    <published>2022-10-14T02:48:32.000Z</published>
+    <updated>2022-10-14T02:48:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Ref:</p><p>原始blog 👉 <a href="https://cdixon.org/2018/02/18/why-decentralization-matters">here</a></p><p>zhihu笔记 👉 <a href="https://zhuanlan.zhihu.com/p/572235146">here</a></p></blockquote><p><img src="./Whydecentralizationmatters.png" /></p><span id="more"></span><p>仅从此篇blog来看，以去中心化概念为核心的web 3.0 时代仅有淳朴的愿景。期待由于网络基础架构的改变，支持去中心化的网络发展后，人类组织合作方式能随之<strong>演进到community-govern的共治模式</strong>。基于web 3.0里的tokens激励机制，能让参与者劳有所得，从机制上实现<strong>公平的按劳分配</strong>。</p><p>从愿景而言让人向往，但其实现方式仍需继续了解。此外，如何顺利接轨现有社会体系，而非技术理论上的空想，也待分析。</p><hr /><p>放下对元宇宙，比特币的成见，了解下Internet可能的未来。</p><p>去中心化，朴素自治的未来有何技术基础支持？web 3.0到底在讨论怎样的Internet？便从此刻开始去了解，准备吧。</p>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Ref:&lt;/p&gt;
+&lt;p&gt;原始blog 👉 &lt;a href=&quot;https://cdixon.org/2018/02/18/why-decentralization-matters&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;zhihu笔记 👉 &lt;a href=&quot;https://zhuanlan.zhihu.com/p/572235146&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;./Whydecentralizationmatters.png&quot; /&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="生活" scheme="http://example.com/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>Torch_Einsum入门</title>
@@ -486,28 +512,6 @@
     <category term="书单" scheme="http://example.com/tags/%E4%B9%A6%E5%8D%95/"/>
     
     <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MSL_10_国庆杂记</title>
-    <link href="http://example.com/2021/10/01/MSL-10-%E5%9B%BD%E5%BA%86%E6%9D%82%E8%AE%B0/"/>
-    <id>http://example.com/2021/10/01/MSL-10-%E5%9B%BD%E5%BA%86%E6%9D%82%E8%AE%B0/</id>
-    <published>2021-10-01T15:07:26.000Z</published>
-    <updated>2021-10-01T15:07:26.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="msl-10-国庆杂记">MSL-10-国庆杂记</h1><blockquote><p>这就来到第10篇了啊，个人的小角落堆积逐渐丰富。</p></blockquote><span id="more"></span><h2 id="长江二桥上的长跑">长江二桥上的长跑</h2><p>两侧高楼林立，夜幕时分，恰是江城灯光秀时。桥下江滩，或排兵列阵跳着广场舞，或小年轻们成双成对迎江风说情话。</p><p>不似长江大桥，那边行人穿梭如织。长江二桥上，人行道不过两人并肩宽度，沿着道望去，不见行人，只有身旁川流不息的车。</p><p>跑到二桥时，十八公里有多了，右小腿微微有点抽筋。换作在东湖，早就止步休息了吧。偏偏在这桥上，步伐再沉重，也不想歇停——钢筋铁骨的大桥，却似断点，隔绝了两岸的繁华和喧腾，我只需要奔跑，奔跑，不止步。桥上这一公里多，尘世烦扰与我无关，仿若数轴上一动点，纯粹地移动便可。</p><p><img src="./01.jpg" /></p><p>这也算是孤独长跑的乐事之一吧。</p><h2 id="关于我和我的父辈">关于《我和我的父辈》</h2><p>为祖国庆生系列电影来到第三部了，显露出疲态。</p><p>抗日骑兵团的故事，《乘风》，真诚动人。那段血泪历史，不过分藻饰夸张时，总是以真实的力量冲击着泪腺。</p><p>《诗》所述的火箭研究人员达摩边疆奉献青春的故事，以小家庭中两位“爸爸”的逝去，渲染那段奉献的燃情岁月。叙事没能打动我，唯独那诗，让人印象深刻——“宇宙，让死亡变得渺小”。与故事无关，与对深邃宇宙的无尽遐想相关。</p><p>随后的两个喜剧单元，感到陌生、无趣。</p><p>前两单元的时代是史书、资料、纪录片中所了解的，后两单元的时代是有所经历，但又堪称擦肩而过的。前二单元的先人们，换来了和平的年代；后两单元的人们，共同构建着盛世。上海、深圳呵，毕竟改革开放排头兵，政策试验田。小学生们，也已积极探索科学实验了。挺好，路一步步走。</p><p>我们的父辈，只能交给自己去记忆了。</p>]]></content>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;msl-10-国庆杂记&quot;&gt;MSL-10-国庆杂记&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;这就来到第10篇了啊，个人的小角落堆积逐渐丰富。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
     
   </entry>
   

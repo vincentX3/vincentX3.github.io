@@ -2607,4 +2607,27 @@ f(w)=\sum_{k=1}^{K} \frac{n_{k}}{n} F_{k}(w) \quad \text { where } \quad F_{k}(w
         <tag>联邦学习</tag>
       </tags>
   </entry>
+  <entry>
+    <title>MSL_19_Why Decentralization Matters笔记</title>
+    <url>/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>Ref:</p>
+<p>原始blog 👉 <a href="https://cdixon.org/2018/02/18/why-decentralization-matters">here</a></p>
+<p>zhihu笔记 👉 <a href="https://zhuanlan.zhihu.com/p/572235146">here</a></p>
+</blockquote>
+<p><img src="./Whydecentralizationmatters.png" /></p>
+<span id="more"></span>
+<p>仅从此篇blog来看，以去中心化概念为核心的web 3.0 时代仅有淳朴的愿景。期待由于网络基础架构的改变，支持去中心化的网络发展后，人类组织合作方式能随之<strong>演进到community-govern的共治模式</strong>。基于web 3.0里的tokens激励机制，能让参与者劳有所得，从机制上实现<strong>公平的按劳分配</strong>。</p>
+<p>从愿景而言让人向往，但其实现方式仍需继续了解。此外，如何顺利接轨现有社会体系，而非技术理论上的空想，也待分析。</p>
+<hr />
+<p>放下对元宇宙，比特币的成见，了解下Internet可能的未来。</p>
+<p>去中心化，朴素自治的未来有何技术基础支持？web 3.0到底在讨论怎样的Internet？便从此刻开始去了解，准备吧。</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+      <tags>
+        <tag>日常</tag>
+      </tags>
+  </entry>
 </search>
