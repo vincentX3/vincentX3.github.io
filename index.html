@@ -203,6 +203,222 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/" class="post-title-link" itemprop="url">GNN_表达能力小结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-29 14:44:33" itemprop="dateCreated datePublished" datetime="2022-10-29T14:44:33+08:00">2022-10-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">ML知识总结</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="GNN_表达能力小结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="如何理解-gnn-表达能力的粗浅小结">如何理解 GNN 表达能力的粗浅小结</h1>
+<blockquote>
+<p>参考阅读：</p>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://graph-neural-networks.github.io/gnnbook_Chapter5.html">Chapter5: The Expressive Power of Graph Neural Networks</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.163.com/dy/article/FG0J275N0511DPVD.html">中科院计算所沈华伟：图神经网络表达能力的回顾和前沿</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/369869891">【ICLR2021论文解读】初探 GNN 表达能力</a></li>
+<li><a target="_blank" rel="noopener" href="https://openreview.net/forum?id=-qh0M9XWxnv">Analyzing the Expressive Power of Graph Neural Networks in a Spectral Perspective</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hilbert9221/p/14443747.html">图神经网络的表达能力与置换同变性</a></li>
+</ol>
+</blockquote>
+<h2 id="神经网络的表达能力">1. 神经网络的表达能力</h2>
+<p>机器学习的任务，可以理解为存在一个从特征空间到目标空间的映射<span class="math inline">\(f^*\)</span>，希望能用模型 <span class="math inline">\(f_\theta\)</span> 来近似<span class="math inline">\(f^*\)</span> 。可将 <span class="math inline">\(f_\theta\)</span> 能近似的<strong>映射范围</strong>理解为模型的表达能力。</p>
+<p>先前研究已证明了定义任意定义在compact space上的连续函数都可被<strong>MLP</strong>近似。但其实，一方面并不能保证<strong>模型经训练所学的<span class="math inline">\(\hat{f}\)</span> 是想近似的<span class="math inline">\(f^*\)</span></strong>，另一方面过强的表达能力还可能导致overfitting。</p>
+<figure>
+<img src="./image-20221024121136460.png" alt="image-20221024121136460" /><figcaption aria-hidden="true">image-20221024121136460</figcaption>
+</figure>
+<p>因此，我们希望建立能够保持强大表达能力的NN，同时对其参数施加约束——归纳偏置反映着对问题的先验认知。</p>
+<p>对于CNN/RNN，模型共享参数的机制隐含着translation invariance的假设，对模型的表达力进行限制，但已经能完成对应任务<strong>(limited but sufficient)</strong>。</p>
+<figure>
+<img src="./image-20221024153918940.png" alt="image-20221024153918940" /><figcaption aria-hidden="true">image-20221024153918940</figcaption>
+</figure>
+<p>对于GNN，则有如下图所示的permutation invariance限定。</p>
+<figure>
+<img src="./image-20221024154514368.png" alt="image-20221024154514368" /><figcaption aria-hidden="true">image-20221024154514368</figcaption>
+</figure>
+<h2 id="gnn表达能力的不同视角">2. GNN表达能力的不同视角</h2>
+<ol type="1">
+<li><p><strong>区分能力(separating power)/相似性度量</strong>：</p>
+<p>经典工作为 <em>How Powerful are Graph Neural Networks？</em>，它使用的<strong>图同构检验graph isomorphism problem</strong>来衡量GNN表达能力。表达力强的GNN能学到分辨性强的graph embedding，让我们<strong>在隐空间中判定两个图是否同构</strong>。</p>
+<p>进一步的，还可尝试探索GNN是否能处理更难的 <strong>图编辑距离graph edit distance problem</strong>。</p></li>
+<li><p><strong>逼近能力(approximation power)</strong>：</p>
+<p>基于<strong>函数逼近</strong>思路，关心神经网络能够<strong>表达的函数的范围有多大</strong>，工作举例有<em>EXPRESSIVE POWER OF INVARIANT AND EQUIVARIANT GRAPH NEURAL NETWORKS</em>。尝试证明GNN可以逼近的定义在图上的映射集合。</p></li>
+<li><p><strong>模式识别</strong>：</p>
+<p>通过研究GNN是否能识别图中的特定结构，把模式识别能力视作GNN的表达能力，工作举例有<em>Can graph neural networks count substructures?</em>。</p></li>
+</ol>
+<h2 id="提升表达力方式wl-test视角">3. 提升表达力方式（WL-test视角）</h2>
+<p><a target="_blank" rel="noopener" href="https://graph-neural-networks.github.io/gnnbook_Chapter5.html">Chapter5: The Expressive Power of Graph Neural Networks</a>的5.4章给出了具体介绍，在此不赘述。</p>
+<figure>
+<img src="./image-20221024162739401.png" alt="image-20221024162739401" /><figcaption aria-hidden="true">image-20221024162739401</figcaption>
+</figure>
+<hr />
+<p>上述观察，主要都聚焦在graph-level研究GNN表达能力，而缺乏从node-level出发的表达能力讨论。</p>
+<p>一说对于node-level任务，GNN已经是universal approximator，不必深入研究。（参考阅读2）</p>
+<figure>
+<img src="./image-20221024185051603.png" alt="image-20221024185051603" /><figcaption aria-hidden="true">image-20221024185051603</figcaption>
+</figure>
+<p>但另一方面，一直以来关于GNN架构的研究，除了提升其表达能力外，也在努力提升其拟合能力——使模型能从有限的训练数据中尽可能拟合ground truth映射函数<span class="math inline">\(f^*\)</span>。</p>
+<figure>
+<img src="./image-20221024185802289.png" alt="image-20221024185802289" /><figcaption aria-hidden="true">image-20221024185802289</figcaption>
+</figure>
+<p>或许可理论层面分析node-level层面GNN的表达能力、泛化能力（待阅读<a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=UH-cmocLJC">How Neural Networks Extrapolate: From Feedforward to Graph Neural Networks. Keyulu Xu et al. ICLR 2021.</a>、<a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=rJxbJeHFPS">What Can Neural Networks Reason About? Keyulu X et al. ICLR2020</a>）；</p>
+<p>也可能参考上述他人证明，指导设计 theortical proven node-level specific GNN。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/" class="post-title-link" itemprop="url">FLAG2022-1-阅读书单</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-09 17:37:14" itemprop="dateCreated datePublished" datetime="2022-01-09T17:37:14+08:00">2022-01-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-20 21:59:55" itemprop="dateModified" datetime="2022-10-20T21:59:55+08:00">2022-10-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/" class="post-meta-item leancloud_visitors" data-flag-title="FLAG2022-1-阅读书单" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>2021年分明是较为清闲的一年，看得书却是近年来最少的一年。2022已至，决心在开年时列出今年的书单，年末再回首自己的完成情况吧。</p>
+<p>不高估自己，且算每月两本，一年读<strong>24本</strong>已是小小的进步。闲时阅读，求广不求精，愿能涉猎各科，览阅人事。未必每本都有触动，暂且约定每读一本，于此留下至少百来字随感，若有触动，便是继续细书随笔吧。</p>
+<p>2022，许愿：<strong>无畏，求知</strong>。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/15/MSL-20-%E8%B9%92%E8%B7%9A%E7%A7%91%E7%A0%94%E5%B0%8F%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -530,96 +746,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/09/07/Crawler-Elsevier-Abstract%E7%88%AC%E5%8F%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Vincent Xue">
-      <meta itemprop="description" content="努力更新博客来使自己清醒。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这是博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/" class="post-title-link" itemprop="url">FLAG2022-1-阅读书单</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-09 17:37:14" itemprop="dateCreated datePublished" datetime="2022-01-09T17:37:14+08:00">2022-01-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-01 15:04:14" itemprop="dateModified" datetime="2022-09-01T15:04:14+08:00">2022-09-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/" class="post-meta-item leancloud_visitors" data-flag-title="FLAG2022-1-阅读书单" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>2021年分明是较为清闲的一年，看得书却是近年来最少的一年。2022已至，决心在开年时列出今年的书单，年末再回首自己的完成情况吧。</p>
-<p>不高估自己，且算每月两本，一年读<strong>24本</strong>已是小小的进步。闲时阅读，求广不求精，愿能涉猎各科，览阅人事。未必每本都有触动，暂且约定每读一本，于此留下至少百来字随感，若有触动，便是继续细书随笔吧。</p>
-<p>2022，许愿：<strong>无畏，求知</strong>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/09/FLAG2022-1-%E9%98%85%E8%AF%BB%E4%B9%A6%E5%8D%95/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -981,91 +1107,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/25/BOOK-07-%E5%B7%A5%E4%BD%9C%E6%B6%88%E8%B4%B9%E4%B8%BB%E4%B9%89%E5%92%8C%E6%96%B0%E7%A9%B7%E4%BA%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Vincent Xue">
-      <meta itemprop="description" content="努力更新博客来使自己清醒。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这是博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/25/BOOK-07-%E5%B7%A5%E4%BD%9C%E6%B6%88%E8%B4%B9%E4%B8%BB%E4%B9%89%E5%92%8C%E6%96%B0%E7%A9%B7%E4%BA%BA/" class="post-title-link" itemprop="url">BOOK-07-工作消费主义和新穷人</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-25 10:37:54" itemprop="dateCreated datePublished" datetime="2022-03-25T10:37:54+08:00">2022-03-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/03/25/BOOK-07-%E5%B7%A5%E4%BD%9C%E6%B6%88%E8%B4%B9%E4%B8%BB%E4%B9%89%E5%92%8C%E6%96%B0%E7%A9%B7%E4%BA%BA/" class="post-meta-item leancloud_visitors" data-flag-title="BOOK-07-工作消费主义和新穷人" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>武汉夜雨狂泻，狂躁的雨滴砸落地面。哦不，该称之为水面了。持续一日的雨水，在柏油路上新铺一层水面。</p>
-<p>听闻“麻豆传媒”的一个摄影团队被抓获，翻看知乎里对事件的评价，产业链的介绍、情色作品的科普。总是会错过些“艺术”，错过了汤不热时代，一如曾经错过了快播的便捷。</p>
-<p>如今，大约大部分人已是<strong>笑贫不笑娼</strong>了。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/25/BOOK-07-%E5%B7%A5%E4%BD%9C%E6%B6%88%E8%B4%B9%E4%B8%BB%E4%B9%89%E5%92%8C%E6%96%B0%E7%A9%B7%E4%BA%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1153,7 +1194,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">49</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

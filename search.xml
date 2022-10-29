@@ -609,16 +609,22 @@
 <p>不高估自己，且算每月两本，一年读<strong>24本</strong>已是小小的进步。闲时阅读，求广不求精，愿能涉猎各科，览阅人事。未必每本都有触动，暂且约定每读一本，于此留下至少百来字随感，若有触动，便是继续细书随笔吧。</p>
 <p>2022，许愿：<strong>无畏，求知</strong>。</p>
 <span id="more"></span>
-<h1 id="书单1123">书单(11/23)</h1>
+<h1 id="书单1323">书单(13/23)</h1>
 <h2 id="历史">历史</h2>
 <ul class="task-list">
 <li><input type="checkbox" disabled="" />
 《<a href="https://book.douban.com/subject/24316346/">美帝国的崩溃 : 过去、现在与未来</a>》</li>
 <li><input type="checkbox" disabled="" />
 《<a href="https://book.douban.com/subject/34869500/">被统治的艺术</a>》</li>
-<li><input type="checkbox" disabled="" />
+<li><input type="checkbox" disabled="" checked="" />
 《<a href="https://book.douban.com/subject/3580750/">潜规则</a>》</li>
 </ul>
+<blockquote>
+<p>出门上班，满眼小商小贩雇主雇员，下班上路，到处是行色匆匆的路人和讨价还价的顾客。想叫一声同志，招呼一声兄弟，真不知冲谁开口。</p>
+</blockquote>
+<p>不曾想，现时常用的“潜规则”一词，居然源自此书。</p>
+<p>能直视现实里潜在运行的规则，约莫是放下书生意气的理想年华，行到经世为人识相的标志吧。</p>
+<p>有史以来，有人群居处，自有不便置于台面的规则运行，或遵循，或抗拒，或自立新规。</p>
 <h2 id="经管">经管</h2>
 <ul class="task-list">
 <li><input type="checkbox" disabled="" />
@@ -2665,6 +2671,71 @@ f(w)=\sum_{k=1}^{K} \frac{n_{k}}{n} F_{k}(w) \quad \text { where } \quad F_{k}(w
       </categories>
       <tags>
         <tag>科研心声</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GNN_表达能力小结</title>
+    <url>/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="如何理解-gnn-表达能力的粗浅小结">如何理解 GNN 表达能力的粗浅小结</h1>
+<blockquote>
+<p>参考阅读：</p>
+<ol type="1">
+<li><a href="https://graph-neural-networks.github.io/gnnbook_Chapter5.html">Chapter5: The Expressive Power of Graph Neural Networks</a></li>
+<li><a href="https://www.163.com/dy/article/FG0J275N0511DPVD.html">中科院计算所沈华伟：图神经网络表达能力的回顾和前沿</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/369869891">【ICLR2021论文解读】初探 GNN 表达能力</a></li>
+<li><a href="https://openreview.net/forum?id=-qh0M9XWxnv">Analyzing the Expressive Power of Graph Neural Networks in a Spectral Perspective</a></li>
+<li><a href="https://www.cnblogs.com/hilbert9221/p/14443747.html">图神经网络的表达能力与置换同变性</a></li>
+</ol>
+</blockquote>
+<h2 id="神经网络的表达能力">1. 神经网络的表达能力</h2>
+<p>机器学习的任务，可以理解为存在一个从特征空间到目标空间的映射<span class="math inline">\(f^*\)</span>，希望能用模型 <span class="math inline">\(f_\theta\)</span> 来近似<span class="math inline">\(f^*\)</span> 。可将 <span class="math inline">\(f_\theta\)</span> 能近似的<strong>映射范围</strong>理解为模型的表达能力。</p>
+<p>先前研究已证明了定义任意定义在compact space上的连续函数都可被<strong>MLP</strong>近似。但其实，一方面并不能保证<strong>模型经训练所学的<span class="math inline">\(\hat{f}\)</span> 是想近似的<span class="math inline">\(f^*\)</span></strong>，另一方面过强的表达能力还可能导致overfitting。</p>
+<figure>
+<img src="./image-20221024121136460.png" alt="image-20221024121136460" /><figcaption aria-hidden="true">image-20221024121136460</figcaption>
+</figure>
+<p>因此，我们希望建立能够保持强大表达能力的NN，同时对其参数施加约束——归纳偏置反映着对问题的先验认知。</p>
+<p>对于CNN/RNN，模型共享参数的机制隐含着translation invariance的假设，对模型的表达力进行限制，但已经能完成对应任务<strong>(limited but sufficient)</strong>。</p>
+<figure>
+<img src="./image-20221024153918940.png" alt="image-20221024153918940" /><figcaption aria-hidden="true">image-20221024153918940</figcaption>
+</figure>
+<p>对于GNN，则有如下图所示的permutation invariance限定。</p>
+<figure>
+<img src="./image-20221024154514368.png" alt="image-20221024154514368" /><figcaption aria-hidden="true">image-20221024154514368</figcaption>
+</figure>
+<h2 id="gnn表达能力的不同视角">2. GNN表达能力的不同视角</h2>
+<ol type="1">
+<li><p><strong>区分能力(separating power)/相似性度量</strong>：</p>
+<p>经典工作为 <em>How Powerful are Graph Neural Networks？</em>，它使用的<strong>图同构检验graph isomorphism problem</strong>来衡量GNN表达能力。表达力强的GNN能学到分辨性强的graph embedding，让我们<strong>在隐空间中判定两个图是否同构</strong>。</p>
+<p>进一步的，还可尝试探索GNN是否能处理更难的 <strong>图编辑距离graph edit distance problem</strong>。</p></li>
+<li><p><strong>逼近能力(approximation power)</strong>：</p>
+<p>基于<strong>函数逼近</strong>思路，关心神经网络能够<strong>表达的函数的范围有多大</strong>，工作举例有<em>EXPRESSIVE POWER OF INVARIANT AND EQUIVARIANT GRAPH NEURAL NETWORKS</em>。尝试证明GNN可以逼近的定义在图上的映射集合。</p></li>
+<li><p><strong>模式识别</strong>：</p>
+<p>通过研究GNN是否能识别图中的特定结构，把模式识别能力视作GNN的表达能力，工作举例有<em>Can graph neural networks count substructures?</em>。</p></li>
+</ol>
+<h2 id="提升表达力方式wl-test视角">3. 提升表达力方式（WL-test视角）</h2>
+<p><a href="https://graph-neural-networks.github.io/gnnbook_Chapter5.html">Chapter5: The Expressive Power of Graph Neural Networks</a>的5.4章给出了具体介绍，在此不赘述。</p>
+<figure>
+<img src="./image-20221024162739401.png" alt="image-20221024162739401" /><figcaption aria-hidden="true">image-20221024162739401</figcaption>
+</figure>
+<hr />
+<p>上述观察，主要都聚焦在graph-level研究GNN表达能力，而缺乏从node-level出发的表达能力讨论。</p>
+<p>一说对于node-level任务，GNN已经是universal approximator，不必深入研究。（参考阅读2）</p>
+<figure>
+<img src="./image-20221024185051603.png" alt="image-20221024185051603" /><figcaption aria-hidden="true">image-20221024185051603</figcaption>
+</figure>
+<p>但另一方面，一直以来关于GNN架构的研究，除了提升其表达能力外，也在努力提升其拟合能力——使模型能从有限的训练数据中尽可能拟合ground truth映射函数<span class="math inline">\(f^*\)</span>。</p>
+<figure>
+<img src="./image-20221024185802289.png" alt="image-20221024185802289" /><figcaption aria-hidden="true">image-20221024185802289</figcaption>
+</figure>
+<p>或许可理论层面分析node-level层面GNN的表达能力、泛化能力（待阅读<a href="https://openreview.net/pdf?id=UH-cmocLJC">How Neural Networks Extrapolate: From Feedforward to Graph Neural Networks. Keyulu Xu et al. ICLR 2021.</a>、<a href="https://openreview.net/pdf?id=rJxbJeHFPS">What Can Neural Networks Reason About? Keyulu X et al. ICLR2020</a>）；</p>
+<p>也可能参考上述他人证明，指导设计 theortical proven node-level specific GNN。</p>
+]]></content>
+      <categories>
+        <category>ML知识总结</category>
+      </categories>
+      <tags>
+        <tag>图神经网络</tag>
+        <tag>图表示学习</tag>
       </tags>
   </entry>
 </search>

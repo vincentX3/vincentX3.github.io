@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如何理解 GNN 表达能力的粗浅小结  参考阅读：  Chapter5: The Expressive Power of Graph Neural Networks 中科院计算所沈华伟：图神经网络表达能力的回顾和前沿 【ICLR2021论文解读】初探 GNN 表达能力 Analyzing the Expressive Power of Graph Neural Networks in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GNN_表达能力小结">
+<meta property="og:url" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/index.html">
+<meta property="og:site_name" content="这是博客">
+<meta property="og:description" content="如何理解 GNN 表达能力的粗浅小结  参考阅读：  Chapter5: The Expressive Power of Graph Neural Networks 中科院计算所沈华伟：图神经网络表达能力的回顾和前沿 【ICLR2021论文解读】初探 GNN 表达能力 Analyzing the Expressive Power of Graph Neural Networks in">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024121136460.png">
+<meta property="og:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024153918940.png">
+<meta property="og:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024154514368.png">
+<meta property="og:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024162739401.png">
+<meta property="og:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024185051603.png">
+<meta property="og:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024185802289.png">
+<meta property="article:published_time" content="2022-10-29T06:44:33.000Z">
+<meta property="article:modified_time" content="2022-10-29T06:44:33.000Z">
+<meta property="article:author" content="Vincent Xue">
+<meta property="article:tag" content="图神经网络">
+<meta property="article:tag" content="图表示学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/image-20221024121136460.png">
+
+<link rel="canonical" href="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GNN_表达能力小结 | 这是博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?cd00dc9d214bf89ab2a9e3420f3828f6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="这是博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">这是博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">试图存在, 但薛三无法自证</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/vincentX3" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GNN_表达能力小结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-29 14:44:33" itemprop="dateCreated datePublished" datetime="2022-10-29T14:44:33+08:00">2022-10-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">ML知识总结</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/10/29/GNN-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E5%B0%8F%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="GNN_表达能力小结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何理解-gnn-表达能力的粗浅小结">如何理解 GNN 表达能力的粗浅小结</h1>
+<blockquote>
+<p>参考阅读：</p>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://graph-neural-networks.github.io/gnnbook_Chapter5.html">Chapter5: The Expressive Power of Graph Neural Networks</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.163.com/dy/article/FG0J275N0511DPVD.html">中科院计算所沈华伟：图神经网络表达能力的回顾和前沿</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/369869891">【ICLR2021论文解读】初探 GNN 表达能力</a></li>
+<li><a target="_blank" rel="noopener" href="https://openreview.net/forum?id=-qh0M9XWxnv">Analyzing the Expressive Power of Graph Neural Networks in a Spectral Perspective</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hilbert9221/p/14443747.html">图神经网络的表达能力与置换同变性</a></li>
+</ol>
+</blockquote>
+<h2 id="神经网络的表达能力">1. 神经网络的表达能力</h2>
+<p>机器学习的任务，可以理解为存在一个从特征空间到目标空间的映射<span class="math inline">\(f^*\)</span>，希望能用模型 <span class="math inline">\(f_\theta\)</span> 来近似<span class="math inline">\(f^*\)</span> 。可将 <span class="math inline">\(f_\theta\)</span> 能近似的<strong>映射范围</strong>理解为模型的表达能力。</p>
+<p>先前研究已证明了定义任意定义在compact space上的连续函数都可被<strong>MLP</strong>近似。但其实，一方面并不能保证<strong>模型经训练所学的<span class="math inline">\(\hat{f}\)</span> 是想近似的<span class="math inline">\(f^*\)</span></strong>，另一方面过强的表达能力还可能导致overfitting。</p>
+<figure>
+<img src="./image-20221024121136460.png" alt="image-20221024121136460" /><figcaption aria-hidden="true">image-20221024121136460</figcaption>
+</figure>
+<p>因此，我们希望建立能够保持强大表达能力的NN，同时对其参数施加约束——归纳偏置反映着对问题的先验认知。</p>
+<p>对于CNN/RNN，模型共享参数的机制隐含着translation invariance的假设，对模型的表达力进行限制，但已经能完成对应任务<strong>(limited but sufficient)</strong>。</p>
+<figure>
+<img src="./image-20221024153918940.png" alt="image-20221024153918940" /><figcaption aria-hidden="true">image-20221024153918940</figcaption>
+</figure>
+<p>对于GNN，则有如下图所示的permutation invariance限定。</p>
+<figure>
+<img src="./image-20221024154514368.png" alt="image-20221024154514368" /><figcaption aria-hidden="true">image-20221024154514368</figcaption>
+</figure>
+<h2 id="gnn表达能力的不同视角">2. GNN表达能力的不同视角</h2>
+<ol type="1">
+<li><p><strong>区分能力(separating power)/相似性度量</strong>：</p>
+<p>经典工作为 <em>How Powerful are Graph Neural Networks？</em>，它使用的<strong>图同构检验graph isomorphism problem</strong>来衡量GNN表达能力。表达力强的GNN能学到分辨性强的graph embedding，让我们<strong>在隐空间中判定两个图是否同构</strong>。</p>
+<p>进一步的，还可尝试探索GNN是否能处理更难的 <strong>图编辑距离graph edit distance problem</strong>。</p></li>
+<li><p><strong>逼近能力(approximation power)</strong>：</p>
+<p>基于<strong>函数逼近</strong>思路，关心神经网络能够<strong>表达的函数的范围有多大</strong>，工作举例有<em>EXPRESSIVE POWER OF INVARIANT AND EQUIVARIANT GRAPH NEURAL NETWORKS</em>。尝试证明GNN可以逼近的定义在图上的映射集合。</p></li>
+<li><p><strong>模式识别</strong>：</p>
+<p>通过研究GNN是否能识别图中的特定结构，把模式识别能力视作GNN的表达能力，工作举例有<em>Can graph neural networks count substructures?</em>。</p></li>
+</ol>
+<h2 id="提升表达力方式wl-test视角">3. 提升表达力方式（WL-test视角）</h2>
+<p><a target="_blank" rel="noopener" href="https://graph-neural-networks.github.io/gnnbook_Chapter5.html">Chapter5: The Expressive Power of Graph Neural Networks</a>的5.4章给出了具体介绍，在此不赘述。</p>
+<figure>
+<img src="./image-20221024162739401.png" alt="image-20221024162739401" /><figcaption aria-hidden="true">image-20221024162739401</figcaption>
+</figure>
+<hr />
+<p>上述观察，主要都聚焦在graph-level研究GNN表达能力，而缺乏从node-level出发的表达能力讨论。</p>
+<p>一说对于node-level任务，GNN已经是universal approximator，不必深入研究。（参考阅读2）</p>
+<figure>
+<img src="./image-20221024185051603.png" alt="image-20221024185051603" /><figcaption aria-hidden="true">image-20221024185051603</figcaption>
+</figure>
+<p>但另一方面，一直以来关于GNN架构的研究，除了提升其表达能力外，也在努力提升其拟合能力——使模型能从有限的训练数据中尽可能拟合ground truth映射函数<span class="math inline">\(f^*\)</span>。</p>
+<figure>
+<img src="./image-20221024185802289.png" alt="image-20221024185802289" /><figcaption aria-hidden="true">image-20221024185802289</figcaption>
+</figure>
+<p>或许可理论层面分析node-level层面GNN的表达能力、泛化能力（待阅读<a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=UH-cmocLJC">How Neural Networks Extrapolate: From Feedforward to Graph Neural Networks. Keyulu Xu et al. ICLR 2021.</a>、<a target="_blank" rel="noopener" href="https://openreview.net/pdf?id=rJxbJeHFPS">What Can Neural Networks Reason About? Keyulu X et al. ICLR2020</a>）；</p>
+<p>也可能参考上述他人证明，指导设计 theortical proven node-level specific GNN。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 图神经网络</a>
+              <a href="/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/" rel="tag"># 图表示学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/10/15/MSL-20-%E8%B9%92%E8%B7%9A%E7%A7%91%E7%A0%94%E5%B0%8F%E8%AE%B0/" rel="prev" title="MSL_20_蹒跚科研小记">
+      <i class="fa fa-chevron-left"></i> MSL_20_蹒跚科研小记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+        
+        <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=2bV_KsPkzlOuuLZ7Nsucqhfj04iXoZ16zOqvmeB-Y_8&cl=ffffff&w=a"></script>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3-gnn-%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E7%9A%84%E7%B2%97%E6%B5%85%E5%B0%8F%E7%BB%93"><span class="nav-text">如何理解 GNN 表达能力的粗浅小结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B"><span class="nav-text">1. 神经网络的表达能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gnn%E8%A1%A8%E8%BE%BE%E8%83%BD%E5%8A%9B%E7%9A%84%E4%B8%8D%E5%90%8C%E8%A7%86%E8%A7%92"><span class="nav-text">2. GNN表达能力的不同视角</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E8%A1%A8%E8%BE%BE%E5%8A%9B%E6%96%B9%E5%BC%8Fwl-test%E8%A7%86%E8%A7%92"><span class="nav-text">3. 提升表达力方式（WL-test视角）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vincent Xue</p>
+  <div class="site-description" itemprop="description">努力更新博客来使自己清醒。</div>
+</div>
+  
+
+  <div class="">
+
+    <div class="">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Vincent Xue</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"kBOuJmtu0EoE9vlD5IWJd5Dn-gzGzoHsz","app_key":"T10XF9QYbKXLS8NiyEPyBWgE","server_url":"https://api.vincentx3.cn","security":true};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
