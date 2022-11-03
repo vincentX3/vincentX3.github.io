@@ -609,7 +609,7 @@
 <p>不高估自己，且算每月两本，一年读<strong>24本</strong>已是小小的进步。闲时阅读，求广不求精，愿能涉猎各科，览阅人事。未必每本都有触动，暂且约定每读一本，于此留下至少百来字随感，若有触动，便是继续细书随笔吧。</p>
 <p>2022，许愿：<strong>无畏，求知</strong>。</p>
 <span id="more"></span>
-<h1 id="书单1323">书单(13/23)</h1>
+<h1 id="书单1423">书单(14/23)</h1>
 <h2 id="历史">历史</h2>
 <ul class="task-list">
 <li><input type="checkbox" disabled="" />
@@ -740,8 +740,11 @@
 <p>没有他那般数学天赋，却莫名的想起在武汉的那些孤寂时刻，是那种，被孤寂漫灌，浓稠的黑泥直钻鼻孔，附着在每寸皮肤，无法呼吸的感觉。</p>
 <p>瑟缩在床上，床单的褶皱似鬼脸无情的嘲笑；反复的键入又删除，方块字规整依旧，却永无那笔下所描绘的质感；雨夜、酷暑、寒冬、湿热，相同点在于眼镜总是看不清楚。</p>
 <ul class="task-list">
-<li><input type="checkbox" disabled="" />
+<li><input type="checkbox" disabled="" checked="" />
 《突然，响起一阵敲门声》</li>
+</ul>
+<p>很迅速在偷闲中看完了，很遗憾只偷闲了一周。本想作为睡前读物，每日小看一篇。却是在看完后哭笑不得，总忍不住再续上一篇。 尤其爱《其实，我最近勃起过两次，硬得就像根金刚棒》。虽然仍是年轻，却总觉自己的宝贝将要一蹶不振。没有晨勃的日子里，会有什么能让人金鸡独立呢？</p>
+<ul class="task-list">
 <li><input type="checkbox" disabled="" checked="" />
 《蛤蟆先生去看心理医生》</li>
 </ul>
@@ -2687,6 +2690,7 @@ f(w)=\sum_{k=1}^{K} \frac{n_{k}}{n} F_{k}(w) \quad \text { where } \quad F_{k}(w
 <li><a href="https://www.cnblogs.com/hilbert9221/p/14443747.html">图神经网络的表达能力与置换同变性</a></li>
 </ol>
 </blockquote>
+<span id="more"></span>
 <h2 id="神经网络的表达能力">1. 神经网络的表达能力</h2>
 <p>机器学习的任务，可以理解为存在一个从特征空间到目标空间的映射<span class="math inline">\(f^*\)</span>，希望能用模型 <span class="math inline">\(f_\theta\)</span> 来近似<span class="math inline">\(f^*\)</span> 。可将 <span class="math inline">\(f_\theta\)</span> 能近似的<strong>映射范围</strong>理解为模型的表达能力。</p>
 <p>先前研究已证明了定义任意定义在compact space上的连续函数都可被<strong>MLP</strong>近似。但其实，一方面并不能保证<strong>模型经训练所学的<span class="math inline">\(\hat{f}\)</span> 是想近似的<span class="math inline">\(f^*\)</span></strong>，另一方面过强的表达能力还可能导致overfitting。</p>
