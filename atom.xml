@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-10-29T06:44:33.000Z</updated>
+  <updated>2022-11-05T07:34:01.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>联邦学习03_模型异构</title>
+    <link href="http://example.com/2022/11/05/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A003-%E6%A8%A1%E5%9E%8B%E5%BC%82%E6%9E%84/"/>
+    <id>http://example.com/2022/11/05/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A003-%E6%A8%A1%E5%9E%8B%E5%BC%82%E6%9E%84/</id>
+    <published>2022-11-05T07:34:01.000Z</published>
+    <updated>2022-11-05T07:34:01.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="flheterogeneous-model-小结">FL：Heterogeneous model 小结</h1><h2 id="motivations">0. Motivations</h2><ol type="1"><li><strong>System heterogeneity</strong>. Clients have various computation and bandwidth resources, where each participant has capacity and desire to design their own unique model.</li><li>Strong server, weak client.</li></ol><span id="more"></span><h2 id="knowledge-distillation-入门">1. Knowledge Distillation 入门</h2><blockquote><p>Ref: 【经典简读】知识蒸馏(Knowledge Distillation) 经典之作 - 潘小小的文章 - 知乎 https://zhuanlan.zhihu.com/p/102038521</p></blockquote><figure><img src="./image-20221104103056522.png" alt="image-20221104103056522" /><figcaption aria-hidden="true">image-20221104103056522</figcaption></figure><p>知识蒸馏使用的是Teacher—Student模型，其中teacher是“知识”的输出者，student是“知识”的接受者。知识蒸馏的过程分为2个阶段:</p><ol type="1"><li>原始模型训练: 训练"Teacher模型", 简称为Net-T，它的特点是模型相对复杂。对于输入X, 其都能输出Y，其中Y经过softmax的映射，输出值对应相应类别的概率值。</li><li>精简模型训练: 训练"Student模型", 简称为Net-S，它是参数量较小、模型结构相对简单的单模型。同样的，对于输入X，其都能输出Y，Y经过softmax映射后同样能输出对应相应类别的概率值。</li></ol><p><strong>Soft Labels(Soft Targets)</strong></p><figure><img src="./image-20221104103157056.png" alt="image-20221104103157056" /><figcaption aria-hidden="true">image-20221104103157056</figcaption></figure><p>最后，Net-S的目标函数有： <span class="math display">\[L=\alpha L_{\text {soft }}+\beta L_{\text {hard }}\]</span></p><h2 id="hetemodel-fl-with-knowledge-distillation">2. HeteModel-FL with knowledge distillation</h2><h3 id="fedhe">2.1 FedHe</h3><blockquote><p>FedHe: Heterogeneous Models and Communication-Efficient Federated Learning</p><p>2021 17th International Conference on Mobility, Sensing and Networking (MSN) 2021</p></blockquote><figure><img src="./image-20221104104226887.png" alt="image-20221104104226887" /><figcaption aria-hidden="true">image-20221104104226887</figcaption></figure><p>Server不承担teacher模型训练，只负责聚合各个client上传的各类样本的logits，并将聚合的结果发还。</p><p>Clients端把 aggregated logits 视作 soft label 进行学习。</p><h3 id="fedmd">2.2 FedMD</h3><blockquote><p>Fedmd: Heterogenous federated learning via model distillation</p><p>arXiv preprint 2019</p></blockquote><figure><img src="./image-20221104110228287.png" alt="image-20221104110228287" /><figcaption aria-hidden="true">image-20221104110228287</figcaption></figure><p>Clients提供一部分数据来构建public dataset，使用 public dataset 训练 teacher model，再进行知识蒸馏。</p><h3 id="fml">2.3 FML</h3><blockquote><p>Federated mutual learning</p><p>arXiv preprint 2020</p></blockquote><figure><img src="./image-20221104110855842.png" alt="image-20221104110855842" /><figcaption aria-hidden="true">image-20221104110855842</figcaption></figure><p>设置 Global model 及 Personalized model。 Global model 架构相同，按照一般FL方式进行训练，作为 teacher model使用。</p><h3 id="fedh2l">2.4 FedH2L</h3><blockquote><p>FedH2L: Federated learning with model and statistical heterogeneity</p><p>arXiv preprint 2021</p></blockquote><p>需要共享部分数据作为seed data（文中未讨论seed data的选择和对模型影响）。</p><p>直接将知识蒸馏迁移到去中心化FL场景。client间互为teacher-student，进行知识蒸馏。</p><h3 id="对比">2.5 对比</h3><table><thead><tr class="header"><th>Model</th><th>Architecture</th><th>Share</th></tr></thead><tbody><tr class="odd"><td>FedHe</td><td>CS</td><td>Logits with class</td></tr><tr class="even"><td>FedMD</td><td>CS</td><td>Public dataset</td></tr><tr class="odd"><td>FML</td><td>CS</td><td>Global model weights</td></tr><tr class="even"><td>FedH2L</td><td>P2P</td><td>Seed data</td></tr></tbody></table><p>如何兼顾隐私与构建强teacher模型，仍是待讨论的问题。</p><h2 id="others">3. Others</h2><p><strong>Hyper networks</strong></p><p>通过Hyper networks学习personalized model weights，模型自由度较知识蒸馏低。</p><figure><img src="./image-20221104111951949.png" alt="image-20221104111951949" /><figcaption aria-hidden="true">image-20221104111951949</figcaption></figure>]]></content>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;flheterogeneous-model-小结&quot;&gt;FL：Heterogeneous model 小结&lt;/h1&gt;
+&lt;h2 id=&quot;motivations&quot;&gt;0. Motivations&lt;/h2&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;&lt;strong&gt;System heterogeneity&lt;/strong&gt;. Clients have various computation and bandwidth resources, where each participant has capacity and desire to design their own unique model.&lt;/li&gt;
+&lt;li&gt;Strong server, weak client.&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    <category term="ML知识总结" scheme="http://example.com/categories/ML%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
+    
+    
+    <category term="联邦学习" scheme="http://example.com/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>GNN_表达能力小结</title>
@@ -496,32 +522,6 @@
     
     <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>BOOK-06-投资书籍小览</title>
-    <link href="http://example.com/2021/10/20/BOOK-06-%E6%8A%95%E8%B5%84%E4%B9%A6%E7%B1%8D%E5%B0%8F%E8%A7%88/"/>
-    <id>http://example.com/2021/10/20/BOOK-06-%E6%8A%95%E8%B5%84%E4%B9%A6%E7%B1%8D%E5%B0%8F%E8%A7%88/</id>
-    <published>2021-10-20T00:50:03.000Z</published>
-    <updated>2021-10-20T00:50:03.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="book-06-投资书籍小览">BOOK-06-投资书籍小览</h1><blockquote><p>持续更新。近来闲暇开始慢慢阅读投资理念相关的书籍。</p></blockquote><span id="more"></span><h2 id="投资中最简单的事">1. 投资中最简单的事</h2><p>投资理念为道，他人之道可借鉴学习打开眼界，更需经个人实践总结验证，最终归纳出个人投资之道；</p><p>投资策略为术，作为投资小白， 太多术语未了解。</p><p>纸上得来终觉浅，绝知此事要躬行。一句话，看多一本后抓紧下场实践吧。</p><p><img src="./1.png" /></p>]]></content>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;book-06-投资书籍小览&quot;&gt;BOOK-06-投资书籍小览&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;持续更新。近来闲暇开始慢慢阅读投资理念相关的书籍。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-    <category term="书单" scheme="http://example.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    
-    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
     
   </entry>
   
