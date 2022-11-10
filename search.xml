@@ -2786,11 +2786,14 @@ L=\alpha L_{\text {soft }}+\beta L_{\text {hard }}
 <blockquote>
 <p>Fedmd: Heterogenous federated learning via model distillation</p>
 <p>arXiv preprint 2019</p>
+<p>Code: https://github.com/diogenes0319/FedMD_clean</p>
 </blockquote>
 <figure>
 <img src="./image-20221104110228287.png" alt="image-20221104110228287" /><figcaption aria-hidden="true">image-20221104110228287</figcaption>
 </figure>
-<p>Clients提供一部分数据来构建public dataset，使用 public dataset 训练 teacher model，再进行知识蒸馏。</p>
+<p>Clients提供一部分数据来构建public dataset。</p>
+<p>各 client 求 public dataset 对应的 logits。Server 负责聚合各个 client 的 logits 并求平均。发还的 avg(logits) 用以蒸馏 client 端的 model。</p>
+<p>由于各 client 是用private dataset + public dataset训练模型，故对public dataset算出的logits中隐性地包含client private data distribution的信息，意味着使用蒸馏可以在不侵犯隐私的情况下获得其他的client的帮助。</p>
 <h3 id="fml">2.3 FML</h3>
 <blockquote>
 <p>Federated mutual learning</p>
