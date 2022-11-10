@@ -609,7 +609,7 @@
 <p>不高估自己，且算每月两本，一年读<strong>24本</strong>已是小小的进步。闲时阅读，求广不求精，愿能涉猎各科，览阅人事。未必每本都有触动，暂且约定每读一本，于此留下至少百来字随感，若有触动，便是继续细书随笔吧。</p>
 <p>2022，许愿：<strong>无畏，求知</strong>。</p>
 <span id="more"></span>
-<h1 id="书单1423">书单(14/23)</h1>
+<h1 id="书单1524">书单(15/24)</h1>
 <h2 id="历史">历史</h2>
 <ul class="task-list">
 <li><input type="checkbox" disabled="" />
@@ -702,7 +702,16 @@
 《<a href="https://book.douban.com/subject/25930025/">只是为了好玩 : Linux之父林纳斯自传</a>》</li>
 <li><input type="checkbox" disabled="" />
 《数据科学家访谈录》</li>
+<li><input type="checkbox" disabled="" checked="" />
+<a href="https://book.douban.com/subject/22993903/">《区块链：从数字货币到信用社会》</a></li>
 </ul>
+<blockquote>
+<p>在区块链的信用评价中，信用其实是一个数学问题。</p>
+</blockquote>
+<p><img src="./区块链从数字货币到信用社会.png" /></p>
+<p>出于了解web3技术基础的需求，略读此书。前三章生动入微，后续章节务虚难解。</p>
+<p>区块链技术为互联网中的信息赋予了绑定在数据本身上的价值。然而该价值如何和现实社会桥接，仍有一段长路要走。</p>
+<p>文中有段对比甚是有趣，摘录如下：“如果说印刷机的意义就在于将信息资源抽离物理世界的束缚，变为一种非竞争性资源，区块链则是起着与印刷机截然相反的作用，<strong>它以处理竞争性资源的方式来处理信息资源（非竞争性）</strong>，人们可以摆脱对可信第三方的依赖，在数字世界中自由地交换数字货币、知识产权、股权甚至不动产所有权。虽然两者处理资源的方式是相反的，但两者对话语结构的改变是一致的。”</p>
 <h2 id="休闲">休闲</h2>
 <ul class="task-list">
 <li><input type="checkbox" disabled="" checked="" />
