@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-11-10T11:18:06.000Z</updated>
+  <updated>2022-12-31T15:21:32.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MSL_21_LifeGoesOn</title>
+    <link href="http://example.com/2022/12/31/MSL-21-LifeGoesOn/"/>
+    <id>http://example.com/2022/12/31/MSL-21-LifeGoesOn/</id>
+    <published>2022-12-31T15:21:32.000Z</published>
+    <updated>2022-12-31T15:21:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Life Must Goes On...</p><p>2022已过去，依旧青春热血莽撞无虑，但也依旧幼稚短视懒惰。</p><p>回首2022的日子，并不能骄傲地于此尽数，只得怯弱地将愿景寄托于2023年。</p><p>或许依旧该张狂地吹下种种牛逼，然而23年，24岁的我，该将吹得牛通通实现才是。</p><blockquote><p>有悲总有喜 人不要自危</p><p>随时代走用眼泪伴这双手</p><p>再辛苦也好 亦不要淡忘</p><p>前景多好看</p><p>不要淡忘</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Life Must Goes On...&lt;/p&gt;
+&lt;p&gt;2022已过去，依旧青春热血莽撞无虑，但也依旧幼稚短视懒惰。&lt;/p&gt;
+&lt;p&gt;回首2022的日子，并不能骄傲地于此尽数，只得怯弱地将愿景寄托于2023年。&lt;/p&gt;
+&lt;p&gt;或许依旧该张狂地吹下种种牛逼，然而23年，2</summary>
+      
+    
+    
+    
+    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>联邦学习03_模型异构</title>
@@ -500,28 +527,6 @@
     
     
     <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MSL-12-文字的力量</title>
-    <link href="http://example.com/2021/10/26/MSL-12-%E6%96%87%E5%AD%97%E7%9A%84%E5%8A%9B%E9%87%8F/"/>
-    <id>http://example.com/2021/10/26/MSL-12-%E6%96%87%E5%AD%97%E7%9A%84%E5%8A%9B%E9%87%8F/</id>
-    <published>2021-10-26T01:00:18.000Z</published>
-    <updated>2021-10-26T01:00:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>“晨曦载曜，万物咸覩”，五六年没有再打出这行字了。</p><p>并非突然追忆起曾经担任所谓文学社社长的日子，只是，想起淡忘的，文字的力量。</p></blockquote><span id="more"></span><p>一点巧合，几分幸运，博客能被人发现，琐碎的念叨能被人喜爱。</p><p>其实内心惶恐不安，只因有自知之明，自己文字水平几何，远无法与相识的才子相比。不过，更多的还是欢喜。由衷地感谢那位静悄悄访问的可人儿，告诉我这些平凡的生活随感亦有人阅读，亦感谢那理直气壮的催稿，唤起懒癌拖稿症患者更新的动力。</p><p>如此相逢，大约我该感谢文字的力量了。</p><p>白底黑字，由字及词成段成章，瞅见文字时，总觉那潜藏着深沉与淡定，以及偌大想象的空间。文字予人的想象力，最让人沉醉。所有的空间，事件，人物，都浓缩在字句中，交由每位读者自由在脑海中揣摩想象。</p><p>穿过长长隧道抵达的雪国，是发呆时不错的让思绪逗留的旅店；又或幻想过上如柯希莫男爵一般轻逸的日子，一直在树上生活；再或是去经受些苦难吧，回到百年前的华夏，该如何奋起救亡……</p><p>图像、视频，信息的量及维度大大跃升，但总觉着太过直接，少了点含蓄，少了些发呆想象的空间——至少现今过载的图、短视频app令人厌恶。摄影、平面设计或是优秀的影视作品，是该另当别论的。</p><p>不小心成了计算机专业的学生后，运动和阅读、输出文字，是不多的感知生活的方式吧。代码与算法，总还是少点人性和生活气息。</p><p>祝自己不忘文字的力量，不忘曾向往的卡尔维诺的轻逸——虽然也没完全参透就是了。</p><hr /><p>对了，顺便也拾起当年文学社的口号送给你吧：“努力，终会被看见”。</p>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;“晨曦载曜，万物咸覩”，五六年没有再打出这行字了。&lt;/p&gt;
-&lt;p&gt;并非突然追忆起曾经担任所谓文学社社长的日子，只是，想起淡忘的，文字的力量。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
     
   </entry>
   
