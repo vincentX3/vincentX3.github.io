@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-01-16T03:00:59.000Z</updated>
+  <updated>2023-02-12T14:43:51.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MSL-23-且行一步</title>
+    <link href="http://example.com/2023/02/12/MSL-23-%E4%B8%94%E8%A1%8C%E4%B8%80%E6%AD%A5/"/>
+    <id>http://example.com/2023/02/12/MSL-23-%E4%B8%94%E8%A1%8C%E4%B8%80%E6%AD%A5/</id>
+    <published>2023-02-12T14:43:51.000Z</published>
+    <updated>2023-02-12T14:43:51.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>终究还是迈出了那一步。</p><span id="more"></span><h1 id="再见的二义性">1. 再见的二义性</h1><p>再见：</p><p>1．再一次见面。 2．临别套语，用于分别时。表示希望以后再见面。</p><p>谭校长的《讲不出再见》一直未能欣赏，直到自己逢了那境遇，才知晓其词曲意。</p><p>情路旅途不止一段，然而此回，终于是轮到我，由我第一次来开口，道声再见。</p><p>原来主动开口，尽管理智层面已然分分秒秒间分析过千千万万回长远故事的不可为继，还是那般沉重且沉痛。会忍不住想象那头的神情——虽然被哥们骂自作多情；会恍惚质问自己；会失眠。</p><p>但仍是决定迈步，重整自我，先修身吧。</p><p>再见，不愿其为套话，由衷地期盼着未来仍能交会，或是作为并行的朋友。</p><h1 id="方向与前路">2. 方向与前路</h1><p>与共同成长的友人间距离愈发遥远。个人的成长是何时开始停滞的？</p><p>友人说，要做有价值的工作，让自己收获成就感与存在感。</p><p>友人说，对任何行事前不经思索，不明自己举止动机的人感到恶心。</p><p>友人说，构建自洽的生活方式……</p><p>我呢？些许混沌。谈恋爱，似乎也只是掌握不少讨欢心的tricks罢了。</p><p>怎样能拾回自信，怎样寻到方向与前路？</p><h1 id="启航">3. 启航</h1><p>此节且做为memo，等待不断补充吧。</p><p>愿景：</p><ul><li>姑且将人生目标，定为追求高质量且丰富的体验吧；</li></ul><p>愿望：</p><ul><li></li></ul><p>习惯：</p><ul><li>自省前置，决策前自问是否符合自我愿景，对其是否有利；</li></ul><p>技巧：</p><ul><li></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;终究还是迈出了那一步。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>MSL_22_经得起变化</title>
@@ -498,32 +519,6 @@
     
     
     <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GNN_GIN论文笔记</title>
-    <link href="http://example.com/2021/11/09/GNN-GIN%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
-    <id>http://example.com/2021/11/09/GNN-GIN%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/</id>
-    <published>2021-11-09T07:06:09.000Z</published>
-    <updated>2021-11-09T07:06:09.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>借结课展示的强制力，更新 <em>How Powerful Are Graph Neural Networks?</em> 论文阅读笔记如下。</p></blockquote><p>此工作发表于ICLR19，将GNN聚合邻居的方式与WL test做类比，理论上论证了GNN表达能力的上限为WL Subtree kernel，并根据分析提出<strong>GIN</strong>模型。论文提供了理解GNN表达能力的新思路，也启迪GNN模型架构发展的方向。</p><span id="more"></span><p><img src="./幻灯片1.png" /></p><p><img src="./幻灯片2.png" /></p><h2 id="background-contributions">1. Background &amp; Contributions</h2><p>GNN近年来来发展迅速，在图表示学习方向取得耀眼成果。但大部分模型的设计都基于经验或直觉，缺少对GNN性质的深入理解分析。</p><p><img src="./幻灯片4.png" /></p><p>本工作主要有4方面的贡献：(见下图)</p><p><img src="./幻灯片5.png" /></p><h2 id="preliminaries">2. Preliminaries</h2><p><img src="./幻灯片7.png" /></p><p>本工作讨论的为Message-Passing类的GNN模型，</p><p>此类模型每层进行<strong>AGGREGATE及COMBINE</strong>操作，分别负责收集邻居信息、结合邻居和节点自身信息更新hidden state。</p><p>若需要获得graph-level的图表示，则一般操作，是对网络最后一层的所有节点信息做聚合，即使用<strong>READOUT</strong>函数取得最后的图表示<span class="math inline">\(h_G\)</span>。READOUT函数需要满足permutation invariant，常用的简单函数有如<strong>求和SUM</strong>。</p><p><img src="./幻灯片8.png" /></p><p>本工作中涉及的WL Test是尝试判断图同构的经典方法。</p><p>图同构问题是图论中的经典问题，且是NP问题。若两个图是同构的，则存在双射函数，能将一个图中节点对应映射为另一图中对应节点。</p><p>如下图，图G、H为同构图，可通过双射的函数f找到两图中一一对应的节点。</p><p><img src="./幻灯片9.png" /></p><p>WL Test是图同构的一个<strong>必要非充分</strong>的条件。其算法迭代执行如下两步：</p><ol type="1"><li>每个节点收集一阶邻居的标签（是不是很像MPNN收集message的步骤）；</li><li>将聚合后的标签集合做hash，创建新的唯一标签；</li></ol><p>每轮迭代后比较两图节点标签集合异同，如使用Jaccard积，如果不同则能说明两图非同构，否则两图可能是同构的。</p><p>一轮迭代的例子如下图。</p><p><img src="./幻灯片10.png" /> <img src="./幻灯片11.png" /></p><h2 id="this-works">3. This works</h2><h3 id="gnn表达能力上界">3.1 GNN表达能力上界</h3><p>任何基于统计的表示学习模型，都想将同类样本映射到表示空间中相近甚至相同位置，不同类样本则尽量远离。</p><p>对于图表示学习，若说两个节点是一样的，则意味着节点的<strong>结构、特征</strong>都相同。具体的，则是两个节点导出的子树结构完全相同，且子树上的节点所有的特征也相同。</p><p>相应的，理想化的GNN能将上述相同节点映射到相同表示空间，不相似节点则映射至表示空间中彼此远离的位置。</p><p>实际上，满足上述要求的GNN，实质上是在解决<strong>图同构问题</strong>。</p><p><img src="./幻灯片13.png" /></p><p><strong>multiset</strong>为后文论证中常用概念，实质上用于描述每个节点所收到的邻居信息。</p><p><img src="./幻灯片14.png" /></p><p>从Section 2中GNN与WL Test介绍可以发现，二者聚合邻居信息更新自身节点hidden state/label的过程在方式上相近。</p><p>作者在一系列证明后给出结论：<strong>基于aggregation的GNN模型，在分辨不同图任务中的能力上界为WL Test</strong>。</p><p><img src="./幻灯片15.png" /></p><p>自然而然的问题，怎样构建GNN模型才能逼近表达能力上界呢？</p><p>作者进一步推导证明，模型的<strong>Aggregate, Combine, Readout函数都必须是单射函数</strong>。（与ideally GNN类似，单射函数保证了不同结构、特征的节点被映射为不同的嵌入表示）。</p><p><img src="./幻灯片16.png" /></p><h3 id="gin">3.2 GIN</h3><p><img src="./幻灯片17.png" /></p><p>基于上图结论，作者提出<strong>Graph Isomorphism Network(GIN)</strong>。</p><p>其中，<span class="math inline">\(f^{(k)}\)</span>为<strong>多层感知机MLP</strong>，ε为可学习的参数，二者再加上<strong>SUM</strong>共同保证了模型函数的单射性。</p><p><img src="./幻灯片18.png" /></p><p>对应的，READOUT函数也要使用<strong>SUM</strong>来保证单射性。 与通常做法不同，GIN为了把握全局的图结构，它的图表示<span class="math inline">\(h_G\)</span>聚合了网络<span class="math inline">\({1,..,k}\)</span>层的全部信息。</p><p><img src="./幻灯片19.png" /></p><p>对于传统基于一阶邻居聚合的GNN模型，本工作发现它们有如下问题： 1. 所使用的单层perceptron在一定场景中是非单射的，表达能力不如MLPs； 1. Mean 和 Max-pooling 算子是非单射的，在下图结构中，节点v和v'聚合所得邻居信息的结果可能一致，意味着使用这两个算子可能丢失更具体的结构信息。</p><p><img src="./幻灯片20.png" /></p><h3 id="experiments">3.3 Experiments</h3><p><img src="./幻灯片21.png" /></p><p>训练阶段，WL Subtree kernel为上界。可以看到GIN-0, GIN-eps都较好的逼近了WL Subtree kernel。而使用其他不满足单射性质的GNN variants则收敛较慢，或者无法收敛至理论上界。</p><p><img src="./幻灯片22.png" /></p><p>实验结果可见，在Graph Classification任务上GIN取得了耀眼成绩。</p><p><img src="./幻灯片23.png" /></p><h2 id="personal-thoughts">4. Personal Thoughts</h2><p><img src="./幻灯片25.png" /> <img src="./幻灯片26.png" /></p>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;借结课展示的强制力，更新 &lt;em&gt;How Powerful Are Graph Neural Networks?&lt;/em&gt; 论文阅读笔记如下。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;此工作发表于ICLR19，将GNN聚合邻居的方式与WL test做类比，理论上论证了GNN表达能力的上限为WL Subtree kernel，并根据分析提出&lt;strong&gt;GIN&lt;/strong&gt;模型。论文提供了理解GNN表达能力的新思路，也启迪GNN模型架构发展的方向。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="论文笔记" scheme="http://example.com/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="图神经网络" scheme="http://example.com/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
-    
-    <category term="图表示学习" scheme="http://example.com/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
