@@ -2971,4 +2971,57 @@ L=\alpha L_{\text {soft }}+\beta L_{\text {hard }}
         <tag>日常</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Torch-CopyModel的坑</title>
+    <url>/2023/02/16/Torch-CopyModel%E7%9A%84%E5%9D%91/</url>
+    <content><![CDATA[<blockquote>
+<p>Main reference: <a href="https://androidkt.com/copy-pytorch-model-using-deepcopy-and-state_dict/">Copy PyTorch Model using deepcopy() and state_dict()</a></p>
+</blockquote>
+<p>近日验证idea，踩中Pytorch复制模型的大坑，遂记录如下。</p>
+<span id="more"></span>
+<h1 id="概况">1. 概况</h1>
+<p><strong>问题现象：</strong>进行联邦学习+GNN知识蒸馏的idea验证，发现在进行FedAvg后，模型loss、acc等不再变化。</p>
+<figure>
+<img src="./image-20230216104047624.png" alt="image-20230216104047624" /><figcaption aria-hidden="true">image-20230216104047624</figcaption>
+</figure>
+<p><strong>原因概述</strong>：复制模型时未对optimizer做重新初始化。</p>
+<figure>
+<img src="./image-20230216103949066.png" alt="image-20230216103949066" /><figcaption aria-hidden="true">image-20230216103949066</figcaption>
+</figure>
+<h1 id="问题发现与探索简述">2. 问题发现与探索（简述）</h1>
+<ol type="1">
+<li>FedAvg+KD时，loss、acc未如预期一般成锯齿形下降，而是在第一次聚合后便不再变化。</li>
+<li>检查模型架构是否异常；</li>
+<li>聚合算法实现检查。但FedAvg + GNN/MLP 正常收敛（这就是坑点，代码实现的单个分析都没有问题）；</li>
+<li>检查模型是否设置异常，未开启反向传播。但<code>print(model.weight.grad())</code>不为0，<code>require_grad==True</code>设置没有问题，但每轮训练，<code>weights, grad</code>都不变（接近发现原因了！）；</li>
+<li>反思是否是梯度消失。但打印的梯度及其变化情况，与梯度消失现象不一致；</li>
+<li>设置client=1，一个模型不进行<code>deepcopy()</code>，只进行知识蒸馏，可以正常训练。另一个模型进行知识蒸馏，并且每一个epoch将参数复制到相同架构的模型，再通过<code>deepcopy</code>拷贝回来，异常！</li>
+</ol>
+<h1 id="bug所在">3. BUG所在</h1>
+<ol type="1">
+<li><p>FedAvg参考他人实现，server模型下发回客户端时使用的是<code>deepcopy</code>：</p>
+<figure>
+<img src="./image-20230216110124249.png" alt="image-20230216110124249" /><figcaption aria-hidden="true">image-20230216110124249</figcaption>
+</figure></li>
+<li><p>知识蒸馏参考他人实现，训练时<code>optimizer</code>作为参数传入：</p>
+<figure>
+<img src="./image-20230216110251502.png" alt="image-20230216110251502" /><figcaption aria-hidden="true">image-20230216110251502</figcaption>
+</figure>
+<p>（而我惯常的<code>train()</code>,optimizer对象是在函数内创建，即每次调用<code>train()</code>时都会重新初始化optimizer）</p></li>
+</ol>
+<p>上述二者，每个都能完成原始代码的既定任务，但两者结合使用时，就会发生optimizer无法更新模型参数的问题！</p>
+<h1 id="pytorch-模型复制">4. Pytorch 模型复制</h1>
+<p>见<a href="https://androidkt.com/copy-pytorch-model-using-deepcopy-and-state_dict/">Copy PyTorch Model using deepcopy() and state_dict()</a></p>
+<ul>
+<li><code>copy.deepcopy()</code>：完整地<strong>深拷贝</strong>整个模型，创建<strong>全新的对象</strong>。该对象递归地复制原模型的内部对象的值。训练新模型需要对原optimizer<strong>重新初始化</strong>；</li>
+<li><code>new_model.load_state_dict(model.state_dict())</code>，首先用户需要自己创建<code>new_model</code>，新模型的架构应与被复制模型的架构一致。<code>load_state_dict</code> only copies parameters and buffers。实践发现不需对原optimizer重新初始化。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具人</category>
+      </categories>
+      <tags>
+        <tag>Pytorch</tag>
+      </tags>
+  </entry>
 </search>

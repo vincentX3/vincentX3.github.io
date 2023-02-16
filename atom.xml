@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-12T14:43:51.000Z</updated>
+  <updated>2023-02-16T02:32:11.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Torch-CopyModel的坑</title>
+    <link href="http://example.com/2023/02/16/Torch-CopyModel%E7%9A%84%E5%9D%91/"/>
+    <id>http://example.com/2023/02/16/Torch-CopyModel%E7%9A%84%E5%9D%91/</id>
+    <published>2023-02-16T02:32:11.000Z</published>
+    <updated>2023-02-16T02:32:11.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Main reference: <a href="https://androidkt.com/copy-pytorch-model-using-deepcopy-and-state_dict/">Copy PyTorch Model using deepcopy() and state_dict()</a></p></blockquote><p>近日验证idea，踩中Pytorch复制模型的大坑，遂记录如下。</p><span id="more"></span><h1 id="概况">1. 概况</h1><p><strong>问题现象：</strong>进行联邦学习+GNN知识蒸馏的idea验证，发现在进行FedAvg后，模型loss、acc等不再变化。</p><figure><img src="./image-20230216104047624.png" alt="image-20230216104047624" /><figcaption aria-hidden="true">image-20230216104047624</figcaption></figure><p><strong>原因概述</strong>：复制模型时未对optimizer做重新初始化。</p><figure><img src="./image-20230216103949066.png" alt="image-20230216103949066" /><figcaption aria-hidden="true">image-20230216103949066</figcaption></figure><h1 id="问题发现与探索简述">2. 问题发现与探索（简述）</h1><ol type="1"><li>FedAvg+KD时，loss、acc未如预期一般成锯齿形下降，而是在第一次聚合后便不再变化。</li><li>检查模型架构是否异常；</li><li>聚合算法实现检查。但FedAvg + GNN/MLP 正常收敛（这就是坑点，代码实现的单个分析都没有问题）；</li><li>检查模型是否设置异常，未开启反向传播。但<code>print(model.weight.grad())</code>不为0，<code>require_grad==True</code>设置没有问题，但每轮训练，<code>weights, grad</code>都不变（接近发现原因了！）；</li><li>反思是否是梯度消失。但打印的梯度及其变化情况，与梯度消失现象不一致；</li><li>设置client=1，一个模型不进行<code>deepcopy()</code>，只进行知识蒸馏，可以正常训练。另一个模型进行知识蒸馏，并且每一个epoch将参数复制到相同架构的模型，再通过<code>deepcopy</code>拷贝回来，异常！</li></ol><h1 id="bug所在">3. BUG所在</h1><ol type="1"><li><p>FedAvg参考他人实现，server模型下发回客户端时使用的是<code>deepcopy</code>：</p><figure><img src="./image-20230216110124249.png" alt="image-20230216110124249" /><figcaption aria-hidden="true">image-20230216110124249</figcaption></figure></li><li><p>知识蒸馏参考他人实现，训练时<code>optimizer</code>作为参数传入：</p><figure><img src="./image-20230216110251502.png" alt="image-20230216110251502" /><figcaption aria-hidden="true">image-20230216110251502</figcaption></figure><p>（而我惯常的<code>train()</code>,optimizer对象是在函数内创建，即每次调用<code>train()</code>时都会重新初始化optimizer）</p></li></ol><p>上述二者，每个都能完成原始代码的既定任务，但两者结合使用时，就会发生optimizer无法更新模型参数的问题！</p><h1 id="pytorch-模型复制">4. Pytorch 模型复制</h1><p>见<a href="https://androidkt.com/copy-pytorch-model-using-deepcopy-and-state_dict/">Copy PyTorch Model using deepcopy() and state_dict()</a></p><ul><li><code>copy.deepcopy()</code>：完整地<strong>深拷贝</strong>整个模型，创建<strong>全新的对象</strong>。该对象递归地复制原模型的内部对象的值。训练新模型需要对原optimizer<strong>重新初始化</strong>；</li><li><code>new_model.load_state_dict(model.state_dict())</code>，首先用户需要自己创建<code>new_model</code>，新模型的架构应与被复制模型的架构一致。<code>load_state_dict</code> only copies parameters and buffers。实践发现不需对原optimizer重新初始化。</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Main reference: &lt;a href=&quot;https://androidkt.com/copy-pytorch-model-using-deepcopy-and-state_dict/&quot;&gt;Copy PyTorch Model using deepcopy() and state_dict()&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;近日验证idea，踩中Pytorch复制模型的大坑，遂记录如下。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="工具人" scheme="http://example.com/categories/%E5%B7%A5%E5%85%B7%E4%BA%BA/"/>
+    
+    
+    <category term="Pytorch" scheme="http://example.com/tags/Pytorch/"/>
+    
+  </entry>
   
   <entry>
     <title>MSL-23-且行一步</title>
@@ -495,30 +519,6 @@
     <category term="图神经网络" scheme="http://example.com/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
     
     <category term="图表示学习" scheme="http://example.com/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MSL_14_星火不熄</title>
-    <link href="http://example.com/2021/11/12/MSL-14-%E6%98%9F%E7%81%AB%E4%B8%8D%E7%86%84/"/>
-    <id>http://example.com/2021/11/12/MSL-14-%E6%98%9F%E7%81%AB%E4%B8%8D%E7%86%84/</id>
-    <published>2021-11-11T16:20:46.000Z</published>
-    <updated>2021-11-15T17:53:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>长河无声奔去，唯爱与信念永存。</p><p>大约借贷了不少幸运，才得以有佳人相伴，赶上了这场舞剧——《永不消逝的电波》。</p></blockquote><span id="more"></span><p>我与舞剧，仿似若即若离。</p><p>看电影是轻松的，取了票往影院软凳一躺，兴致其高时说不定还揽一桶爆米花入场（虽然上一次吃爆米花看电影的记忆早已模糊）；观舞剧嘛，刻板印象里将它定义为风雅之事。刷豆瓣活动时总会看到些有趣的剧目，每每为其内容描述心动时，但或因无人作陪，或忧剧目高雅大老粗人难以体悟，总归是在购票界面迟疑许久后，默默地点下取消。</p><p>这回，总算是昂首步入了琴台剧院。</p><h2 id="无端联想">1. 无端联想</h2><p>且说观剧体验。</p><p>高坐三楼，俯瞰舞台，看不清舞者细微的神态与动作，却也一览群舞全貌。</p><p>虽说些许“一场论”了，但舞剧更有人世的风貌，而电影不过是被镜头捕获的局促视角。初次观剧，用目不暇接来概括最为恰当。舞台上。每位舞者都倾情演绎着自己的角色。携带的望远镜也无用武之地，剧场上各个角落，各个人物都尽心舞蹈着，以律动的肢体叙事——光饱览全貌已然耗尽心神，望远镜着实无法定下关注的焦点。恰似人世，大家都在自己一片时空中过活，时空不时交会，大多并行延申。全知全能如“神”，才能不错过分毫细节；一般人若俯瞰人世，怕也是如观舞剧般，粗览全局后，定睛瞅了这头，漏过了那头。</p><p>再谈舞蹈。</p><p>对舞蹈几近是白痴，脑中能有印象的舞，是《闻香识女人》里阿尔·帕西诺那曲探戈——和舞剧也不搭边就是了。此番观舞，难说有啥专业见解，只是深深地被曼妙的舞姿打动——举手投足间倾诉的情愫或溢出的力量。</p><p>记得一众身着旗袍的舞者，婀娜身姿甚至脱去了想象中民国上海纸醉金迷的脂粉气，约有几分”翩如兰苕翠，婉如游龙举“之貌；记得夜幕中的追捕与搏斗，没有拳拳到肉的实感，没有快切没有特写，但飞舞的黑色衣襟，高跳、翻滚、旋转，依旧描摹着激烈的生死斗争；记得昂首阔步舞至人生终章的豪迈；记得一众烈士步履艰难地带镣前进……</p><p>也还记得身边紧握的手。</p><p>不多的遗憾，是无法录影吧。恨自己双眼与脑瓜的记录能力有限，不能让我逐帧细致地回味。</p><p>舞美设计也与人震撼，奈何文字苍白，那些精巧的编排唯亲临现场才能体会。</p><p>便是略提一点有趣的观察吧：裁缝的店铺中，立着一扇镜子。仔细看去，发现镜面并非平整，照镜之人身形都被扭曲拉伸。或许借着反射，暗喻着那时代的光怪陆离罢。</p><h2 id="听不见的电波">2. 听不见的电波</h2><p>曾看过电影《听风者》，那故事更传奇些——盲人调音师识破敌台。《永不消逝的电波》，才来得真实些，更易设身处地遐想，更易动情。</p><p>如今再度富强的华夏，便是当年的同志们，各自坚守自己的一份职责，聚沙成塔，血肉叠铸而成。比起如今的我们，他们大多不会有更多的学识吧，甚至也无更多的阅历——那么多可爱的同志们，从年岁上看不过是个孩子。就像剧中的小裁缝学徒，无任务时蹦蹦跳跳玩乐才是天性，与相遇的卖花的女孩子本还有一段故事可以延展。他们多的，大约是对未来的信念，以及一腔热血吧。相信着中华民族五千年血脉不会中断，相信镰刀锤头能挥舞出光明，相信以自己的生命，做好分内事，便有星星之火，将见燎原。</p><p>因而，尤其看不得剧中小裁缝被害后，梦中还魂、道别的场景。一来，带大我、授童稚的我以人生原则的外公逝世后，每每梦见，醒来总是不免泪流，故也算是略知梦见逝者，醒后所感的悲恸、萧瑟；二来，最不忍见孩童生命的消逝。他们本有无穷条交汇、分叉的通往未来的道路，却横地被在主干道上插上此路不通的牌子，此后，再无路可走。</p><p>梦中小裁缝的谢幕，最让人动容——他越洒脱，越是安慰、鼓励生者，越使观者反思、自愧——坦然接受死亡的人能有几多，能使短暂人世经历重于泰山者又有几多。</p><p>身边的心跳声一个个沉寂下去，空气中总震荡着听不见的电波，夜晚，发报机仍不能停下。回望那段历史，总会满怀敬意。强大的信念与意志，让工作的接力棒在生死两界传递——可慨然赴死，也会负重继续前进。</p><h2 id="听不到的故事">3. 听不到的故事</h2><p>剧终时，黑底白字，投影出”长河无声奔去，唯爱与信念永存“。</p><p>奔涌的长江浪涛滚滚，怎会无声？沉默的，是翻卷浪花下，离去的人们，以及他们无人传述的故事。</p><p>遗憾惭愧是难免的，那么多生命无声暗淡了去，甚至连历史的尘埃都不是。</p><p>不过，故事大约不是必须的，信念才是。不需要留声机，需要长明的火把。</p><p>星火不熄，华夏长存。</p>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;长河无声奔去，唯爱与信念永存。&lt;/p&gt;
-&lt;p&gt;大约借贷了不少幸运，才得以有佳人相伴，赶上了这场舞剧——《永不消逝的电波》。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
     
   </entry>
   
