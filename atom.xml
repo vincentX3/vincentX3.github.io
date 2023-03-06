@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-02-16T02:32:11.000Z</updated>
+  <updated>2023-03-06T17:16:08.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MSL-24-自驱新时代(Memo)</title>
+    <link href="http://example.com/2023/03/07/MSL-24-%E8%87%AA%E9%A9%B1%E6%96%B0%E6%97%B6%E4%BB%A3-Memo/"/>
+    <id>http://example.com/2023/03/07/MSL-24-%E8%87%AA%E9%A9%B1%E6%96%B0%E6%97%B6%E4%BB%A3-Memo/</id>
+    <published>2023-03-06T17:16:08.000Z</published>
+    <updated>2023-03-06T17:16:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>自驱、持续学习重要性愈发凸显</strong>。 <span id="more"></span></p><p>ChatGPT Api 可供大众调用了，各式产品、生产力工具开始涌现。</p><p>摸鱼刷着知乎，看到：</p><blockquote><p>Bilibili x OpenAI x Notion x Python：分享我的长视频自动化摘要笔记完整工作流（万字长文，代码分享，点赞收藏） - 段小草的文章 - 知乎 https://zhuanlan.zhihu.com/p/610250035</p></blockquote><p>已经有人基于ChatGPT Api，定制出视频自动化摘要笔记的程序。意味着过往截图、摘抄、个人概括等繁琐流程，都被压缩，个人时间能更多用于吸收视频传递的信息。</p><ul><li><strong>工具的进化，拉大了人与人间可达的差距</strong></li></ul><p>好比两人比赛远行，过往只能徒步，自驱者每日多行二三小时不过领先几里路；而今两人都被赋予汽车，自驱者迅速学会开车并远行，不消几日就将彻底领先无踪。</p><ul><li><strong>自驱，主动学习</strong></li></ul><p>切要摆脱应试填鸭思维，被动学习。当下时代，更需要找到自己生活的主线，主动探索，利用新生产力工具提升自我。</p><ul><li><strong>自驱亦分层级</strong></li></ul><p>高级的，知晓个人需求，定制工具强壮自身；中级的，拥抱新工具，活学活用；低级的，则仍满足于低效的旧模式，暗自满足。</p><hr /><p>有了以ChatGPT代表的新LLM模型，仓鼠症更需根治了。徒劳囤积资料无效，逻辑与分辨力才是关键——海量信息可依靠AI负责提取，人则负责分辨并指引AI优化提取结果，进而将信息化作知识乃至更高维内容。</p><figure><img src="./image-20230307013217319-16781239438421.png" alt="image-20230307013217319" /><figcaption aria-hidden="true">image-20230307013217319</figcaption></figure>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;自驱、持续学习重要性愈发凸显&lt;/strong&gt;。</summary>
+    
+    
+    
+    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>Torch-CopyModel的坑</title>
@@ -493,32 +514,6 @@
     
     
     <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GNN_利用边信息</title>
-    <link href="http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/"/>
-    <id>http://example.com/2021/11/13/GNN-%E5%88%A9%E7%94%A8%E8%BE%B9%E4%BF%A1%E6%81%AF/</id>
-    <published>2021-11-13T06:44:51.000Z</published>
-    <updated>2021-11-13T06:44:51.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p><strong>Abstract</strong>:</p><p>当前GNNs主要利用了节点特征，忽略了边上信息。本笔记对GNNs中利用边信息的方式进行小结。</p></blockquote><span id="more"></span><p>部分图片截取自[1]，感谢原创人员悉心的总结分享。</p><h2 id="backgrounds">1. Backgrounds</h2><p>图表示学习近年来取得巨大进展，以<strong>GCNs</strong>为代表的一系列图神经网络模型在节点分类、图分类、链接预测等图领域任务取得亮眼的成果。其中大部分模型基于<em>message-passing</em>方式构建，即“聚合邻居信息，更新节点自身状态”，在此范式中，节点特征得到充分的学习。而现实的许多图中，边上存在丰富的信息，它们在当前大多模型中未被充分利用。</p><p>Edge Features同样描述着网络，学习edge features能强化图神经网络的表达能力。</p><p>以下图为例：</p><p>社交网络中，edge features更具体地描述着用户(nodes)间关系。</p><p><img src="./01.png" /></p><h2 id="recently-works">2. Recently Works</h2><p>当前图神经网络对边信息主要有如下几种利用方式：</p><p><img src="./GNNs+Edge%20Features.png" /></p><h3 id="implicit-utilization">2.1 Implicit Utilization</h3><p>每个节点只aggregate其邻居的信息，这一聚合方式本身就基于节点间的边实现。此情况下只视作各个边为binary feature，只有“有边/无边”区别。</p><h3 id="naive-utilization">2.2 Naive Utilization</h3><p>对于边上特征为scalar的情况，最简单直接的方式是使用带权的邻接矩阵描述，与之对应的，使用支持edge weight的模型学习即可。</p><h3 id="aggregate-from-different-types-of-edge">2.3 Aggregate from Different Types of Edge</h3><p>在许多场景中，边上特征为类别标签，如社交网络中，边上可以标注两人为工作关系、家人等。</p><p>对于存在多种类型边的图（边异构），常见处理方法是<strong>依照边的类型分别聚合信息</strong>。</p><p>如早期工作<strong>Relational GCN</strong>[2]，</p><p>其只在GCN</p><p><span class="math display">\[h^{l+1}_i = \sum_{j \in \mathcal{N}_{i}} \frac{1}{norm} W^{(l)} h_{j}^{(l)}+W^{(l)} h_{i}^{(l)}\]</span></p><p>的基础上，增加了<span class="math inline">\(\sum_{r \in R}\)</span>.</p><p><img src="./02.png" /></p><p>其他模型也是类似思路，仅在聚合方式上做进一步细化。 如下图：</p><p><img src="./03.png" /></p><h3 id="multi-dimensional-edge-features">2.4 Multi-dimensional Edge Features</h3><p>上述3个方式并不能较好地处理边上多维特征。面对多维边特征，常见手段也是在aggregation阶段将边特征、邻居节点特征通过某种function结合在一起，再传给目标节点。</p><p>General Idea 如下图：</p><p><img src="./04.png" /></p><p>相关工作有<em>PNAConv</em>[3],<em>Crystal Graph Conv</em>[4]。</p><h3 id="learn-edge-embeddings">2.5 Learn Edge Embeddings</h3><p>与2.4区别在于，下述方法以多维边特征为输入，并在模型每层更新，类似学习node embedding一般，同时学习edge embeddings。其实现方式多为创建某种辅助图，在该图中将边也视作节点，再用现有GAT等模型学习边和节点的表示。</p><ol type="1"><li><p><em>EGNN</em> [5] <span class="math display">\[X^{l}=\sigma\left[\prod_{p=1}^{P}\left(\alpha_{\cdots p}^{l}\left(X^{l-1}, E_{\cdots p}^{l-1}\right) g^{l}\left(X^{l-1}\right)\right)\right]\]</span></p><p><span class="math inline">\(P\)</span> 为边特征维度数。</p><p>在GAT基础上，单独处理每一维的特征。聚合函数中加入节点特征，并为每一维特征单独学一组注意力权重，最后将各维输出concate。本文的edge embeddings，为每层所学的边多维特征注意力权重。</p><p><img src="./05.png" /></p></li><li><p><em>CensNet</em> [6]</p><p>使用line graph（原始图中节点变为line graph中的边，边变为节点）构建辅助图，在original graph和line graph上训练模型，交替更新node, edge embeddings。</p><p><img src="./06.png" /></p></li><li><p><em>NENN</em> [7]</p><p>以GAT为基础，提出Node-level Attention Layer, Edge-level Attention Layer。</p><p>每个layer区别主要在于输入的图的观察角度。</p><p>如下图中两矩形方框部分，分别以node、edge为视角，重新定义“邻居”，将边/节点视作新图中的节点，在新图中学习边和节点的embeddings。</p><p><img src="./07.png" /></p></li><li><p><em>EGAT</em> [8]</p><p>与<em>CensNet</em>类似，使用line graph+GAT学习节点和边的表示。</p><p><img src="./08.png" /></p></li></ol><h2 id="discussion">3. Discussion</h2><ol type="1"><li>2.5中多用GAT编码边特征信息，带来较大的计算开销，能否更轻量且优雅的编码边特征？</li><li>2.5中使用诸如line graph等构建辅助图，把原图中的边变换为辅助图中的节点，从而可以利用已有GNN进行边嵌入的学习。但是，对于“边的邻居边”，是否同样满足节点与其邻居相近的假设？</li><li>如何评估边特征与节点的关系，边特征如何切实的帮助图表示学习？</li></ol><h2 id="reference">Reference</h2><ol type="1"><li>https://www.youtube.com/watch?v=mdWQYYapvR8</li><li>Schlichtkrull M, Kipf T N, Bloem P, et al. Modeling relational data with graph convolutional networks[C]//European semantic web conference. Springer, Cham, 2018: 593-607.</li><li>Corso G, Cavalleri L, Beaini D, et al. Principal neighbourhood aggregation for graph nets[J]. arXiv preprint arXiv:2004.05718, 2020.</li><li>Xie T, Grossman J C. Crystal graph convolutional neural networks for an accurate and interpretable prediction of material properties[J]. Physical review letters, 2018, 120(14): 145301.</li><li>Gong L, Cheng Q. Exploiting edge features for graph neural networks[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2019: 9211-9219.</li><li>Jiang X, Ji P, Li S. CensNet: Convolution with Edge-Node Switching in Graph Neural Networks[C]//IJCAI. 2019: 2656-2662.</li><li>Yang Y, Li D. Nenn: Incorporate node and edge features in graph neural networks[C]//Asian Conference on Machine Learning. PMLR, 2020: 593-608.</li><li>Chen J, Chen H. Edge-Featured Graph Attention Network[J]. arXiv preprint arXiv:2101.07671, 2021.</li></ol>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Abstract&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;当前GNNs主要利用了节点特征，忽略了边上信息。本笔记对GNNs中利用边信息的方式进行小结。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="ML知识总结" scheme="http://example.com/categories/ML%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
-    
-    
-    <category term="图神经网络" scheme="http://example.com/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
-    
-    <category term="图表示学习" scheme="http://example.com/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   

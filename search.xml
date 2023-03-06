@@ -3024,4 +3024,39 @@ L=\alpha L_{\text {soft }}+\beta L_{\text {hard }}
         <tag>Pytorch</tag>
       </tags>
   </entry>
+  <entry>
+    <title>MSL-24-自驱新时代(Memo)</title>
+    <url>/2023/03/07/MSL-24-%E8%87%AA%E9%A9%B1%E6%96%B0%E6%97%B6%E4%BB%A3-Memo/</url>
+    <content><![CDATA[<p><strong>自驱、持续学习重要性愈发凸显</strong>。 <span id="more"></span></p>
+<p>ChatGPT Api 可供大众调用了，各式产品、生产力工具开始涌现。</p>
+<p>摸鱼刷着知乎，看到：</p>
+<blockquote>
+<p>Bilibili x OpenAI x Notion x Python：分享我的长视频自动化摘要笔记完整工作流（万字长文，代码分享，点赞收藏） - 段小草的文章 - 知乎 https://zhuanlan.zhihu.com/p/610250035</p>
+</blockquote>
+<p>已经有人基于ChatGPT Api，定制出视频自动化摘要笔记的程序。意味着过往截图、摘抄、个人概括等繁琐流程，都被压缩，个人时间能更多用于吸收视频传递的信息。</p>
+<ul>
+<li><strong>工具的进化，拉大了人与人间可达的差距</strong></li>
+</ul>
+<p>好比两人比赛远行，过往只能徒步，自驱者每日多行二三小时不过领先几里路；而今两人都被赋予汽车，自驱者迅速学会开车并远行，不消几日就将彻底领先无踪。</p>
+<ul>
+<li><strong>自驱，主动学习</strong></li>
+</ul>
+<p>切要摆脱应试填鸭思维，被动学习。当下时代，更需要找到自己生活的主线，主动探索，利用新生产力工具提升自我。</p>
+<ul>
+<li><strong>自驱亦分层级</strong></li>
+</ul>
+<p>高级的，知晓个人需求，定制工具强壮自身；中级的，拥抱新工具，活学活用；低级的，则仍满足于低效的旧模式，暗自满足。</p>
+<hr />
+<p>有了以ChatGPT代表的新LLM模型，仓鼠症更需根治了。徒劳囤积资料无效，逻辑与分辨力才是关键——海量信息可依靠AI负责提取，人则负责分辨并指引AI优化提取结果，进而将信息化作知识乃至更高维内容。</p>
+<figure>
+<img src="./image-20230307013217319-16781239438421.png" alt="image-20230307013217319" /><figcaption aria-hidden="true">image-20230307013217319</figcaption>
+</figure>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>日常</tag>
+      </tags>
+  </entry>
 </search>
