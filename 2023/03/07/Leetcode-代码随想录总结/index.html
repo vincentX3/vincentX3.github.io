@@ -20,17 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://example.com/categories/index.html">
+  <meta name="description" content="内容整理自代码随想录  1. DP 动态规划 1.1 思路框架 动规五部曲分别为：  确定dp数组（dp table）以及下标的含义 一般来说，dp数组元素即为题目所求的局部最优结果。分析问题规模确定数组维数； 确定递推公式 注意紧扣数组定义； dp数组如何初始化 确定遍历顺序 根据递推公式所需的上下文，确定方向。 如有 dp[i][j] &#x3D; dp[i + 1][j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-代码随想录总结">
+<meta property="og:url" content="http://example.com/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="这是博客">
+<meta property="og:description" content="内容整理自代码随想录  1. DP 动态规划 1.1 思路框架 动规五部曲分别为：  确定dp数组（dp table）以及下标的含义 一般来说，dp数组元素即为题目所求的局部最优结果。分析问题规模确定数组维数； 确定递推公式 注意紧扣数组定义； dp数组如何初始化 确定遍历顺序 根据递推公式所需的上下文，确定方向。 如有 dp[i][j] &#x3D; dp[i + 1][j">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-22T17:29:50.000Z">
-<meta property="article:modified_time" content="2020-12-06T15:00:18.073Z">
+<meta property="article:published_time" content="2023-03-07T02:26:03.000Z">
+<meta property="article:modified_time" content="2023-03-07T02:26:03.000Z">
 <meta property="article:author" content="Vincent Xue">
+<meta property="article:tag" content="Leetcode">
+<meta property="article:tag" content="找工">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/categories/">
+<link rel="canonical" href="http://example.com/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/">
 
 
 <script id="page-configurations">
@@ -38,13 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>categories | 这是博客
-</title>
+  <title>Leetcode-代码随想录总结 | 这是博客</title>
   
 
 
@@ -197,51 +200,141 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Leetcode-代码随想录总结
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
-<div class="post-meta">
+              <time title="创建时间：2023-03-07 10:26:03" itemprop="dateCreated datePublished" datetime="2023-03-07T10:26:03+08:00">2023-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">工具人</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="Leetcode-代码随想录总结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>内容整理自<a target="_blank" rel="noopener" href="https://www.programmercarl.com/">代码随想录</a></p>
+</blockquote>
+<h2 id="dp-动态规划">1. DP 动态规划</h2>
+<h3 id="思路框架">1.1 思路框架</h3>
+<p>动规五部曲分别为：</p>
+<ol type="1">
+<li><p><strong>确定dp数组（dp table）以及下标的含义</strong></p>
+<p>一般来说，dp数组元素即为题目所求的局部最优结果。分析问题规模确定数组维数；</p></li>
+<li><p><strong>确定递推公式</strong></p>
+<p>注意紧扣数组定义；</p></li>
+<li><p><strong>dp数组如何初始化</strong></p></li>
+<li><p><strong>确定遍历顺序</strong></p>
+<p>根据递推公式所需的上下文，确定方向。</p>
+<p>如有 <code>dp[i][j] = dp[i + 1][j - 1] + 1</code>，则遍历顺序为 i由大到小，j由小到大；</p></li>
+<li><p><strong>举例推导dp数组</strong></p>
+<p>辅助Debug检验代码实现/递推公式缺漏。</p></li>
+</ol>
+<h3 id="背包问题">1.2 背包问题</h3>
+<ul>
+<li>思路</li>
+</ul>
+<p>题目不会直给地点明是背包问题，需要分析物品和背包对应题目中的什么元素。有时元素<strong>同时是物品和背包</strong>。</p>
+<ul>
+<li>01背包（每种物品仅有1件）</li>
+</ul>
+<p>——滚动数组实现</p>
+<p>dp[j]表示：容量为j的背包，所背的物品价值可以最大为dp[j]。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = bagWeight; j &gt;= weight[i]; j--) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>倒序遍历</strong>是为了保证物品i只被放入一次！</p>
+<ul>
+<li>完全背包（每种物品有无限件）</li>
+</ul>
+<p>完全背包的物品是可以添加多次的，所以要<strong>从小到大去遍历</strong>，即：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先遍历物品，再遍历背包</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = weight[i]; j &lt;= bagWeight ; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是仅仅是纯完全背包的遍历顺序是这样的，题目稍有变化，两个for循环的先后顺序就不一样了。</p>
+<p><strong>如果求组合数就是外层for循环遍历物品，内层for遍历背包</strong>。</p>
+<p><strong>如果求排列数就是外层for遍历背包，内层for循环遍历物品</strong>。</p>
+<h3 id="其他系列">1.3 其他系列</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%82%A1%E7%A5%A8%E7%B3%BB%E5%88%97">股票系列</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E5%AD%90%E5%BA%8F%E5%88%97%E7%B3%BB%E5%88%97">子序列 Subsequence / 子数组 Subarray</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Leetcode/" rel="tag"># Leetcode</a>
+              <a href="/tags/%E6%89%BE%E5%B7%A5/" rel="tag"># 找工</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/07/MSL-24-%E8%87%AA%E9%A9%B1%E6%96%B0%E6%97%B6%E4%BB%A3-Memo/" rel="prev" title="MSL-24-自驱新时代(Memo)">
+      <i class="fa fa-chevron-left"></i> MSL-24-自驱新时代(Memo)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              目前共计 6 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ML%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">ML知识总结</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BA%BA/">工具人</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E5%AE%9E%E8%B7%B5/">算法实践</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/">论文笔记</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a><span class="category-list-count">30</span></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -295,6 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dp-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-text">1. DP 动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF%E6%A1%86%E6%9E%B6"><span class="nav-text">1.1 思路框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-text">1.2 背包问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%B3%BB%E5%88%97"><span class="nav-text">1.3 其他系列</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

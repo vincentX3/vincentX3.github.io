@@ -203,6 +203,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vincent Xue">
+      <meta itemprop="description" content="努力更新博客来使自己清醒。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="这是博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">Leetcode-代码随想录总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-07 10:26:03" itemprop="dateCreated datePublished" datetime="2023-03-07T10:26:03+08:00">2023-03-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BA%BA/" itemprop="url" rel="index"><span itemprop="name">工具人</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="Leetcode-代码随想录总结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>内容整理自<a target="_blank" rel="noopener" href="https://www.programmercarl.com/">代码随想录</a></p>
+</blockquote>
+<h2 id="dp-动态规划">1. DP 动态规划</h2>
+<h3 id="思路框架">1.1 思路框架</h3>
+<p>动规五部曲分别为：</p>
+<ol type="1">
+<li><p><strong>确定dp数组（dp table）以及下标的含义</strong></p>
+<p>一般来说，dp数组元素即为题目所求的局部最优结果。分析问题规模确定数组维数；</p></li>
+<li><p><strong>确定递推公式</strong></p>
+<p>注意紧扣数组定义；</p></li>
+<li><p><strong>dp数组如何初始化</strong></p></li>
+<li><p><strong>确定遍历顺序</strong></p>
+<p>根据递推公式所需的上下文，确定方向。</p>
+<p>如有 <code>dp[i][j] = dp[i + 1][j - 1] + 1</code>，则遍历顺序为 i由大到小，j由小到大；</p></li>
+<li><p><strong>举例推导dp数组</strong></p>
+<p>辅助Debug检验代码实现/递推公式缺漏。</p></li>
+</ol>
+<h3 id="背包问题">1.2 背包问题</h3>
+<ul>
+<li>思路</li>
+</ul>
+<p>题目不会直给地点明是背包问题，需要分析物品和背包对应题目中的什么元素。有时元素<strong>同时是物品和背包</strong>。</p>
+<ul>
+<li>01背包（每种物品仅有1件）</li>
+</ul>
+<p>——滚动数组实现</p>
+<p>dp[j]表示：容量为j的背包，所背的物品价值可以最大为dp[j]。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = bagWeight; j &gt;= weight[i]; j--) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>倒序遍历</strong>是为了保证物品i只被放入一次！</p>
+<ul>
+<li>完全背包（每种物品有无限件）</li>
+</ul>
+<p>完全背包的物品是可以添加多次的，所以要<strong>从小到大去遍历</strong>，即：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先遍历物品，再遍历背包</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = weight[i]; j &lt;= bagWeight ; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是仅仅是纯完全背包的遍历顺序是这样的，题目稍有变化，两个for循环的先后顺序就不一样了。</p>
+<p><strong>如果求组合数就是外层for循环遍历物品，内层for遍历背包</strong>。</p>
+<p><strong>如果求排列数就是外层for遍历背包，内层for循环遍历物品</strong>。</p>
+<h3 id="其他系列">1.3 其他系列</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%82%A1%E7%A5%A8%E7%B3%BB%E5%88%97">股票系列</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E5%AD%90%E5%BA%8F%E5%88%97%E7%B3%BB%E5%88%97">子序列 Subsequence / 子数组 Subarray</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/07/MSL-24-%E8%87%AA%E9%A9%B1%E6%96%B0%E6%97%B6%E4%BB%A3-Memo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -969,98 +1085,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Vincent Xue">
-      <meta itemprop="description" content="努力更新博客来使自己清醒。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="这是博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">MSL_19_Why Decentralization Matters笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-14 10:48:32" itemprop="dateCreated datePublished" datetime="2022-10-14T10:48:32+08:00">2022-10-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-15 01:08:34" itemprop="dateModified" datetime="2022-10-15T01:08:34+08:00">2022-10-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%94%9F%E6%B4%BB/" itemprop="url" rel="index"><span itemprop="name">生活</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="MSL_19_Why Decentralization Matters笔记" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>Ref:</p>
-<p>原始blog 👉 <a target="_blank" rel="noopener" href="https://cdixon.org/2018/02/18/why-decentralization-matters">here</a></p>
-<p>zhihu笔记 👉 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/572235146">here</a></p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/14/MSL-19-WhyDecentralizationMatters%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1148,7 +1172,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1161,7 +1185,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-03-06T17:16:08.000Z</updated>
+  <updated>2023-03-07T02:26:03.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Leetcode-代码随想录总结</title>
+    <link href="http://example.com/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/"/>
+    <id>http://example.com/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/</id>
+    <published>2023-03-07T02:26:03.000Z</published>
+    <updated>2023-03-07T02:26:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>内容整理自<a href="https://www.programmercarl.com/">代码随想录</a></p></blockquote><h2 id="dp-动态规划">1. DP 动态规划</h2><h3 id="思路框架">1.1 思路框架</h3><p>动规五部曲分别为：</p><ol type="1"><li><p><strong>确定dp数组（dp table）以及下标的含义</strong></p><p>一般来说，dp数组元素即为题目所求的局部最优结果。分析问题规模确定数组维数；</p></li><li><p><strong>确定递推公式</strong></p><p>注意紧扣数组定义；</p></li><li><p><strong>dp数组如何初始化</strong></p></li><li><p><strong>确定遍历顺序</strong></p><p>根据递推公式所需的上下文，确定方向。</p><p>如有 <code>dp[i][j] = dp[i + 1][j - 1] + 1</code>，则遍历顺序为 i由大到小，j由小到大；</p></li><li><p><strong>举例推导dp数组</strong></p><p>辅助Debug检验代码实现/递推公式缺漏。</p></li></ol><h3 id="背包问题">1.2 背包问题</h3><ul><li>思路</li></ul><p>题目不会直给地点明是背包问题，需要分析物品和背包对应题目中的什么元素。有时元素<strong>同时是物品和背包</strong>。</p><ul><li>01背包（每种物品仅有1件）</li></ul><p>——滚动数组实现</p><p>dp[j]表示：容量为j的背包，所背的物品价值可以最大为dp[j]。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = bagWeight; j &gt;= weight[i]; j--) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>倒序遍历</strong>是为了保证物品i只被放入一次！</p><ul><li>完全背包（每种物品有无限件）</li></ul><p>完全背包的物品是可以添加多次的，所以要<strong>从小到大去遍历</strong>，即：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先遍历物品，再遍历背包</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = weight[i]; j &lt;= bagWeight ; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>但是仅仅是纯完全背包的遍历顺序是这样的，题目稍有变化，两个for循环的先后顺序就不一样了。</p><p><strong>如果求组合数就是外层for循环遍历物品，内层for遍历背包</strong>。</p><p><strong>如果求排列数就是外层for遍历背包，内层for循环遍历物品</strong>。</p><h3 id="其他系列">1.3 其他系列</h3><ul><li><a href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%82%A1%E7%A5%A8%E7%B3%BB%E5%88%97">股票系列</a></li><li><a href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E5%AD%90%E5%BA%8F%E5%88%97%E7%B3%BB%E5%88%97">子序列 Subsequence / 子数组 Subarray</a></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;内容整理自&lt;a href=&quot;https://www.programmercarl.com/&quot;&gt;代码随想录&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;dp-动态规划&quot;&gt;1. DP 动态规划&lt;/h2&gt;
+&lt;h3 id=&quot;思路框架</summary>
+      
+    
+    
+    
+    <category term="工具人" scheme="http://example.com/categories/%E5%B7%A5%E5%85%B7%E4%BA%BA/"/>
+    
+    
+    <category term="Leetcode" scheme="http://example.com/tags/Leetcode/"/>
+    
+    <category term="找工" scheme="http://example.com/tags/%E6%89%BE%E5%B7%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>MSL-24-自驱新时代(Memo)</title>
@@ -489,31 +519,6 @@
     <category term="图神经网络" scheme="http://example.com/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
     
     <category term="图表示学习" scheme="http://example.com/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MSL_15_夜与便利店</title>
-    <link href="http://example.com/2021/12/13/MSL-15-%E5%A4%9C%E4%B8%8E%E4%BE%BF%E5%88%A9%E5%BA%97/"/>
-    <id>http://example.com/2021/12/13/MSL-15-%E5%A4%9C%E4%B8%8E%E4%BE%BF%E5%88%A9%E5%BA%97/</id>
-    <published>2021-12-12T16:08:37.000Z</published>
-    <updated>2021-12-28T12:35:38.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>搬家的前一夜，一如往常，走进罗森。打算买两个茶叶蛋，和舍友一人一个分了——煮泡一天的蛋最为入味。却只见一锅红褐色的茶汤，蛋已售罄了。和那胖乎乎的年轻店员对视一眼，又走出店门。</p><p>大约很难再见他。</p></blockquote><p>没有所谓深夜食堂的热络，夜间的便利店，默默消化着每个独身过客。</p><span id="more"></span><p>总觉着，夜里的便利店，往来的人们总算能卸下一日的包袱或伪装，短暂地释放真实的自我。</p><p>它不是酒吧，并不能趁着酒意与人攀谈，彼此交换故事。大多时候，我只是在选购食物、付款间隙，瞄几眼货架前的人们，高脚凳上的人们——大多沉默，享受自己的独处时刻。</p><p>有见过：十一点的罗森，邻座四瓶AD钙一字排开，窄桌上再加一份咖喱炸鸡便当，只着手机看直播。一瓶、两瓶，吸管咕噜噜的声音与筷子扒拉米饭刮蹭盒底的声音相和。直到每瓶AD钙上都插了吸管，黑色塑料餐盒只留一点咖喱汁时，便起身离去。</p><p>也见过：情侣，大约是热恋期吧。深夜忙碌后，选好食物，不在暖烘烘的店内就餐，倒是寻了店门外的小石凳——女生坐在男生大腿上，团身靠在胸口。</p><p>更多的人，像我，不作逗留，一个普通的消费者罢了。进店奔向货架搜寻目标，偶尔的优惠组合会扰乱采购计划。有货，心满意足；售罄，摇摇头，叹气离开。</p><p>真正和便利店相伴的，是店员。没有顾客时应该会坐下休息吧，站一夜实在辛苦。夜晚顾客不多，却有其孤独的忙碌。货物补给总是晚上送抵，扫码入库上架，不得停息。</p><p>金玟岐17年写的《7-11》，不是我的故事，却照映着城市里的孤勇者们。</p><p>不算好吃的食物，不算美丽的价格，只因深夜它有唯一点亮的灯火，变得温暖可爱起来。</p>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;搬家的前一夜，一如往常，走进罗森。打算买两个茶叶蛋，和舍友一人一个分了——煮泡一天的蛋最为入味。却只见一锅红褐色的茶汤，蛋已售罄了。和那胖乎乎的年轻店员对视一眼，又走出店门。&lt;/p&gt;
-&lt;p&gt;大约很难再见他。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;没有所谓深夜食堂的热络，夜间的便利店，默默消化着每个独身过客。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
     
   </entry>
   

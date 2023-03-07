@@ -3059,4 +3059,59 @@ L=\alpha L_{\text {soft }}+\beta L_{\text {hard }}
         <tag>日常</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Leetcode-代码随想录总结</title>
+    <url>/2023/03/07/Leetcode-%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<blockquote>
+<p>内容整理自<a href="https://www.programmercarl.com/">代码随想录</a></p>
+</blockquote>
+<h2 id="dp-动态规划">1. DP 动态规划</h2>
+<h3 id="思路框架">1.1 思路框架</h3>
+<p>动规五部曲分别为：</p>
+<ol type="1">
+<li><p><strong>确定dp数组（dp table）以及下标的含义</strong></p>
+<p>一般来说，dp数组元素即为题目所求的局部最优结果。分析问题规模确定数组维数；</p></li>
+<li><p><strong>确定递推公式</strong></p>
+<p>注意紧扣数组定义；</p></li>
+<li><p><strong>dp数组如何初始化</strong></p></li>
+<li><p><strong>确定遍历顺序</strong></p>
+<p>根据递推公式所需的上下文，确定方向。</p>
+<p>如有 <code>dp[i][j] = dp[i + 1][j - 1] + 1</code>，则遍历顺序为 i由大到小，j由小到大；</p></li>
+<li><p><strong>举例推导dp数组</strong></p>
+<p>辅助Debug检验代码实现/递推公式缺漏。</p></li>
+</ol>
+<h3 id="背包问题">1.2 背包问题</h3>
+<ul>
+<li>思路</li>
+</ul>
+<p>题目不会直给地点明是背包问题，需要分析物品和背包对应题目中的什么元素。有时元素<strong>同时是物品和背包</strong>。</p>
+<ul>
+<li>01背包（每种物品仅有1件）</li>
+</ul>
+<p>——滚动数组实现</p>
+<p>dp[j]表示：容量为j的背包，所背的物品价值可以最大为dp[j]。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = bagWeight; j &gt;= weight[i]; j--) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>倒序遍历</strong>是为了保证物品i只被放入一次！</p>
+<ul>
+<li>完全背包（每种物品有无限件）</li>
+</ul>
+<p>完全背包的物品是可以添加多次的，所以要<strong>从小到大去遍历</strong>，即：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 先遍历物品，再遍历背包</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; weight.<span class="built_in">size</span>(); i++) &#123; <span class="comment">// 遍历物品</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = weight[i]; j &lt;= bagWeight ; j++) &#123; <span class="comment">// 遍历背包容量</span></span><br><span class="line">        dp[j] = <span class="built_in">max</span>(dp[j], dp[j - weight[i]] + value[i]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是仅仅是纯完全背包的遍历顺序是这样的，题目稍有变化，两个for循环的先后顺序就不一样了。</p>
+<p><strong>如果求组合数就是外层for循环遍历物品，内层for遍历背包</strong>。</p>
+<p><strong>如果求排列数就是外层for遍历背包，内层for循环遍历物品</strong>。</p>
+<h3 id="其他系列">1.3 其他系列</h3>
+<ul>
+<li><a href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%82%A1%E7%A5%A8%E7%B3%BB%E5%88%97">股票系列</a></li>
+<li><a href="https://www.programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%80%BB%E7%BB%93%E7%AF%87.html#%E5%AD%90%E5%BA%8F%E5%88%97%E7%B3%BB%E5%88%97">子序列 Subsequence / 子数组 Subarray</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>工具人</category>
+      </categories>
+      <tags>
+        <tag>Leetcode</tag>
+        <tag>找工</tag>
+      </tags>
+  </entry>
 </search>
