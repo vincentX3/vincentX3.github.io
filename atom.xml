@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-12-06T06:28:47.000Z</updated>
+  <updated>2024-07-07T13:02:12.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MSL_Last</title>
+    <link href="http://example.com/2024/07/07/MSL-Last/"/>
+    <id>http://example.com/2024/07/07/MSL-Last/</id>
+    <published>2024-07-07T13:02:12.000Z</published>
+    <updated>2024-07-07T13:02:12.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>要毕业了，MSL系列该写个终章才是。</p><p>该给7年武汉生活也写个句号才是。</p><p>一如此刻落笔的踟蹰，3年的研究生生涯似乎没留下什么值得说道的记录。宏愿未了，壮志已消，不过按部就班地完成了学业。</p><p>（2024.05.17）</p><hr /><p>明日入职，MSL-终章最终还是没写出来。</p><blockquote><p>“偶爾亦明瞭別讓潛力浪費 但發完力三秒還是怕倦坐低”</p></blockquote><p>喂衰仔，勤力滴，给心机干活啦。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;要毕业了，MSL系列该写个终章才是。&lt;/p&gt;
+&lt;p&gt;该给7年武汉生活也写个句号才是。&lt;/p&gt;
+&lt;p&gt;一如此刻落笔的踟蹰，3年的研究生生涯似乎没留下什么值得说道的记录。宏愿未了，壮志已消，不过按部就班地完成了学业。&lt;/p&gt;
+&lt;p&gt;（2024.05.17）&lt;/p&gt;
+&lt;h</summary>
+      
+    
+    
+    
+    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>MSL-27-去看尘大师了</title>
@@ -472,33 +500,6 @@
     <category term="图神经网络" scheme="http://example.com/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
     
     <category term="图表示学习" scheme="http://example.com/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>BOOK-07-工作消费主义和新穷人</title>
-    <link href="http://example.com/2022/03/25/BOOK-07-%E5%B7%A5%E4%BD%9C%E6%B6%88%E8%B4%B9%E4%B8%BB%E4%B9%89%E5%92%8C%E6%96%B0%E7%A9%B7%E4%BA%BA/"/>
-    <id>http://example.com/2022/03/25/BOOK-07-%E5%B7%A5%E4%BD%9C%E6%B6%88%E8%B4%B9%E4%B8%BB%E4%B9%89%E5%92%8C%E6%96%B0%E7%A9%B7%E4%BA%BA/</id>
-    <published>2022-03-25T02:37:54.000Z</published>
-    <updated>2022-03-25T02:37:54.000Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>武汉夜雨狂泻，狂躁的雨滴砸落地面。哦不，该称之为水面了。持续一日的雨水，在柏油路上新铺一层水面。</p><p>听闻“麻豆传媒”的一个摄影团队被抓获，翻看知乎里对事件的评价，产业链的介绍、情色作品的科普。总是会错过些“艺术”，错过了汤不热时代，一如曾经错过了快播的便捷。</p><p>如今，大约大部分人已是<strong>笑贫不笑娼</strong>了。</p></blockquote><span id="more"></span><p>一直提醒自己用发展的眼光观察、评析事物，却不时忘记亦要时常回顾历史，看看我们是如何一步步走成今天的道路。</p><ul><li>关于劳动</li></ul><p>这本书，回顾随生产力进步与社会发展的需要，人们如何一步步丢失职业自豪，被塑造成机械化的部件，进而一步步被挖去朴素的道德，被灌输用不断的消费来填充自己.</p><blockquote><p>越来越多的人认为，从工匠变成工人时失去的人的尊严，只有通过赢得更多盈余才能恢复。这种变迁中，努力工作能使人们道德升华的呼声日益衰弱。现在，衡量人们声望和社会地位的是工资的差别，而不是勤于工作的道德或惰于工作的罪恶。</p></blockquote><ul><li>关于穷人</li></ul><p>同时，还残酷地揭露着某些国家对穷人的“污名化”——生产力进步不再需要本国劳工时，穷人不再是失业，而是单纯的<strong>过剩</strong>人口。</p><blockquote><p>“失业者”虽然暂时没有工作，但一旦环境好转，他们就有望回到“生产者”的行列，一切也将回到正轨。“过剩”的人则不同，他们是多余的、编外的，不被需要。他们要么出生在一个“饱和”的社会里（即社会的续存无需更多的人从事生产），要么由于经济和技术进步（即有了新的生产力，较少的人员参与就能满足日益增长的商品和服务需求），变得不再必要。</p></blockquote><p>过剩的穷人开始背负各种污蔑，成为各种社会负面情绪转嫁的出口。媒体不断吹风造势，让大众逐渐接受人穷必是其自身有罪过，合理化对穷人的冷漠。以至于确实能见到身边有人，抱着书中所提态度：</p><blockquote><p>他们确实有一个共同点：在其他人看来，他们没有存在的必要，正是因为完全无用才会被归入社会底层——若他们消失，其他人会生活得更好。他们无疑是美丽风景线中的污渍，是丑陋又贪婪的杂草，他们对园林的和谐之美没有任何贡献，还偷走了其他植物的养分。如果他们消失，所有人都会获益。</p></blockquote><p>这般冷漠蔓延，剩下保有对生命基本尊重与对人类良知的人将如《狂人日记》中一般，道“我疯了”吧。</p><p>穷人们真是那般懒散罪恶吗，更多时候只是他们的故事被改写，从<strong>被剥夺</strong>的故事被叙述为自甘堕落的故事。</p><ul><li>关于消费</li></ul><blockquote><p>如果消费是衡量成功人生的标准，衡量幸福的标准，甚至是衡量尊严的标准，那么人类欲望的潘多拉之盒已经打开，再多的购买和刺激的感觉，都不能唤回过去“达到标准”带来的满足感：现在根本就没有标准可言。终点线和参赛者一起前行，人们力图到达的目标永远领先一步之遥。</p></blockquote><p>为人嘛，求给自己立下标准，反抗下动物性的欲望吧。</p>]]></content>
-    
-    
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;武汉夜雨狂泻，狂躁的雨滴砸落地面。哦不，该称之为水面了。持续一日的雨水，在柏油路上新铺一层水面。&lt;/p&gt;
-&lt;p&gt;听闻“麻豆传媒”的一个摄影团队被抓获，翻看知乎里对事件的评价，产业链的介绍、情色作品的科普。总是会错过些“艺术”，错过了汤不热时代，一如曾经错过了快播的便捷。&lt;/p&gt;
-&lt;p&gt;如今，大约大部分人已是&lt;strong&gt;笑贫不笑娼&lt;/strong&gt;了。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-    <category term="书单" scheme="http://example.com/tags/%E4%B9%A6%E5%8D%95/"/>
-    
-    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
     
   </entry>
   
