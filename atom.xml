@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-07-07T13:02:12.000Z</updated>
+  <updated>2024-10-08T15:12:20.000Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Q_0_开端</title>
+    <link href="http://example.com/2024/10/08/Q-0-%E5%BC%80%E7%AB%AF/"/>
+    <id>http://example.com/2024/10/08/Q-0-%E5%BC%80%E7%AB%AF/</id>
+    <published>2024-10-08T15:12:20.000Z</published>
+    <updated>2024-10-08T15:12:20.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>从胃被拿捏开始。富贵面包公司的面包确实好吃。</p></blockquote><p>有些话，还是别候着盼着有啥绝佳的场合，得抓紧说。不然，面包再多吃下去也显得不礼貌了。</p><span id="more"></span><hr /><p>久未提笔，上来总不免靠啰嗦来缓解尴尬。</p><p>直入正题吧，故事的开端，并不复杂。并不相信一见钟情，但有的人就是能凭一张图和寥寥几行文字播种下期待——所谓巧笑倩兮，美目盼兮。会是位怎样的可人呢？</p><p>上天偶尔不吝啬，如此凑巧，能分到一组培训。能说是“远超预期”吗——灵魂与皮囊一样瞩目。于公，才思敏捷，好家伙，对着大老板就是一通流畅且严谨的提问；于私，靠谱的让人自惭，订餐也好其他活动也罢总是在他人犹疑间就安排妥当。更何况那笑面，眉梢微微弯下，嘴角上挑，便是酷热八月的清风。以至于在聚餐合照时，都悄悄地站在她身后，想凑近些。</p><p>本以为培训末了，便不过成了留在微信列表里的闪念。可曾想，她就这样拎着好吃面包直冲冲地闯进来了。怎么会有人这么善良且直接啊——不过是向本地人寻求面包店的种草，却直接把草场都挪到面前了。</p><p>那晚些许惶恐，许多欢喜。平静好些时日的心头，被投下一个小石子，泛起阵阵微波。</p><hr /><p>从酷暑到秋风渐凉，不过两月出头的时间，也幸运地共同分享了许多周末。密室里心疼地看着你撞到脑门，不敢擅自去揉；又到K房里欣赏天籁，原来所谓K歌之王是曲目丰富到每首只唱一半；随着你的安利，发现杭州也没网传的那般美食荒漠；看个电影不曾想卸下心防，当场泪崩……</p><p>第一回一同小酌，真心话环节被问到“要多久才能确定是否合适开展一段感情”，我好像回答的模棱两可。其实，那时更多的踟蹰，在于自我怀疑。对方太过耀眼，而深知自己的不堪，不敢冒犯。</p><p>却也还是你，在阁楼烛光旁，给予我勇气。</p><p>所以，人不轻狂枉少年。七月刚来杭州时，念叨着此后寻个逍遥，无欲无求。现在，计划有变！并非心生妄念，而是真切地盼望，想拥抱你，走入你的生活。</p><p>想一同探访江浙的每座城镇，小桥流水间，聆听你过去的故事；</p><p>想同游异域北国，冰天雪地间，感受彼此掌心的温度；</p><p>想走进你的镜头中，留下浮光掠影飞舞，妄自尊大地，做影像里的半个主角；</p><p>想拾起纸币，开始记录两人的故事……</p><p>想，想很多。想不久之后，甚至想不起单身的时日，只想到与你的悠长年月。</p><p>唠叨这么多，还是先不想那么多，用传统的四字收尾：我喜欢你。</p>]]></content>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;从胃被拿捏开始。富贵面包公司的面包确实好吃。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;有些话，还是别候着盼着有啥绝佳的场合，得抓紧说。不然，面包再多吃下去也显得不礼貌了。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
   
   <entry>
     <title>MSL_Last</title>
@@ -470,36 +494,6 @@
     <category term="书单" scheme="http://example.com/tags/%E4%B9%A6%E5%8D%95/"/>
     
     <category term="日常" scheme="http://example.com/tags/%E6%97%A5%E5%B8%B8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GNN-GATv2</title>
-    <link href="http://example.com/2022/05/20/GNN-GATv2/"/>
-    <id>http://example.com/2022/05/20/GNN-GATv2/</id>
-    <published>2022-05-20T06:44:17.000Z</published>
-    <updated>2022-05-20T06:44:17.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="论文笔记how-attentive-are-graph-attention-networks">论文笔记：HOW ATTENTIVE ARE GRAPH ATTENTION NETWORKS?</h1><blockquote><p>PDF: https://openreview.net/pdf?id=F72ximsx7C1</p><p>OpenReview：https://openreview.net/forum?id=F72ximsx7C1</p><p>ICLR 2022</p></blockquote><h2 id="abstract">1. Abstract</h2><p>认为GAT是static attention，仅实现了对节点重要度的静态ranking，而未实现对不同query给出不同key的设想；提出GATv2，通过调整LeakyReLU和linear unit计算顺序，实现dynamic attention，即对不同query能给出不同key。</p><span id="more"></span><h2 id="motivations">2. Motivations</h2><p>GAT已成为图神经网络发展历程中的标志性架构，但本文观察发现，GAT的attention对于相同的keys实现的其实是ranking。</p><p>假设有如下二部图，求解 <em>Dictionary Lookup</em> 问题：</p><p><img src="./gatv2_01.png" style="zoom:67%;" /></p><p>使用GAT所得的attention scores如下：</p><p><img src="./gatv2_02.png" style="zoom:38%;" /></p><p>可以看到，对于不同的query，key的scores排序实际是一样的（<strong>静态</strong>的）。这限制了GAT的表达能力。</p><p>而本文认为，attention的初衷应该是：给定不同的query，能找到不同的key（即不同query，ranking结果应该不同，<strong>动态</strong>的）。</p><h2 id="method">3. Method</h2><h3 id="definitions">3.1 Definitions</h3><p>注意力机制其实是求解给定query时keys的注意力得分分布。</p><ul><li><p><strong>Static Attention</strong></p><p>设有计算注意力得分的函数族<span class="math inline">\(\mathcal{F}\)</span>, 对于任意 <span class="math inline">\(f \in \mathcal{F}\)</span>，给出 key <span class="math inline">\(\mathbb{K}=\left\{\boldsymbol{k}_{1}, \ldots, \boldsymbol{k}_{n}\right\} \subset \mathbb{R}^{d}\)</span> 和 query <span class="math inline">\(\mathbb{Q}=\left\{\boldsymbol{q}_{1}, \ldots, \boldsymbol{q}_{m}\right\} \subset \mathbb{R}^{d}\)</span>，若存在一个“得分最高”的 key <span class="math inline">\(k_{j_f}\)</span> 使得 <span class="math inline">\(f\left(\boldsymbol{q}_{i}, \boldsymbol{k}_{j_{f}}\right) \geq f\left(\boldsymbol{q}_{i}, \boldsymbol{k}_{j}\right)\)</span>，则称 <span class="math inline">\(\mathcal{F}\)</span> 为静态注意力；</p></li><li><p><strong>Dynamic Attention</strong></p><p>设有计算注意力得分的函数族<span class="math inline">\(\mathcal{F}\)</span>, <span class="math inline">\(f \in \mathcal{F}\)</span>，给出 key <span class="math inline">\(\mathbb{K}=\left\{\boldsymbol{k}_{1}, \ldots, \boldsymbol{k}_{n}\right\} \subset \mathbb{R}^{d}\)</span> 和 query <span class="math inline">\(\mathbb{Q}=\left\{\boldsymbol{q}_{1}, \ldots, \boldsymbol{q}_{m}\right\} \subset \mathbb{R}^{d}\)</span>，对于任意的映射 <span class="math inline">\(\varphi:[m] \rightarrow[n]\)</span>，存在 <span class="math inline">\(f \in \mathcal{F}\)</span>，使任意的 query 及任意的 key <span class="math inline">\(j_{\neq \varphi(i)} \in[n]\)</span>，有<span class="math inline">\(f\left(\boldsymbol{q}_{i}, \boldsymbol{k}_{\varphi(i)}\right)&gt;f\left(\boldsymbol{q}_{i}, \boldsymbol{k}_{j}\right)\)</span>，则称 <span class="math inline">\(\mathcal{F}\)</span> 为动态注意力。</p></li></ul><h2 id="gat有限的表达能力及修正">3.2 GAT有限的表达能力及修正</h2><ul><li><p><strong>GAT 分析</strong></p><p>首先回顾GAT中attention score计算方式，有： <span class="math display">\[e\left(\boldsymbol{h}_{i}, \boldsymbol{h}_{j}\right)=\text { LeakyReLU }\left(\boldsymbol{a}^{\top} \cdot\left[\boldsymbol{W} \boldsymbol{h}_{i} \| \boldsymbol{W} \boldsymbol{h}_{j}\right]\right)\]</span></p><p><span class="math display">\[\alpha_{i j}=\operatorname{softmax}_{j}\left(e\left(\boldsymbol{h}_{i}, \boldsymbol{h}_{j}\right)\right)=\frac{\exp \left(e\left(\boldsymbol{h}_{i}, \boldsymbol{h}_{j}\right)\right)}{\sum_{j^{\prime} \in \mathcal{N}_{i}} \exp \left(e\left(\boldsymbol{h}_{i}, \boldsymbol{h}_{j^{\prime}}\right)\right)}\]</span></p><p>对于式子(1)，我们令 <span class="math inline">\(\boldsymbol{a}=\left[\boldsymbol{a}_{1} \| \boldsymbol{a}_{2}\right] \in \mathbb{R}^{2 d^{\prime}}\)</span>，可得： <span class="math display">\[e\left(\boldsymbol{h}_{i}, \boldsymbol{h}_{j}\right)=\text { LeakyReLU }\left(\boldsymbol{a}_{1}^{\top} \boldsymbol{W} \boldsymbol{h}_{i}+\boldsymbol{a}_{2}^{\top} \boldsymbol{W} \boldsymbol{h}_{j}\right)\]</span> 可以发现，对于有限的节点集合 <span class="math inline">\(\mathcal{V}\)</span>，存在一个节点 <span class="math inline">\(j_{max}\)</span>，使 <span class="math inline">\(\boldsymbol{a}_{2}^{\top} \boldsymbol{W} \boldsymbol{h}_{j_{max}}\)</span> 最大，即GAT计算的为 <em>static attention</em>。节点重要程度排序是确定的，和 query node 无关。Query node 只能影响注意力得分分布的 "sharpeness"。</p><blockquote><p>关于 <strong>multi-head</strong> ：上述结论对每个head仍适用，只是每个head的 <span class="math inline">\(j_{max}\)</span> 节点未必相同。</p></blockquote></li><li><p><strong>改进</strong></p><p>本文核心内容，将 <span class="math inline">\(\boldsymbol{a}\)</span> 移动到非线性激活外，使GAT成为 <em>dynamic attention</em>。</p><p><img src="./gatv2_03.png" /></p><p>证明较长，见文章appendix。</p></li></ul><h2 id="exp">4. Exp</h2><ul><li><em>Dictionary Lookup</em></li></ul><p>对于上文中二部图问题，使用改进后的GAT能有效实现<em>dynamic attention</em>。</p><p><img src="./gatv2_04.png" style="zoom:50%;" /></p><ul><li><p>Robustness to Noise</p><p>本文发现<em>dynamic attention</em>能更好抵抗噪声（不过没有进一步分析原因）。</p><p><img src="./gatv2_05.png" style="zoom:38%;" /></p></li><li><p>Node / Graph / Link Prediction</p><p><img src="./gatv2_06.png" style="zoom:50%;" /></p><p><img src="./gatv2_07.png" style="zoom:50%;" /></p><p><img src="./gatv2_08.png" style="zoom:50%;" /></p><p>值得注意的是，节点预测中 单头的 GATv2 在两个数据集上有更佳表现。作者解释为单头的GATv2已经有足够的表达能力，使用8头时反而由于过强的表达能力，遭遇了过拟合。</p></li></ul><h2 id="其他">其他</h2><p>twitter和openreview上的讨论很有意思，截取一些在此。</p><ul><li><p>GAT原作者</p><p><img src="./gatv2_09.png" style="zoom:38%;" /></p></li><li><p>关于GATv1, v2表达能力与参数数量的讨论 (二者参数数量相同，表达能力不同)</p><p><img src="./gatv2_10.png" style="zoom:50%;" /></p></li><li><p>作者关于 <em>dynamic attention</em> 的思考</p><p><img src="./gatv2_11.png" /></p></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;论文笔记how-attentive-are-graph-attention-networks&quot;&gt;论文笔记：HOW ATTENTIVE ARE GRAPH ATTENTION NETWORKS?&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;PDF: https://openreview.net/pdf?id=F72ximsx7C1&lt;/p&gt;
-&lt;p&gt;OpenReview：https://openreview.net/forum?id=F72ximsx7C1&lt;/p&gt;
-&lt;p&gt;ICLR 2022&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;abstract&quot;&gt;1. Abstract&lt;/h2&gt;
-&lt;p&gt;认为GAT是static attention，仅实现了对节点重要度的静态ranking，而未实现对不同query给出不同key的设想；提出GATv2，通过调整LeakyReLU和linear unit计算顺序，实现dynamic attention，即对不同query能给出不同key。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="论文笔记" scheme="http://example.com/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"/>
-    
-    
-    <category term="图神经网络" scheme="http://example.com/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
-    
-    <category term="图表示学习" scheme="http://example.com/tags/%E5%9B%BE%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
